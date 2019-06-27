@@ -23,6 +23,15 @@
  */
 
 $string['pluginname'] = 'Password Policy Checker';
+$string['passworddigitsname'] = 'Maximum Sequential Digits';
+$string['passworddigitsdesc'] = 'Enforce a maximum number of sequential digits.';
+$string['passworddigitsinputname'] = 'Maximum Sequential Digits Input';
+$string['passworddigitsinputdesc'] = 'Maximum number of sequential digits.';
+$string['passwordcharsname'] = 'Maximum Repeated Characters';
+$string['passwordcharsdesc'] = 'Enforce a maximum number of repeated characters';
+$string['passwordcharsinputname'] = 'Maximum Sequential Digits Input';
+$string['passwordcharsinputdesc'] = 'Maximum number of sequential digits.';
+
 
 /*
  * Privacy provider (GDPR)
