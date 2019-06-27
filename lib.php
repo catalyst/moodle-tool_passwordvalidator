@@ -5,19 +5,21 @@ function tool_password_check_password_policy($password){
     if (!(is_siteadmin())) {
         $errs = '';
 
-        //Check for fname, lname, city
+        //Check for fname, lname, city, username, email address, domain name of email
+        $email = $USER->email;
+        
         $badstrings = array($USER->firstname, $USER->lastname,
-                            $USER->city);
+                        $USER->city, $USER->username,
+                        );
         $found = false;
         
-        foreach ($badstrings as $string){
-            $found = stripos($password, $string);
+        foreach ($badstrings as $string) {
+            if (stripos($password, $string) !== false) {
+                $errs .= "Found occurance of $string in password. Please remove.\n";
+            }
         }
 
-        if ($found !== false){
-            $errs .= 'Found Identifying substring';
-        }
-
+        //Check for significant dates
         return $errs;
     }
 }
