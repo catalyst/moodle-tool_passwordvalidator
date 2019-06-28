@@ -23,6 +23,7 @@
  */
 defined('MOODLE_INTERNAL') || die;
 // Require validation library.
+require_once(__DIR__.'/../../../config.php');
 require_once('lib.php');
 
 if ($hassiteconfig) {

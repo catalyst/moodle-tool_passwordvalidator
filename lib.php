@@ -1,6 +1,8 @@
 <?php
+require_once(__DIR__.'/../../../config.php');
 function password_validate($password, $test){
     global $USER;
+    global $DB;
     //Only execute checks if user isn't admin or is test more
     if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
@@ -106,7 +108,11 @@ function password_validate($password, $test){
             }
         }
 
-        return $errs;
+        // Get time user last changed password
+        $lastchange = 0;
+        //$DB->get_field('tool_password', 'changetime', array('id' => ($USER->id)));
+
+        return $lastchange;
     }
 }
 
