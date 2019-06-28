@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die;
+// Require validation library.
+require_once('lib.php');
 
 if ($hassiteconfig) {
 
@@ -31,30 +33,57 @@ if ($hassiteconfig) {
     if (!during_initial_install()) {
 
         //IRAP Complexity Minimum
-        $settings->add(new admin_setting_configcheckbox('irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
+        $settings->add(new admin_setting_configcheckbox('tool_password/irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
                     get_string('passwordirapcomplexitydesc', 'tool_password'), 1));
         
         //IRAP Not only numbers
-        $settings->add(new admin_setting_configcheckbox('irap_numbers', get_string('passwordirapnumbersname', 'tool_password'),
+        $settings->add(new admin_setting_configcheckbox('tool_password/irap_numbers', get_string('passwordirapnumbersname', 'tool_password'),
                     get_string('passwordirapnumbersdesc', 'tool_password'), 1));
 
         // Sequential digits settings.
-        $settings->add(new admin_setting_configcheckbox('sequential_digits', get_string('passworddigitsname', 'tool_password'),
+        $settings->add(new admin_setting_configcheckbox('tool_password/sequential_digits', get_string('passworddigitsname', 'tool_password'),
                     get_string('passworddigitsdesc', 'tool_password'), 1));
         
-        $settings->add(new admin_setting_configtext('sequential_digits_input', get_string('passworddigitsinputname', 'tool_password'),
+        $settings->add(new admin_setting_configtext('tool_password/sequential_digits_input', get_string('passworddigitsinputname', 'tool_password'),
                     get_string('passworddigitsinputdesc', 'tool_password'), 2, PARAM_INT)); 
         
         // Repeated characters settings
-        $settings->add(new admin_setting_configcheckbox('repeated_chars', get_string('passwordcharsname', 'tool_password'),
+        $settings->add(new admin_setting_configcheckbox('tool_password/repeated_chars', get_string('passwordcharsname', 'tool_password'),
                     get_string('passwordcharsdesc', 'tool_password'), 1));
 
-        $settings->add(new admin_setting_configtext('repeated_chars_input', get_string('passwordcharsinputname', 'tool_password'),
+        $settings->add(new admin_setting_configtext('tool_password/repeated_chars_input', get_string('passwordcharsinputname', 'tool_password'),
                     get_string('passwordcharsinputdesc', 'tool_password'), 1, PARAM_INT));
         
-        $settings->add(new admin_setting_configcheckbox('personal_info', get_string('passwordpersonalinfoname', 'tool_password'),
+        //Personal information control
+        $settings->add(new admin_setting_configcheckbox('tool_password/personal_info', get_string('passwordpersonalinfoname', 'tool_password'),
                     get_string('passwordpersonalinfodesc', 'tool_password'), 1));
-    
+        
+        //Testing panel
+
+        //Get current password configuration
+        $testpassword = get_config('tool_password', 'password_test_field');
+        $testerdesc = '';
+        $testervalidation = password_validate($testpassword, true);
+
+        if ((trim($testervalidation) == '') && (trim($testpassword) !== ''))  {
+            //If no validation errors and pass isnt empty
+            $message = 'passwordtesterpass';
+            $type = 'notifysuccess';
+        } else if (trim($testpassword) == '') {
+            //if password is empty, notify empty
+            $message = 'passwordtesterempty';
+            $type = 'notifymessage';
+        } else if (trim($testervalidation) !== '') {
+            $message = 'passwordtesterfail';
+            $type = 'notifyerror';
+        }
+        $testerdesc .= $OUTPUT->notification(get_string($message, 'tool_password').' '. $testervalidation, $type);
+
+        $settings->add(new admin_setting_configtext('tool_password/password_test_field', get_string('passwordtestername', 'tool_password'),
+                    $testerdesc, '', PARAM_RAW));
+        
+        
+
     }
 }
 

@@ -1,8 +1,8 @@
 <?php
-function tool_password_check_password_policy($password){
+function password_validate($password, $test){
     global $USER;
-    //Only execute checks if user isn't admin
-    if (!(is_siteadmin())) {
+    //Only execute checks if user isn't admin or is test more
+    if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
 
         //=====IRAP Certification checks=========
@@ -18,6 +18,7 @@ function tool_password_check_password_policy($password){
         //NIST Recommendations - beyond above IRAP
         //Black list of compromised passwords - HARD
         //No service name in password
+        //=========================================
 
         // IRAP Complexity Reqs
         //ACSC Security Control 0421
@@ -67,7 +68,8 @@ function tool_password_check_password_policy($password){
             
             foreach ($badstrings as $string) {
                 if (stripos($password, $string) !== false) {
-                    $errs .= "Found occurance of $string in password. Please remove.\n";
+                    $errs .= "Password contains identifying information.\n";
+                    break;
                 }
             }
         }
@@ -90,7 +92,17 @@ function tool_password_check_password_policy($password){
             }
         }
 
+        // Check for blacklist phrases - eg Service name
+        if (get_config('tool_password', 'service_name')) {
+            
+        }
+
         return $errs;
     }
+}
+
+//Wrapper function
+function tool_password_check_password_policy($password) {
+    return password_validate($password, false);
 }
 

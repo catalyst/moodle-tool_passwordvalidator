@@ -37,7 +37,11 @@ $string['passwordcharsinputname'] = 'Maximum Repeated Characters Input';
 $string['passwordcharsinputdesc'] = 'Maximum number of sequential digits.';
 $string['passwordpersonalinfoname'] = 'Personal Information Checker';
 $string['passwordpersonalinfodesc'] = 'Ensure no known personal information is contained in the password.';
-
+$string['passwordtestername'] = 'Password Tester Field';
+$string['passwordtesterdesc'] = 'Password tester. Enter a password and save changes to see validation.';
+$string['passwordtesterpass'] = 'Pass: Tester password passed validation settings. ';
+$string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: ';
+$string['passwordtesterempty'] = 'No password entered to test.';
 
 /*
  * Privacy provider (GDPR)
