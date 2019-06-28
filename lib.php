@@ -93,8 +93,17 @@ function password_validate($password, $test){
         }
 
         // Check for blacklist phrases - eg Service name
-        if (get_config('tool_password', 'service_name')) {
+        if (get_config('tool_password', 'phrase_blacklist')) {
+            $phrasesraw = get_config('tool_password', 'phrase_blacklist_input');
+            $phrases = explode(PHP_EOL, $phrasesraw);
             
+            foreach ($phrases as $string) {
+                $tstring = trim($string);
+                if (stripos($password, $tstring) !== false) {
+                    $errs .= "Password contains blacklisted phrase such as service name.\n";
+                    break;
+                }
+            }
         }
 
         return $errs;

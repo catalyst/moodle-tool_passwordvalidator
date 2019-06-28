@@ -37,11 +37,18 @@ $string['passwordcharsinputname'] = 'Maximum Repeated Characters Input';
 $string['passwordcharsinputdesc'] = 'Maximum number of sequential digits.';
 $string['passwordpersonalinfoname'] = 'Personal Information Checker';
 $string['passwordpersonalinfodesc'] = 'Ensure no known personal information is contained in the password.';
+$string['passwordphrasename'] = 'Enforce Phrase Blacklisting';
+$string['passwordphrasedesc'] = 'Enforce blacklisting of chosen phrases such as service names in passwords';
+$string['passwordphraseinputname'] = 'Phrase Blacklist Entry';
+$string['passwordphraseinputdesc'] = 'Enter words or phrases to blacklist in passwords, such as service names. Put each new word or phrase on a seperate line. Matching is NOT case sensitive. E.g. "moodle" matches to "MOODLE".';
+$string['passwordtesterheading'] = 'Password Validation Tester';
+$string['passwordtesterheadingdesc'] = 'Enter a password into the box and save changes to test it against the current validation settings';
 $string['passwordtestername'] = 'Password Tester Field';
 $string['passwordtesterdesc'] = 'Password tester. Enter a password and save changes to see validation.';
 $string['passwordtesterpass'] = 'Pass: Tester password passed validation settings. ';
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: ';
 $string['passwordtesterempty'] = 'No password entered to test.';
+
 
 /*
  * Privacy provider (GDPR)

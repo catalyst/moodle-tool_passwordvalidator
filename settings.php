@@ -58,7 +58,16 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_configcheckbox('tool_password/personal_info', get_string('passwordpersonalinfoname', 'tool_password'),
                     get_string('passwordpersonalinfodesc', 'tool_password'), 1));
         
+        //Phrase blacklisting
+        $settings->add(new admin_setting_configcheckbox('tool_password/phrase_blacklist', get_string('passwordphrasename', 'tool_password'),
+                    get_string('passwordphrasedesc', 'tool_password'), 1));
+        
+        $settings->add(new admin_setting_configtextarea('tool_password/phrase_blacklist_input', get_string('passwordphraseinputname', 'tool_password'),
+                    get_string('passwordphraseinputdesc', 'tool_password'), 'moodle', PARAM_RAW));
+        
         //Testing panel
+        // Heading.
+        $settings->add(new admin_setting_heading('tool_password/testing_heading', get_string('passwordtesterheading', 'tool_password'),get_string('passwordtesterheadingdesc', 'tool_password')));
 
         //Get current password configuration
         $testpassword = get_config('tool_password', 'password_test_field');
@@ -81,9 +90,6 @@ if ($hassiteconfig) {
 
         $settings->add(new admin_setting_configtext('tool_password/password_test_field', get_string('passwordtestername', 'tool_password'),
                     $testerdesc, '', PARAM_RAW));
-        
-        
-
     }
 }
 
