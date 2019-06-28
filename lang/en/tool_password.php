@@ -23,14 +23,20 @@
  */
 
 $string['pluginname'] = 'Password Policy Checker';
+$string['passwordirapcomplexityname'] = 'Enforce IRAP Complexity Standards';
+$string['passwordirapcomplexitydesc'] = 'Enforce ACSC Security Control 0421: Minimum password complexity. Passwords containing only letters must be at least 13 characters. Passwords containing at least 3 of 4: Lowercase letters, Uppercase letters, Numbers, Special characters, must be at least 10 characters.';
+$string['passwordirapnumbersname'] = 'Enforce Letters and Characters in Password';
+$string['passwordirapnumbersdesc'] = 'Enforce ACSC Security Control 0417: Password cannot be only numbers';
 $string['passworddigitsname'] = 'Maximum Sequential Digits';
 $string['passworddigitsdesc'] = 'Enforce a maximum number of sequential digits.';
 $string['passworddigitsinputname'] = 'Maximum Sequential Digits Input';
 $string['passworddigitsinputdesc'] = 'Maximum number of sequential digits.';
 $string['passwordcharsname'] = 'Maximum Repeated Characters';
 $string['passwordcharsdesc'] = 'Enforce a maximum number of repeated characters';
-$string['passwordcharsinputname'] = 'Maximum Sequential Digits Input';
+$string['passwordcharsinputname'] = 'Maximum Repeated Characters Input';
 $string['passwordcharsinputdesc'] = 'Maximum number of sequential digits.';
+$string['passwordpersonalinfoname'] = 'Personal Information Checker';
+$string['passwordpersonalinfodesc'] = 'Ensure no known personal information is contained in the password.';
 
 
 /*

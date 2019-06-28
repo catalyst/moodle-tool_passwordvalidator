@@ -30,11 +30,19 @@ if ($hassiteconfig) {
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
 
+        //IRAP Complexity Minimum
+        $settings->add(new admin_setting_configcheckbox('irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
+                    get_string('passwordirapcomplexitydesc', 'tool_password'), 1));
+        
+        //IRAP Not only numbers
+        $settings->add(new admin_setting_configcheckbox('irap_numbers', get_string('passwordirapnumbersname', 'tool_password'),
+                    get_string('passwordirapnumbersdesc', 'tool_password'), 1));
+
         // Sequential digits settings.
-        $settings->add(new admin_setting_configcheckbox('repeated_digits', get_string('passworddigitsname', 'tool_password'),
+        $settings->add(new admin_setting_configcheckbox('sequential_digits', get_string('passworddigitsname', 'tool_password'),
                     get_string('passworddigitsdesc', 'tool_password'), 1));
         
-        $settings->add(new admin_setting_configtext('repeated_digits_input', get_string('passworddigitsinputname', 'tool_password'),
+        $settings->add(new admin_setting_configtext('sequential_digits_input', get_string('passworddigitsinputname', 'tool_password'),
                     get_string('passworddigitsinputdesc', 'tool_password'), 2, PARAM_INT)); 
         
         // Repeated characters settings
@@ -43,6 +51,10 @@ if ($hassiteconfig) {
 
         $settings->add(new admin_setting_configtext('repeated_chars_input', get_string('passwordcharsinputname', 'tool_password'),
                     get_string('passwordcharsinputdesc', 'tool_password'), 1, PARAM_INT));
+        
+        $settings->add(new admin_setting_configcheckbox('personal_info', get_string('passwordpersonalinfoname', 'tool_password'),
+                    get_string('passwordpersonalinfodesc', 'tool_password'), 1));
+    
     }
 }
 
