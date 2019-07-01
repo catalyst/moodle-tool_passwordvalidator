@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * 
+ *
  *
  * @package    tool_password
  * @copyright  2019 Peter Burnett <peterburnett@catalyst-au.net>
