@@ -18,7 +18,7 @@
  *  Password Policy Checker Settings Page
  *
  * @package    tool_password
- * @copyright     Peter Burnett <peterburnett@catalyst-au.net>
+ * @copyright  Peter Burnett <peterburnett@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die;
@@ -53,7 +53,7 @@ if ($hassiteconfig) {
                     get_string('passwordcharsdesc', 'tool_password'), 1));
 
         $settings->add(new admin_setting_configtext('tool_password/repeated_chars_input', get_string('passwordcharsinputname', 'tool_password'),
-                    get_string('passwordcharsinputdesc', 'tool_password'), 1, PARAM_INT));
+                    get_string('passwordcharsinputdesc', 'tool_password'), 2, PARAM_INT));
         
         //Personal information control
         $settings->add(new admin_setting_configcheckbox('tool_password/personal_info', get_string('passwordpersonalinfoname', 'tool_password'),
@@ -72,6 +72,10 @@ if ($hassiteconfig) {
 
                     $settings->add(new admin_setting_configtext('tool_password/time_lockout_input', get_string('passwordlockoutinputname', 'tool_password'),
                     get_string('passwordlockoutinputdesc', 'tool_password'), 0, PARAM_INT));
+        
+        //Check against HaveIBeenPwned.com API
+        $settings->add(new admin_setting_configcheckbox('tool_password/password_blacklist', get_string('passwordblacklistname', 'tool_password'),
+                    get_string('passwordblacklistdesc', 'tool_password'), 1));
         
         //Testing panel
         // Heading.

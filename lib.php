@@ -130,7 +130,24 @@ function password_validate($password, $test){
             }
         }
 
-        
+        //Check against HaveIBeenPwned.com password breach API
+        if (get_config('tool_password', 'password_blacklist')) {
+            $API = 'https://api.pwnedpasswords.com/range/';
+            //Get first 5 chars of hash to search API for
+            $pwhash = sha1($password);
+            $searchstring = substr($pwhash, 0, 5);
+
+            //Get API response
+            $URL = $API .= $searchstring;
+            $response = file_get_contents($URL);
+
+            //Check for presence of hash in response
+            $shorthash = substr($pwhash, 5);
+            if (stripos($response, $shorthash) !== false) {
+                $errs .= 'Password found in online breached passwords collection.';
+            }
+        }
+
         return $errs;
     }
 }
