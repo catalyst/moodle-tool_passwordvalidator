@@ -108,14 +108,24 @@ function password_validate($password, $test){
             }
         }
 
-        if (get_config('tool_password', 'phrase_blacklist')) {
+        // Check for password changes on the user account within lockout period.
+        if (get_config('tool_password', 'time_lockout')) {
             $lastchanges = $DB->get_records('user_password_history', array('userid' => ($USER->id)), 'timecreated DESC');
             $currenttime = time();
             //get first elements timecreated, order from DB query
             $timechanged = reset($lastchanges)->timecreated;
             //Calculate 24 hr constant in seconds
             $day = 24*60*60;
-            if ($timechanged >= ($currenttime - $day)){
+
+            //Set the time modifier based on configuration
+            $inputtime = get_config('tool_password', 'time_lockout_input');
+            if ($inputtime <= 0){
+                $modifier = $day;
+            } else {
+                $modifier = $inputtime;
+            }
+
+            if ($timechanged >= ($currenttime - $modifier)){
                 $errs .= 'Password already changed recently. Please try again later.';
             }
         }
