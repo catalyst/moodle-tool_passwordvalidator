@@ -48,3 +48,12 @@ in seconds will enforce a period of that long from the time of last change. Ente
 <p1><b>Check Password Against Blacklist:</b> NIST recommends that passwords are checked against a blacklist of known bad passwords from data breaches. Enabling this control
 checks the hash of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the
 catalogued breaches </p1>
+
+<h2> Password Tester </h2>
+<p1> The password tester allows admins to enter a password. Upon saving changes to the settings, the password will be validated against the above configuration, and the user will be alerted
+as to the status of the password. For the purposes of password lockout testing and information testing, the password will be checked against the current user account accessing the settings,
+typically the administration account. </p1>
+
+<h2> Installation </h2>
+<p1>To install the plugin simply drop it into the /path/to/moodle/admin/tool/password directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now,
+and the plugin will be installed. </p1>
