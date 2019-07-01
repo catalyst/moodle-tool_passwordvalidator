@@ -66,6 +66,13 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_configtextarea('tool_password/phrase_blacklist_input', get_string('passwordphraseinputname', 'tool_password'),
                     get_string('passwordphraseinputdesc', 'tool_password'), 'moodle', PARAM_RAW));
         
+        //Password Change lockout period
+        $settings->add(new admin_setting_configcheckbox('tool_password/time_lockout', get_string('passwordlockoutname', 'tool_password'),
+                    get_string('passwordlockoutdesc', 'tool_password'), 1));
+
+                    $settings->add(new admin_setting_configtext('tool_password/time_lockout_input', get_string('passwordlockoutinputname', 'tool_password'),
+                    get_string('passwordlockoutinputdesc', 'tool_password'), 0, PARAM_INT));
+        
         //Testing panel
         // Heading.
         $settings->add(new admin_setting_heading('tool_password/testing_heading', get_string('passwordtesterheading', 'tool_password'),get_string('passwordtesterheadingdesc', 'tool_password')));

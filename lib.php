@@ -3,7 +3,7 @@ require_once(__DIR__.'/../../../config.php');
 function password_validate($password, $test){
     global $USER;
     global $DB;
-    //Only execute checks if user isn't admin or is test more
+    //Only execute checks if user isn't admin or is test mode
     if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
 
@@ -108,11 +108,20 @@ function password_validate($password, $test){
             }
         }
 
-        // Get time user last changed password
-        $lastchange = 0;
-        //$DB->get_field('tool_password', 'changetime', array('id' => ($USER->id)));
+        if (get_config('tool_password', 'phrase_blacklist')) {
+            $lastchanges = $DB->get_records('user_password_history', array('userid' => ($USER->id)), 'timecreated DESC');
+            $currenttime = time();
+            //get first elements timecreated, order from DB query
+            $timechanged = reset($lastchanges)->timecreated;
+            //Calculate 24 hr constant in seconds
+            $day = 24*60*60;
+            if ($timechanged >= ($currenttime - $day)){
+                $errs .= 'Password already changed recently. Please try again later.';
+            }
+        }
 
-        return $lastchange;
+        
+        return $errs;
     }
 }
 
