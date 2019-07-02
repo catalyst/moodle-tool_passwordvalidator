@@ -105,6 +105,7 @@ class tool_password_password_testcase extends advanced_testcase {
 
     function test_sequential_digits() {
         $this->resetAfterTest(true);
+        set_config('sequential_digits', 1,'tool_password');
         set_config('sequential_digits_input', 5,'tool_password');
 
         $goodresponse = '';
@@ -133,6 +134,7 @@ class tool_password_password_testcase extends advanced_testcase {
 
     function test_repeated_chars() {
         $this->resetAfterTest(true);
+        set_config('repeated_chars', 1,'tool_password');
         set_config('repeated_chars_input', 4,'tool_password');
 
         $goodresponse = '';
@@ -161,6 +163,8 @@ class tool_password_password_testcase extends advanced_testcase {
 
     function test_phrase_blacklisting() {
         $this->resetAfterTest(true);
+        
+        set_config('phrase_blacklist', 1,'tool_password');
         set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space",'tool_password');
 
         $goodresponse = '';
@@ -179,6 +183,36 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase1));
         $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase2));
         $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase3));
+    }
+
+    function test_lockout_period() {
+        $this->resetAfterTest(true);
+        //Set timelock to 1 second
+        set_config('time_lockout', 1 ,'tool_password');
+        set_config('time_lockout_input', 1 ,'tool_password');
+
+        $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
+                         'lastname' => 'user', 'city' => 'testcity'));
+        $this->setUser($user);
+
+        //TODO Finish implementation
+    }
+
+    function test_password_blacklist() {
+        // Due to constant data breaches etc, there is a chance one day these tests
+        // may fail, as the passwords chosen as the safe test version may actually
+        // become leaked
+        
+        $goodresponse = '';
+        $badpassword = 'password';
+        $safepassword = 'hopefully this password remains safe $&!@#*(%(&!@*(%';
+
+        // Safe variables
+        $this->assertEquals($goodresponse, password_blacklist($goodresponse));
+        $this->assertEquals($goodresponse, password_blacklist($safepassword));
+
+        // verified leaked password
+        $this->assertNotEquals($goodresponse, password_blacklist($badpassword));
     }
 }
 
