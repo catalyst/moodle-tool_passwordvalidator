@@ -75,5 +75,54 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, complexity_checker($onlyspecials, false));
         $this->assertNotEquals($goodresponse, complexity_checker($specialsandnumbers, false));
     }
+
+    function test_personal_information() {
+        $this->resetAfterTest(true);
+        //generate user account to test against
+        $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
+                         'lastname' => 'user', 'city' => 'testcity'));
+        $this->setUser($user);
+
+        $goodresponse = '';
+        $safestring = 'noinformationhere';
+        $badfname = 'abcTestabc';
+        $badlname = 'abcUserabc';
+        $badusername = 'abcPHPUnitabc';
+        $badcity = 'abctestcityabc';
+
+        //Empty password, no data to be found
+        $this->assertEquals($goodresponse, personal_information($safestring));
+        
+        //safestrings
+        $this->assertEquals($goodresponse, personal_information($safestring));
+        
+        //Bad strings
+        $this->assertNotEquals($goodresponse, personal_information($badfname));
+        $this->assertNotEquals($goodresponse, personal_information($badlname));
+        $this->assertNotEquals($goodresponse, personal_information($badcity));
+        $this->assertNotEquals($goodresponse, personal_information($badusername));
+    }
+
+    function test_sequential_digits() {
+        $this->resetAfterTest(true);
+        set_config('sequential_digits_input', 5,'tool_password');
+
+        $goodresponse = '';
+        $noseqdigits = 'a1b2c3d4';
+        $safeseqdigits = 'a11b22c33';
+        $maxseqdigits = 'a11111b22222';
+        $overseqdigits = 'a111111b222222';
+        $nodigits = 'abcd!@#$';
+
+        //Safe variables
+        $this->assertEquals($goodresponse, sequential_digits($goodresponse));
+        $this->assertEquals($goodresponse, sequential_digits($noseqdigits));
+        $this->assertEquals($goodresponse, sequential_digits($safeseqdigits));
+        $this->assertEquals($goodresponse, sequential_digits($maxseqdigits));
+        $this->assertEquals($goodresponse, sequential_digits($nodigits));
+
+        //Over the limit
+        $this->assertNotEquals($goodresponse, sequential_digits($overseqdigits));
+    }
 }
 
