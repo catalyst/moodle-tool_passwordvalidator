@@ -118,6 +118,9 @@ function complexity_checker($password, $complex) {
         if (($specialchars === 1) || ($numbers === 1)) {
             // At least 3 character sets found
             $minchars = 10;
+        } else {
+            // Less than 3 charsets
+            $minchars = 13;
         }
     } else {
         // Less than 3 charsets
@@ -126,12 +129,12 @@ function complexity_checker($password, $complex) {
 
     if ((strlen($password) < $minchars) && $complex) {
         $return .= 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13.
-         Adding numbers and special characters must be length 10';
+         Adding numbers and special characters must be length 10.';
     }
 
     if (!($complex)) {
-        if (($lowercase === 0 && $uppercase === 0 && $specialchars === 0) && $numbers === 1) {
-            $return .= 'Password can not consist of only numbers';
+        if ($lowercase === 0 && $uppercase === 0){
+            $return .= 'Password can not consist of only numbers and/or special characters.';
         }
     }
     return $return;
