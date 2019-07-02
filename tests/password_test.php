@@ -113,6 +113,9 @@ class tool_password_password_testcase extends advanced_testcase {
         $maxseqdigits = 'a11111b22222';
         $overseqdigits = 'a111111b222222';
         $nodigits = 'abcd!@#$';
+        $nodigitsrepeatsafe = 'aaabbb';
+        $nodigitsrepeatmax = 'aaaaabbbbb';
+        $nodigitsrepeatover = 'aaaaaabbbbbb';
 
         //Safe variables
         $this->assertEquals($goodresponse, sequential_digits($goodresponse));
@@ -120,9 +123,62 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, sequential_digits($safeseqdigits));
         $this->assertEquals($goodresponse, sequential_digits($maxseqdigits));
         $this->assertEquals($goodresponse, sequential_digits($nodigits));
+        $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatsafe));
+        $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatmax));
+        $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatover));
 
         //Over the limit
         $this->assertNotEquals($goodresponse, sequential_digits($overseqdigits));
+    }
+
+    function test_repeated_chars() {
+        $this->resetAfterTest(true);
+        set_config('repeated_chars_input', 4,'tool_password');
+
+        $goodresponse = '';
+        $norepeatchars = 'a1b2c3d4';
+        $saferepeatchars = 'aa1bb2cc3';
+        $maxrepeatchars = 'aaaa1bbbb2cccc3';
+        $overrepeatchars = 'aaaaa1bbbbb2ccccc3';
+        $noletterssafe = '1122';
+        $nolettersmax = '11112222';
+        $nolettersover = '1111122222';
+
+
+        //Safe variables
+        $this->assertEquals($goodresponse, repeated_chars($goodresponse));
+        $this->assertEquals($goodresponse, repeated_chars($norepeatchars));
+        $this->assertEquals($goodresponse, repeated_chars($saferepeatchars));
+        $this->assertEquals($goodresponse, repeated_chars($maxrepeatchars));
+        $this->assertEquals($goodresponse, repeated_chars($noletterssafe));
+        $this->assertEquals($goodresponse, repeated_chars($nolettersmax));
+
+        //Over the limit, with letters or without
+        $this->assertNotEquals($goodresponse, repeated_chars($overrepeatchars));
+        $this->assertNotEquals($goodresponse, repeated_chars($nolettersover));
+
+    }
+
+    function test_phrase_blacklisting() {
+        $this->resetAfterTest(true);
+        set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space",'tool_password');
+
+        $goodresponse = '';
+        $tooshort = 'abc123';
+        $safephrase = 'nophraseisbad';
+        $badphrase1 = 'badphrasehere';
+        $badphrase2 = 'phrasetwohere';
+        $badphrase3 = 'phrase with space here';
+
+        // Safe Variables
+        $this->assertEquals($goodresponse, phrase_blacklist($goodresponse));
+        $this->assertEquals($goodresponse, phrase_blacklist($tooshort));
+        $this->assertEquals($goodresponse, phrase_blacklist($safephrase));
+
+        // Contains bad phrases
+        $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase1));
+        $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase2));
+        $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase3));
     }
 }
 
