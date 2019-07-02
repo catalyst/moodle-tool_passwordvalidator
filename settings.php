@@ -77,6 +77,10 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_configcheckbox('tool_password/password_blacklist', get_string('passwordblacklistname', 'tool_password'),
                     get_string('passwordblacklistdesc', 'tool_password'), 1));
 
+        // Panel for Displaying controls that are incorrect/misconfigured
+        //$repeatpasswords = get_config()
+        // TODO Config Misconfigure panel
+
         // Testing panel
         // Heading.
         $settings->add(new admin_setting_heading('tool_password/testing_heading', get_string('passwordtesterheading', 'tool_password'),

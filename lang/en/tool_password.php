@@ -55,6 +55,16 @@ $string['passwordtesterpass'] = 'Pass: Tester password passed validation setting
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: ';
 $string['passwordtesterempty'] = 'No password entered to test.';
 
+$string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.';
+$string['responsenoletters'] = 'Password can not consist of only numbers and/or special characters.';
+$string['responseidentifyinginformation'] = 'Password contains identifying information.';
+$string['responsenumericsequence'] = 'Password contains numeric sequence.';
+$string['responserepeatedcharacters'] = 'Password contains repeated characters.';
+$string['responseblacklistphrase'] = 'Password contains blacklisted phrase such as service name.';
+$string['responsedatabaseerror'] = 'Error retrieving information from database';
+$string['responselockoutperiod'] = 'Password already changed recently. Please try again later.';
+$string['responsebreachedpassword'] = 'Password found in online breached passwords collection.';
+
 
 /*
  * Privacy provider (GDPR)

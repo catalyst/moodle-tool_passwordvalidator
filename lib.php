@@ -128,13 +128,12 @@ function complexity_checker($password, $complex) {
     }
 
     if ((strlen($password) < $minchars) && $complex) {
-        $return .= 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13.
-         Adding numbers and special characters must be length 10.';
+        $return .= get_string('responseminimumlength', 'tool_password');
     }
 
     if (!($complex)) {
         if ($lowercase === 0 && $uppercase === 0){
-            $return .= 'Password can not consist of only numbers and/or special characters.';
+            $return .= get_string('responsenoletters', 'tool_password');
         }
     }
     return $return;
@@ -149,7 +148,7 @@ function personal_information($password) {
 
     foreach ($badstrings as $string) {
         if (stripos($password, $string) !== false) {
-            $return .= "Password contains identifying information.\n";
+            $return .= get_string('responseidentifyinginformation', 'tool_password');
             break;
         }
     }
@@ -163,7 +162,7 @@ function sequential_digits($password) {
     $return = '';
 
     if (preg_match($digitpattern, $password) === 1) {
-        $return .= "Password contains numeric sequence.\n";
+        $return .= get_string('responsenumericsequence', 'tool_password');
     }
 
     return $return;
@@ -175,7 +174,7 @@ function repeated_chars($password) {
     $return = '';
 
     if (preg_match($characterpattern, $password) === 1) {
-        $return .= "Password contains repeated characters.\n";
+        $return .= get_string('responserepeatedcharacters', 'tool_password');
     }
     return $return;
 }
@@ -188,7 +187,7 @@ function phrase_blacklist($password) {
     foreach ($phrases as $string) {
         $tstring = trim($string);
         if (stripos($password, $tstring) !== false) {
-            $return .= "Password contains blacklisted phrase such as service name.\n";
+            $return .= get_string('responseblacklistphrase', 'tool_password');
             break;
         }
     }
@@ -201,7 +200,7 @@ function lockout_period($password) {
     try {
         $lastchanges = $DB->get_records('user_password_history', array('userid' => ($USER->id)), 'timecreated DESC');
     } catch (Exception $e) {
-        $return .= 'Error retrieving information from database';
+        $return .= get_string('responsedatabaseerror', 'tool_password');
     }
     $currenttime = time();
 
@@ -219,7 +218,7 @@ function lockout_period($password) {
     }
 
     if ($timechanged >= ($currenttime - $modifier)) {
-        $return .= 'Password already changed recently. Please try again later.';
+        $return .= get_string('responselockoutperiod', 'tool_password');
     }
     return $return;
 }
@@ -238,7 +237,7 @@ function password_blacklist($password) {
     // Check for presence of hash in response
     $shorthash = substr($pwhash, 5);
     if (stripos($response, $shorthash) !== false) {
-        $return .= 'Password found in online breached passwords collection.';
+        $return .= get_string('responsebreachedpassword', 'tool_password');
     }
     return $return;
 }
