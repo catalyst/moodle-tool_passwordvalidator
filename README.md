@@ -57,3 +57,5 @@ typically the administration account. </p1>
 <h2> Installation </h2>
 <p1>To install the plugin simply drop it into the /path/to/moodle/admin/tool/password directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now,
 and the plugin will be installed. </p1>
+<p1>This plugin relies on the moodle core security setting "Password Rotation Limit" This must be set to at least 1, so that moodle stores the time that a password was last changed.
+If this setting is not enabled, the settings page for this plugin will alert you, and the time lockout functionality of the plugin will not work. </p1>
