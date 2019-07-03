@@ -26,7 +26,7 @@ function password_validate($password, $test) {
     // Only execute checks if user isn't admin or is test mode.
     if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
-
+        global $USER;
         // =====IRAP Certification checks=========
         // Complexity reqs X
         // Not only numbers X
@@ -77,7 +77,7 @@ function password_validate($password, $test) {
 
         // Check for password changes on the user account within lockout period.
         if (get_config('tool_password', 'time_lockout')) {
-            $errs .= lockout_period($password);
+            $errs .= lockout_period($password, $USER);
         }
 
         // Check against HaveIBeenPwned.com password breach API
@@ -189,11 +189,11 @@ function phrase_blacklist($password) {
     return $return;
 }
 
-function lockout_period($password) {
+function lockout_period($password, $user) {
     $return = '';
     global $DB;
     try {
-        $lastchanges = $DB->get_records('user_password_history', array('userid' => ($USER->id)), 'timecreated DESC');
+        $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
     } catch (Exception $e) {
         $return .= get_string('responsedatabaseerror', 'tool_password');
     }
@@ -269,10 +269,15 @@ function config_checker() {
         $type = 'notifyerror';
     }
 
-    //password rotation not beind enabled is a fail
+    // Password rotation not beind enabled is a fail
     if ($CFG->passwordreuselimit < 1) {
         $response .= get_string('configpasswordrotationempty', 'tool_password');
         $type = 'notifyerror';
+    }
+
+    // If no errors at end, return a good message
+    if ($type == 'notifysuccess') {
+        $response .= get_string('configpasswordgood', 'tool_password');
     }
 
     return array($response, $type);

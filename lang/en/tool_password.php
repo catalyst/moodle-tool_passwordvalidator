@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ // Settings menu strings
 $string['pluginname'] = 'Password Policy Checker';
 $string['passwordirapcomplexityname'] = 'Enforce IRAP Complexity Standards';
 $string['passwordirapcomplexitydesc'] = 'Enforce ACSC Security Control 0421: Minimum password complexity. Passwords containing only letters must be at least 13 characters. Passwords containing at least 3 of 4: Lowercase letters, Uppercase letters, Numbers, Special characters, must be at least 10 characters.';
@@ -29,8 +30,8 @@ $string['passwordirapcomplexitysimple'] = 'Minimum Simple Complexity Length';
 $string['passwordirapcomplexitysimpledesc'] = 'Minimum length for simple passwords with only letters.';
 $string['passwordirapcomplexitycomplex'] = 'Minimum Complex Complexity Length';
 $string['passwordirapcomplexitycomplexdesc'] = 'Minimum length for complex passwords with 3 or more character sets.';
-$string['passwordirapnumbersname'] = 'Enforce Letters and Characters in Password';
-$string['passwordirapnumbersdesc'] = 'Enforce ACSC Security Control 0417: Password cannot be only numbers';
+$string['passwordirapnumbersname'] = 'Enforce Letters in Password';
+$string['passwordirapnumbersdesc'] = 'Enforce ACSC Security Control 0417: Password cannot be only numbers, or contain only numbers and characters.';
 $string['passworddigitsname'] = 'Maximum Sequential Digits';
 $string['passworddigitsdesc'] = 'Enforce a maximum number of sequential digits.';
 $string['passworddigitsinputname'] = 'Maximum Sequential Digits Input';
@@ -61,6 +62,7 @@ $string['passwordtesterpass'] = 'Pass: Tester password passed validation setting
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: ';
 $string['passwordtesterempty'] = 'No password entered to test.';
 
+// Password validation responses
 $string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.<br>';
 $string['responsenoletters'] = 'Password can not consist of only numbers and/or special characters.<br>';
 $string['responseidentifyinginformation'] = 'Password contains identifying information.<br>';
@@ -71,12 +73,14 @@ $string['responsedatabaseerror'] = 'Error retrieving information from database.<
 $string['responselockoutperiod'] = 'Password already changed recently. Please try again later.<br>';
 $string['responsebreachedpassword'] = 'Password found in online breached passwords collection.<br>';
 
+// Moodle config checker strings
 $string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.<br>';
 $string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1. It is recommended to set this value to atleast 1, but higher is better.<br>';
 $string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.<br>';
 $string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.<br>';
 $string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';
 $string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';
+$string['configpasswordgood'] = 'No incorrect moodle password configurations found.<br>';
 
 /*
  * Privacy provider (GDPR)
