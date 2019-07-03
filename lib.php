@@ -21,7 +21,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__.'/../../../config.php');
-require_once('form.php');
 /**
  * Validates the password provided against the password policy configured in the plugin admin
  * settings menu. Calls all of the individual checks
@@ -97,7 +96,7 @@ function password_validate($password, $test) {
 
         // If no errors, and selected in config, bring up questions form
         if ($errs == '' && get_config('tool_password', 'question_prompt')) {
-            
+
         }
 
         return $errs;
