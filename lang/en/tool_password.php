@@ -61,6 +61,8 @@ $string['passwordtesterdesc'] = 'Password tester. Enter a password and save chan
 $string['passwordtesterpass'] = 'Pass: Tester password passed validation settings. ';
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: ';
 $string['passwordtesterempty'] = 'No password entered to test.';
+$string['passwordquestion'] = 'Prompt Security Questions';
+$string['passwordquestiondesc'] = 'Prompt for security questions on password change.';
 
 // Password validation responses
 $string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.<br>';
