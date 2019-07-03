@@ -75,7 +75,8 @@ $string['responsebreachedpassword'] = 'Password found in online breached passwor
 
 // Moodle config checker strings
 $string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.<br>';
-$string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1. It is recommended to set this value to atleast 1, but higher is better.<br>';
+$string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1. It is recommended to set this value to atleast 1, but higher is better.
+    ACSC recommends not reusing passwords within  8 changes. <br>';
 $string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.<br>';
 $string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.<br>';
 $string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';

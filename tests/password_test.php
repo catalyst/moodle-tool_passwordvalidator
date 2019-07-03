@@ -1,10 +1,24 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 defined('MOODLE_INTERNAL') || die();
-require_once __DIR__.'/../lib.php';
-require_once __DIR__.'../../../../../user/lib.php';
+require_once(__DIR__.'/../lib.php');
+require_once(__DIR__.'../../../../../user/lib.php');
 class tool_password_password_testcase extends advanced_testcase {
-    function test_complexity_length(){
+    public function test_complexity_length() {
         $goodresponse = '';
         $onlylowerstooshort = 'abcdefg';
         $onlylowerslong = 'aabbccddeeffgg';
@@ -23,24 +37,24 @@ class tool_password_password_testcase extends advanced_testcase {
         $onlynumbersandspeciallong = '1234567!@#$%%^';
         $onlynumbersandspecialshort = '1234567!@#';
 
-        //Assert error message if provided empty pw
+        // Assert error message if provided empty pw
         $this->assertNotEquals($goodresponse, complexity_checker($goodresponse, true));
 
-        //Assert error message for too short passwords
+        // Assert error message for too short passwords
         $this->assertNotEquals($goodresponse, complexity_checker($onlylowerstooshort, true));
         $this->assertNotEquals($goodresponse, complexity_checker($onlyupperstooshort, true));
         $this->assertNotEquals($goodresponse, complexity_checker($upperlettersandnumberstooshort, true));
         $this->assertNotEquals($goodresponse, complexity_checker($lowerlettersandnumberstooshort, true));
         $this->assertNotEquals($goodresponse, complexity_checker($upperlettersandspecialtooshort, true));
         $this->assertNotEquals($goodresponse, complexity_checker($lowerlettersandspecialtooshort, true));
-        
-        //Only numbers and special characters, length req only
+
+        // Only numbers and special characters, length req only
         $this->assertEquals($goodresponse, complexity_checker($onlynumbersandspeciallong, true));
         $this->assertEquals($goodresponse, complexity_checker($specialcharsonlylong, true));
         $this->assertNotEquals($goodresponse, complexity_checker($onlynumbersandspecialshort, true));
         $this->assertNotEquals($goodresponse, complexity_checker($specialcharsonlytooshort, true));
-        
-        //Assert empty response for success
+
+        // Assert empty response for success
         $this->assertEquals($goodresponse, complexity_checker($onlylowerslong, true));
         $this->assertEquals($goodresponse, complexity_checker($onlyupperslong, true));
         $this->assertEquals($goodresponse, complexity_checker($upperlettersandnumberslong, true));
@@ -49,7 +63,7 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, complexity_checker($upperlettersandspeciallong, true));
     }
 
-    function test_complexity_chars(){
+    public function test_complexity_chars() {
         $goodresponse = '';
         $onlylowers = 'abcdefg';
         $onlyuppers = 'ABCDEFG';
@@ -62,7 +76,7 @@ class tool_password_password_testcase extends advanced_testcase {
         $uppersandspecials = 'ABCD!@#';
         $specialsandnumbers = '123$%^&';
 
-        //All with letters should equal
+        // All with letters should equal
         $this->assertEquals($goodresponse, complexity_checker($onlylowers, false));
         $this->assertEquals($goodresponse, complexity_checker($onlyuppers, false));
         $this->assertEquals($goodresponse, complexity_checker($lowersanduppers, false));
@@ -71,15 +85,15 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, complexity_checker($uppersandnumbers, false));
         $this->assertEquals($goodresponse, complexity_checker($uppersandspecials, false));
 
-        //All with no letters should not equal
+        // All with no letters should not equal
         $this->assertNotEquals($goodresponse, complexity_checker($onlynumbers, false));
         $this->assertNotEquals($goodresponse, complexity_checker($onlyspecials, false));
         $this->assertNotEquals($goodresponse, complexity_checker($specialsandnumbers, false));
     }
 
-    function test_personal_information() {
+    public function test_personal_information() {
         $this->resetAfterTest(true);
-        //generate user account to test against
+        // Generate user account to test against
         $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
                          'lastname' => 'user', 'city' => 'testcity'));
         $this->setUser($user);
@@ -91,22 +105,22 @@ class tool_password_password_testcase extends advanced_testcase {
         $badusername = 'abcPHPUnitabc';
         $badcity = 'abctestcityabc';
 
-        //Empty password, no data to be found
+        // Empty password, no data to be found
         $this->assertEquals($goodresponse, personal_information($safestring));
-        
-        //safestrings
+
+        // Safe strings
         $this->assertEquals($goodresponse, personal_information($safestring));
-        
-        //Bad strings
+
+        // Bad strings
         $this->assertNotEquals($goodresponse, personal_information($badfname));
         $this->assertNotEquals($goodresponse, personal_information($badlname));
         $this->assertNotEquals($goodresponse, personal_information($badcity));
         $this->assertNotEquals($goodresponse, personal_information($badusername));
     }
 
-    function test_sequential_digits() {
+    public function test_sequential_digits() {
         $this->resetAfterTest(true);
-        set_config('sequential_digits_input', 5,'tool_password');
+        set_config('sequential_digits_input', 5, 'tool_password');
 
         $goodresponse = '';
         $noseqdigits = 'a1b2c3d4';
@@ -118,7 +132,7 @@ class tool_password_password_testcase extends advanced_testcase {
         $nodigitsrepeatmax = 'aaaaabbbbb';
         $nodigitsrepeatover = 'aaaaaabbbbbb';
 
-        //Safe variables
+        // Safe variables
         $this->assertEquals($goodresponse, sequential_digits($goodresponse));
         $this->assertEquals($goodresponse, sequential_digits($noseqdigits));
         $this->assertEquals($goodresponse, sequential_digits($safeseqdigits));
@@ -128,13 +142,13 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatmax));
         $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatover));
 
-        //Over the limit
+        // Over the limit
         $this->assertNotEquals($goodresponse, sequential_digits($overseqdigits));
     }
 
-    function test_repeated_chars() {
+    public function test_repeated_chars() {
         $this->resetAfterTest(true);
-        set_config('repeated_chars_input', 4,'tool_password');
+        set_config('repeated_chars_input', 4, 'tool_password');
 
         $goodresponse = '';
         $norepeatchars = 'a1b2c3d4';
@@ -145,8 +159,7 @@ class tool_password_password_testcase extends advanced_testcase {
         $nolettersmax = '11112222';
         $nolettersover = '1111122222';
 
-
-        //Safe variables
+        // Safe variables
         $this->assertEquals($goodresponse, repeated_chars($goodresponse));
         $this->assertEquals($goodresponse, repeated_chars($norepeatchars));
         $this->assertEquals($goodresponse, repeated_chars($saferepeatchars));
@@ -154,15 +167,15 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, repeated_chars($noletterssafe));
         $this->assertEquals($goodresponse, repeated_chars($nolettersmax));
 
-        //Over the limit, with letters or without
+        // Over the limit, with letters or without
         $this->assertNotEquals($goodresponse, repeated_chars($overrepeatchars));
         $this->assertNotEquals($goodresponse, repeated_chars($nolettersover));
 
     }
 
-    function test_phrase_blacklisting() {
+    public function test_phrase_blacklisting() {
         $this->resetAfterTest(true);
-        set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space",'tool_password');
+        set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space", 'tool_password');
 
         $goodresponse = '';
         $tooshort = 'abc123';
@@ -182,7 +195,7 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase3));
     }
 
-    function test_lockout_period() {
+    public function test_lockout_period() {
         $this->resetAfterTest(true);
         global $CFG;
         global $DB;
@@ -190,42 +203,42 @@ class tool_password_password_testcase extends advanced_testcase {
         $goodresponse = '';
         $testpassword = 'testpassword';
 
-        //Set timelock to 1 second
-        set_config('time_lockout_input', 2 ,'tool_password');
+        // Set timelock to 1 second
+        set_config('time_lockout_input', 2 , 'tool_password');
 
-        //create a user then 'fake add' a password to trigger the timelock
+        // Create a user then 'fake add' a password to trigger the timelock
         $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
                          'lastname' => 'user', 'city' => 'testcity'));
         $this->setUser($user);
         user_add_password_history($user->id, 'passwordhistory1');
-        
-        //Now test that you are unable to change password
+
+        // Now test that you are unable to change password
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
 
-        //Wait 3 seconds then test again
+        // Wait 3 seconds then test again
         sleep(3);
         $this->assertEquals($goodresponse, lockout_period($testpassword, $user));
-        
+
         // Repeat with a slightly longer period
-        set_config('time_lockout_input', 4 ,'tool_password');
+        set_config('time_lockout_input', 4 , 'tool_password');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
         sleep(5);
         $this->assertEquals($goodresponse, lockout_period($testpassword, $user));
 
-        //then set config to 0 and test that it defaults to a 24hr period
-        set_config('time_lockout_input', 0 ,'tool_password');
+        // Then set config to 0 and test that it defaults to a 24hr period
+        set_config('time_lockout_input', 0 , 'tool_password');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
         sleep(2);
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
     }
 
-    function test_password_blacklist() {
+    public function test_password_blacklist() {
         // Due to constant data breaches etc, there is a chance one day these tests
         // may fail, as the passwords chosen as the safe test version may actually
         // become leaked
-        
+
         $goodresponse = '';
         $badpassword = 'password';
         $safepassword = 'hopefully this password remains safe $&!@#*(%(&!@*(%';

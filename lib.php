@@ -127,7 +127,7 @@ function complexity_checker($password, $complex) {
     }
 
     if (!($complex)) {
-        if ($lowercase === 0 && $uppercase === 0){
+        if ($lowercase === 0 && $uppercase === 0) {
             $return .= get_string('responsenoletters', 'tool_password');
         }
     }
@@ -242,16 +242,16 @@ function config_checker() {
     $response = '';
     $type = 'notifysuccess';
 
-    //Check if a password policy is in place, not necessarily a fail
+    // Check if a password policy is in place, not necessarily a fail
     if ($CFG->passwordpolicy == 1) {
         $response .= get_string('configpasswordpolicy', 'tool_password');
-        //if notify is currently success
+        // If notify is currently success
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
         }
     }
 
-    //minimum char enforcement is a fail
+    // Minimum char enforcement is a fail
     if (($CFG->passwordpolicy == 1) && $CFG->minpassworddigits >= 1) {
         $response .= get_string('configpassworddigits', 'tool_password');
         $type = 'notifyerror';

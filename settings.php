@@ -37,7 +37,7 @@ if ($hassiteconfig) {
         // IRAP Complexity Minimum
         $settings->add(new admin_setting_configcheckbox('tool_password/irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
                     get_string('passwordirapcomplexitydesc', 'tool_password'), 1));
-        
+
         $settings->add(new admin_setting_configtext('tool_password/simple_length_input', get_string('passwordirapcomplexitysimple', 'tool_password'),
                     get_string('passwordirapcomplexitysimpledesc', 'tool_password'), 13, PARAM_INT));
 
@@ -97,7 +97,7 @@ if ($hassiteconfig) {
         // Get current password configuration
         $testpassword = get_config('tool_password', 'password_test_field');
         $testerdesc = '';
-        //Only check if not empty
+        // Only check if not empty
         if ($testpassword != '') {
             $testervalidation = password_validate($testpassword, true);
         }
