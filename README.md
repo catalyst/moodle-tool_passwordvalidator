@@ -13,8 +13,15 @@ for any configuration, while enforcing safe, sensible guidelines for passwords. 
 both uppercase and lowercase. For passwords that contain at least 3 of the the following: lowercase letters, uppercase letters, numbers,
 special characters, the minimum length must be 10 characters. Enable this control to enforce this minimum length policy.</p1>
 
+<p1><b>Minimum Simple Complexity Length:</b> This box allows for input of an integer value to be the minimum number of characters allowed in simple passwords, consisting of
+only letters, both uppercase and lowercase. The Australian ISM recommends this length be 13, which is the default value.</p1>
+
+<p1><b>Minimum Complex Complexity Length:</b> This box allows for input of an integer value to be the minimum number of characters allowed in complex passwords, consisting
+of a combination of lowercase letters, uppercase letters, numbers and/or special characters. The Australian USM recommend this length be 10, which is the default value.</p1>
+
 <p1><b>Enforce Letters and Characters in Password:</b> The Australian ISM recommends that passwords are not allowed to be constructed of just
-numbers, and must contain some letters and/or special characters. Enable this control to enforce that passwords are not constructed of only numeric characters </p1>
+numbers and special characters, and must contain some letters. Enable this control to enforce that passwords are not constructed of only numeric characters or combinations
+of both numbers and special characters, and must contain letters </p1>
 
 <p1><b>Maximum Sequential Digits:</b> The Australian ISM recommends that passwords may not contain sequences of numbers, which may be a date or other significant number.
 Enable this control to enforce a maximum number of sequential numberic characters.
@@ -49,6 +56,9 @@ in seconds will enforce a period of that long from the time of last change. Ente
 checks the hash of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the
 catalogued breaches </p1>
 
+<h2>Moodle Configuration Checker</h2>
+<p1>This will automatically check the moodle configuration for settings that are either relied on by the plugin, or conflict with the plugin. It checks the password policy enforced by Moodle, which should be disabled and the plugin used instead, as well as the configuration settings of the policy if the policy is enabled. It is not recommended to enforce a minimum number of specific types of characters, such as uppercase letters, lowercase letters, special characters, and non-alphanumberic characters. </p1>
+
 <h2> Password Tester </h2>
 <p1> The password tester allows admins to enter a password. Upon saving changes to the settings, the password will be validated against the above configuration, and the user will be alerted
 as to the status of the password. For the purposes of password lockout testing and information testing, the password will be checked against the current user account accessing the settings,
@@ -59,3 +69,6 @@ typically the administration account. </p1>
 and the plugin will be installed. </p1>
 <p1>This plugin relies on the moodle core security setting "Password Rotation Limit" This must be set to at least 1, so that moodle stores the time that a password was last changed.
 If this setting is not enabled, the settings page for this plugin will alert you, and the time lockout functionality of the plugin will not work. </p1>
+
+<h2> Unit Testing </h2>
+<p1> All of the password validation functionality has accompanying unit tests, that validate that the program is operating correctly. These tests can be executed via PHPUnit from the Moodle installation if it is installed.</p1>
