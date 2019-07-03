@@ -22,6 +22,16 @@
  */
 require_once(__DIR__.'/../../../config.php');
 
+/**
+ * Validates the password provided against the password policy configured in the plugin admin
+ * settings menu. Calls all of the individual checks
+ *
+ * @param string $password The password to be validated.
+ * @param bool $test Testmode. If true, the checks will run even if the executing account is an administrator.
+ *             Used for tester validation in the settings menu.
+ * @return string Returns a string of any errors presented by the checks, or an empty string for success.
+ *
+ */
 function password_validate($password, $test) {
     // Only execute checks if user isn't admin or is test mode.
     if ((!(is_siteadmin()) || $test == true)) {
@@ -89,11 +99,28 @@ function password_validate($password, $test) {
     }
 }
 
-// Wrapper function
+/**
+ * Wrapper function for the password validation. Simply calls password validate
+ * with test mode disabled.
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the checks, or an empty string for success.
+ *
+ */
 function tool_password_check_password_policy($password) {
     return password_validate($password, false);
 }
 
+/**
+ * Complexity Checker. Checks character sets in the password, and returns if password
+ * is not long enough based on the character sets found, and the length minimums set in the admin settings menu.
+ *
+ * @param string $password The password to be validated.
+ * @param bool $complex A boolean flag for whether function is checking complexity, or the presence of letters.
+ *             Used for function reuse.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function complexity_checker($password, $complex) {
     $return = '';
     $lowercasepattern = '/[a-z]/';
@@ -134,6 +161,14 @@ function complexity_checker($password, $complex) {
     return $return;
 }
 
+/**
+ * Checks the password for known personal information supplied by the user. Any additional checks can
+ * be added into the $badstrings array.
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function personal_information($password) {
     // Check for fname, lname, city, username
     global $USER;
@@ -150,6 +185,14 @@ function personal_information($password) {
     return $return;
 }
 
+/**
+ * Checks the password for sequential numeric characters, to avoid number sequences such as dates.
+ * Number to check against is specified in the admin settings menu.
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function sequential_digits($password) {
     // get maximum allowed number of digits, add 1 to work in the regex
     $seqdigits = get_config('tool_password', 'sequential_digits_input') + 1;
@@ -163,6 +206,14 @@ function sequential_digits($password) {
     return $return;
 }
 
+/**
+ * Checks the password for repeated characters such as 'AAAAA'. Number of allowed sequential characters
+ * is specified in the admin settings menu.
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function repeated_chars($password) {
     $repeatchars = get_config('tool_password', 'repeated_chars_input');
     $characterpattern = '/(.)\1{'.$repeatchars.',}/';
@@ -174,6 +225,14 @@ function repeated_chars($password) {
     return $return;
 }
 
+/**
+ * Checks password for any blacklisted phrase such as service name. Blacklisted phrases are
+ * specified in the admin settings menu.
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function phrase_blacklist($password) {
     $phrasesraw = get_config('tool_password', 'phrase_blacklist_input');
     $phrases = explode(PHP_EOL, $phrasesraw);
@@ -189,18 +248,30 @@ function phrase_blacklist($password) {
     return $return;
 }
 
+/**
+ * Checks account database settings for the last time password was changed. If time is within a period specified
+ * in the admin settings menu from the last password change, error returned.
+ *
+ * @param string $password The password to be validated.
+ * @param object $user The user account to check the database for time changes on. Should always be the current user accoun.
+ *               Used only for testing purposes.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function lockout_period($password, $user) {
     $return = '';
     global $DB;
+    $failedconn = false;
     try {
         $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
+        // get first elements timecreated, order from DB query
+        $timechanged = reset($lastchanges)->timecreated;
     } catch (Exception $e) {
         $return .= get_string('responsedatabaseerror', 'tool_password');
+        $failedconn = true;
     }
     $currenttime = time();
 
-    // get first elements timecreated, order from DB query
-    $timechanged = reset($lastchanges)->timecreated;
     // Calculate 24 hr constant in seconds
     $day = 24 * 60 * 60;
 
@@ -211,13 +282,23 @@ function lockout_period($password, $user) {
     } else {
         $modifier = $inputtime;
     }
-
-    if ($timechanged >= ($currenttime - $modifier)) {
-        $return .= get_string('responselockoutperiod', 'tool_password');
+    //check for failed connection so no errors from timechanged being unset
+    if (!($failedconn)) {
+        if ($timechanged >= ($currenttime - $modifier)) {
+            $return .= get_string('responselockoutperiod', 'tool_password');
+        }
     }
     return $return;
 }
 
+/**
+ * Checks password against the HaveIBeenPwned password breach API. No passwords are transferred.
+ * Password is hashed, and only the first 5 characters are sent over the network.
+ * 
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function password_blacklist($password) {
     $return = '';
     $api = 'https://api.pwnedpasswords.com/range/';
@@ -237,6 +318,12 @@ function password_blacklist($password) {
     return $return;
 }
 
+/**
+ * Checks the global moodle configuration for any settings that conflict or are relied upon by the plugin
+ * 
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
 function config_checker() {
     global $CFG;
     $response = '';
