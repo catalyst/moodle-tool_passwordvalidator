@@ -15,18 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides an overview of installed admin tools
- *
- * Displays the list of found admin tools, their version (if found) and
- * a link to uninstall the admin tool.
- *
- * The code is based on admin/localplugins.php by David Mudrak.
  *
  * @package   tool_password
  * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__.'/../../../config.php');
+
 function password_validate($password, $test) {
     // Only execute checks if user isn't admin or is test mode.
     if ((!(is_siteadmin()) || $test == true)) {
@@ -240,5 +235,46 @@ function password_blacklist($password) {
         $return .= get_string('responsebreachedpassword', 'tool_password');
     }
     return $return;
+}
+
+function config_checker() {
+    global $CFG;
+    $response = '';
+    $type = 'notifysuccess';
+
+    //Check if a password policy is in place, not necessarily a fail
+    if ($CFG->passwordpolicy == 1) {
+        $response .= get_string('configpasswordpolicy', 'tool_password');
+        //if notify is currently success
+        if ($type == 'notifysuccess') {
+            $type = 'notifymessage';
+        }
+    }
+
+    //minimum char enforcement is a fail
+    if (($CFG->passwordpolicy == 1) && $CFG->minpassworddigits >= 1) {
+        $response .= get_string('configpassworddigits', 'tool_password');
+        $type = 'notifyerror';
+    }
+    if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlower >= 1) {
+        $response .= get_string('configpasswordlowerletter', 'tool_password');
+        $type = 'notifyerror';
+    }
+    if (($CFG->passwordpolicy == 1) && $CFG->minpasswordupper >= 1) {
+        $response .= get_string('configpasswordupperletter', 'tool_password');
+        $type = 'notifyerror';
+    }
+    if (($CFG->passwordpolicy == 1) && $CFG->minpasswordnonalphanum >= 1) {
+        $response .= get_string('configpasswordspecialchars', 'tool_password');
+        $type = 'notifyerror';
+    }
+
+    //password rotation not beind enabled is a fail
+    if ($CFG->passwordreuselimit < 1) {
+        $response .= get_string('configpasswordrotationempty', 'tool_password');
+        $type = 'notifyerror';
+    }
+
+    return array($response, $type);
 }
 

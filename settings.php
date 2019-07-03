@@ -25,6 +25,7 @@ defined('MOODLE_INTERNAL') || die;
 // Require validation library.
 require_once(__DIR__.'/../../../config.php');
 require_once('lib.php');
+global $CFG;
 
 if ($hassiteconfig) {
 
@@ -36,6 +37,12 @@ if ($hassiteconfig) {
         // IRAP Complexity Minimum
         $settings->add(new admin_setting_configcheckbox('tool_password/irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
                     get_string('passwordirapcomplexitydesc', 'tool_password'), 1));
+        
+        $settings->add(new admin_setting_configtext('tool_password/simple_length_input', get_string('passwordirapcomplexitysimple', 'tool_password'),
+                    get_string('passwordirapcomplexitysimpledesc', 'tool_password'), 13, PARAM_INT));
+
+        $settings->add(new admin_setting_configtext('tool_password/complex_length_input', get_string('passwordirapcomplexitycomplex', 'tool_password'),
+                    get_string('passwordirapcomplexitycomplexdesc', 'tool_password'), 10, PARAM_INT));
 
         // IRAP Not only numbers
         $settings->add(new admin_setting_configcheckbox('tool_password/irap_numbers', get_string('passwordirapnumbersname', 'tool_password'),
@@ -78,18 +85,22 @@ if ($hassiteconfig) {
                     get_string('passwordblacklistdesc', 'tool_password'), 1));
 
         // Panel for Displaying controls that are incorrect/misconfigured
-        //$repeatpasswords = get_config()
-        // TODO Config Misconfigure panel
+        $configcheckdesc = config_checker();
+        $configdesc .= $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
+        $settings->add(new admin_setting_heading('tool_password/settings_heading', get_string('passwordsettingsheading', 'tool_password'), $configdesc));
 
         // Testing panel
-        // Heading.
+        // Heading
         $settings->add(new admin_setting_heading('tool_password/testing_heading', get_string('passwordtesterheading', 'tool_password'),
                     get_string('passwordtesterheadingdesc', 'tool_password')));
 
         // Get current password configuration
         $testpassword = get_config('tool_password', 'password_test_field');
         $testerdesc = '';
-        $testervalidation = password_validate($testpassword, true);
+        //Only check if not empty
+        if ($testpassword != '') {
+            $testervalidation = password_validate($testpassword, true);
+        }
 
         if ((trim($testervalidation) == '') && (trim($testpassword) !== '')) {
             // If no validation errors and pass isnt empty

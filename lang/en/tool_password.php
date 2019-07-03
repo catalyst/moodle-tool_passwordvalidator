@@ -25,6 +25,10 @@
 $string['pluginname'] = 'Password Policy Checker';
 $string['passwordirapcomplexityname'] = 'Enforce IRAP Complexity Standards';
 $string['passwordirapcomplexitydesc'] = 'Enforce ACSC Security Control 0421: Minimum password complexity. Passwords containing only letters must be at least 13 characters. Passwords containing at least 3 of 4: Lowercase letters, Uppercase letters, Numbers, Special characters, must be at least 10 characters.';
+$string['passwordirapcomplexitysimple'] = 'Minimum Simple Complexity Length';
+$string['passwordirapcomplexitysimpledesc'] = 'Minimum length for simple passwords with only letters.';
+$string['passwordirapcomplexitycomplex'] = 'Minimum Complex Complexity Length';
+$string['passwordirapcomplexitycomplexdesc'] = 'Minimum length for complex passwords with 3 or more character sets.';
 $string['passwordirapnumbersname'] = 'Enforce Letters and Characters in Password';
 $string['passwordirapnumbersdesc'] = 'Enforce ACSC Security Control 0417: Password cannot be only numbers';
 $string['passworddigitsname'] = 'Maximum Sequential Digits';
@@ -47,6 +51,8 @@ $string['passwordlockoutinputname'] = 'Password Change Lockout Period Input';
 $string['passwordlockoutinputdesc'] = 'Enter a lockout period in seconds (for unix timestamping). Enter 0 for 24 hours default';
 $string['passwordblacklistname'] = 'Check Password Against Blacklist';
 $string['passwordblacklistdesc'] = 'Securely check passwords against the haveibeenpwned.com Breached passwords API.';
+$string['passwordsettingsheading'] = 'Moodle Configuration Checker';
+$string['passwordsettingsheadingdesc'] = 'Checks current moodle configuration and alerts users to any conflicts with the plugin, or insecure settings';
 $string['passwordtesterheading'] = 'Password Validation Tester';
 $string['passwordtesterheadingdesc'] = 'Enter a password into the box and save changes to test it against the current validation settings';
 $string['passwordtestername'] = 'Password Tester Field';
@@ -55,16 +61,22 @@ $string['passwordtesterpass'] = 'Pass: Tester password passed validation setting
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: ';
 $string['passwordtesterempty'] = 'No password entered to test.';
 
-$string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.';
-$string['responsenoletters'] = 'Password can not consist of only numbers and/or special characters.';
-$string['responseidentifyinginformation'] = 'Password contains identifying information.';
-$string['responsenumericsequence'] = 'Password contains numeric sequence.';
-$string['responserepeatedcharacters'] = 'Password contains repeated characters.';
-$string['responseblacklistphrase'] = 'Password contains blacklisted phrase such as service name.';
-$string['responsedatabaseerror'] = 'Error retrieving information from database';
-$string['responselockoutperiod'] = 'Password already changed recently. Please try again later.';
-$string['responsebreachedpassword'] = 'Password found in online breached passwords collection.';
+$string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.<br>';
+$string['responsenoletters'] = 'Password can not consist of only numbers and/or special characters.<br>';
+$string['responseidentifyinginformation'] = 'Password contains identifying information.<br>';
+$string['responsenumericsequence'] = 'Password contains numeric sequence.<br>';
+$string['responserepeatedcharacters'] = 'Password contains repeated characters.<br>';
+$string['responseblacklistphrase'] = 'Password contains blacklisted phrase such as service name.<br>';
+$string['responsedatabaseerror'] = 'Error retrieving information from database.<br>';
+$string['responselockoutperiod'] = 'Password already changed recently. Please try again later.<br>';
+$string['responsebreachedpassword'] = 'Password found in online breached passwords collection.<br>';
 
+$string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.<br>';
+$string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1. It is recommended to set this value to atleast 1, but higher is better.<br>';
+$string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.<br>';
+$string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.<br>';
+$string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';
+$string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';
 
 /*
  * Privacy provider (GDPR)
