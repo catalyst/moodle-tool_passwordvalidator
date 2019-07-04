@@ -36,22 +36,7 @@ function password_validate($password, $test) {
     if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
         global $USER;
-        // =====IRAP Certification checks=========
-        // Complexity reqs X
-        // Not only numbers X
-        // no personal information X
-        // no repeated characters X
-        // no numeric sequences X
 
-        // a single dictionary word
-        // No repeat passwords
-
-        // NIST Recommendations - beyond above IRAP
-        // Black list of compromised passwords - HARD
-        // No service name in password
-        // =========================================
-
-        // IRAP Complexity Reqs
         // ACSC Security Control 0421
         // Check for character sets.
         if (get_config('tool_password', 'irap_complexity')) {
