@@ -32,7 +32,8 @@ require_once(__DIR__.'/../../../config.php');
  *
  */
 function password_validate($password, $test) {
-    // Only execute checks if user isn't admin or is test mode.
+    // Only execute checks if user isn't admin or is test mode.c
+    // Here so admin can force passwords
     if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
         global $USER;
@@ -80,9 +81,9 @@ function password_validate($password, $test) {
         }
 
         // If no errors, and selected in config, bring up questions form
-        if ($errs == '' && get_config('tool_password', 'question_prompt')) {
-
-        }
+        /*if ($errs == '' && get_config('tool_password', 'question_prompt')) {
+            // TODO implementation here
+        }*/
 
         return $errs;
     }
@@ -271,7 +272,7 @@ function lockout_period($password, $user) {
     } else {
         $modifier = $inputtime;
     }
-    //check for failed connection so no errors from timechanged being unset
+    // check for failed connection so no errors from timechanged being unset
     if (!($failedconn)) {
         if ($timechanged >= ($currenttime - $modifier)) {
             $return .= get_string('responselockoutperiod', 'tool_password');
@@ -283,7 +284,7 @@ function lockout_period($password, $user) {
 /**
  * Checks password against the HaveIBeenPwned password breach API. No passwords are transferred.
  * Password is hashed, and only the first 5 characters are sent over the network.
- * 
+ *
  * @param string $password The password to be validated.
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
@@ -309,7 +310,7 @@ function password_blacklist($password) {
 
 /**
  * Checks the global moodle configuration for any settings that conflict or are relied upon by the plugin
- * 
+ *
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */

@@ -85,7 +85,7 @@ if ($hassiteconfig) {
                     get_string('passwordblacklistdesc', 'tool_password'), 1));
 
         $settings->add(new admin_setting_configcheckbox('tool_password/question_prompt', get_string('passwordquestion', 'tool_password'),
-                    get_string('passwordquestiondesc', 'tool_password'), 1));         
+                    get_string('passwordquestiondesc', 'tool_password'), 1));
 
         // Panel for Displaying controls that are incorrect/misconfigured
         $configcheckdesc = config_checker();
