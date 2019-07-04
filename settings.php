@@ -26,10 +26,6 @@ defined('MOODLE_INTERNAL') || die;
 require_once(__DIR__.'/../../../config.php');
 require_once('lib.php');
 
-// Require configuration file
-//require_once('templates/NIST_ISM_2019.php');
-
-
 global $CFG;
 
 if ($hassiteconfig) {
@@ -38,6 +34,17 @@ if ($hassiteconfig) {
 
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
+        // ======================FORCED CONFIGURATIONS SETTINGS========================
+        // Set to manually true if using forced configuration
+        $forcedconfig = true;
+        $template = 'NIST_ISM_2019.php';
+        if ($forcedconfig) {
+            // Set to the template to use
+            require_once("templates/$template");
+
+            $templatedesc .= $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_password') . $template, 'notifymessage');
+            $settings->add(new admin_setting_heading('tool_password/template_heading','', $templatedesc));
+        }
 
         // IRAP Complexity Minimum
         $settings->add(new admin_setting_configcheckbox('tool_password/irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
