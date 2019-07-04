@@ -66,9 +66,9 @@ If this setting is not enabled, the settings page for this plugin will alert you
 
 <h2> Templates </h2>
 <p1> This plugin allows for the use of templates, which force the configuration to match the specification inside of the template file. To enforce a template, edit the settings.php file. Edit the $forcedconfig variable to false:
-```$forcedconfig = true;```
+`$forcedconfig = true;`
 Then set the $template variable to be the name of the template, placed inside the /templates directory.
-```$template = 'NIST_ISM_2019.php';```
+`$template = 'NIST_ISM_2019.php';`
 Save the file. Then visit the plugin settings at Site Administration-> Plugins-> Admin tools-> Password Policy Validator, and the updated template settings will be loaded and applied.
 
 <h2> Unit Testing </h2>
