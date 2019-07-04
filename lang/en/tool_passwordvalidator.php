@@ -17,13 +17,13 @@
 /**
  *
  *
- * @package    tool_password
+ * @package    tool_passwordvalidator
  * @copyright  2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
  // Settings menu strings
-$string['pluginname'] = 'Password Policy Checker';
+$string['pluginname'] = 'Password Validator';
 $string['passwordforcedconfig'] = 'Settings are read only, configuration is forced in template file: ';
 $string['passwordbadconfigload'] = 'Unable to load template configuration file. Check variables are correct, and that template is inside the templates folder. - ';
 $string['passwordirapcomplexityname'] = 'Enforce ISM Complexity Standards';

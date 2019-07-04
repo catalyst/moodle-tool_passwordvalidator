@@ -17,7 +17,7 @@
 /**
  * A tool to validate passwords against particular password policies.
  *
- * @package   tool_password
+ * @package   tool_passwordvalidator
  * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,43 +41,43 @@ function password_validate($password, $test) {
 
         // ACSC Security Control 0421
         // Check for character sets.
-        if (get_config('tool_password', 'irap_complexity')) {
+        if (get_config('tool_passwordvalidator', 'irap_complexity')) {
             $errs .= complexity_checker($password, true);
         }
 
         // ACSC Security Control 0417
         // Not only numbers
-        if (get_config('tool_password', 'irap_numbers')) {
+        if (get_config('tool_passwordvalidator', 'irap_numbers')) {
             $errs .= complexity_checker($password, false);
         }
 
         // Personal Information Check.
-        if (get_config('tool_password', 'personal_info')) {
+        if (get_config('tool_passwordvalidator', 'personal_info')) {
             $errs .= personal_information($password);
         }
 
         // Check for sequential digits.
-        if (get_config('tool_password', 'sequential_digits_input') > 0) {
+        if (get_config('tool_passwordvalidator', 'sequential_digits_input') > 0) {
             $errs .= sequential_digits($password);
         }
 
         // Check for repeated characters.
-        if (get_config('tool_password', 'repeated_chars_input') > 0) {
+        if (get_config('tool_passwordvalidator', 'repeated_chars_input') > 0) {
             $errs .= repeated_chars($password);
         }
 
         // Check for blacklist phrases - eg Service name
-        if (get_config('tool_password', 'phrase_blacklist')) {
+        if (get_config('tool_passwordvalidator', 'phrase_blacklist')) {
             $errs .= phrase_blacklist($password);
         }
 
         // Check for password changes on the user account within lockout period.
-        if (get_config('tool_password', 'time_lockout_input') > 0) {
+        if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
             $errs .= lockout_period($password, $USER);
         }
 
         // Check against HaveIBeenPwned.com password breach API
-        if (get_config('tool_password', 'password_blacklist')) {
+        if (get_config('tool_passwordvalidator', 'password_blacklist')) {
             $errs .= password_blacklist($password);
         }
 
@@ -93,7 +93,7 @@ function password_validate($password, $test) {
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
-function tool_password_check_password_policy($password) {
+function tool_passwordvalidator_check_password_policy($password) {
     return password_validate($password, false);
 }
 
@@ -136,12 +136,12 @@ function complexity_checker($password, $complex) {
     }
 
     if ((strlen($password) < $minchars) && $complex) {
-        $return .= get_string('responseminimumlength', 'tool_password');
+        $return .= get_string('responseminimumlength', 'tool_passwordvalidator');
     }
 
     if (!($complex)) {
         if ($lowercase === 0 && $uppercase === 0) {
-            $return .= get_string('responsenoletters', 'tool_password');
+            $return .= get_string('responsenoletters', 'tool_passwordvalidator');
         }
     }
     return $return;
@@ -164,7 +164,7 @@ function personal_information($password) {
 
     foreach ($badstrings as $string) {
         if (stripos($password, $string) !== false) {
-            $return .= get_string('responseidentifyinginformation', 'tool_password');
+            $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator');
             break;
         }
     }
@@ -181,12 +181,12 @@ function personal_information($password) {
  */
 function sequential_digits($password) {
     // get maximum allowed number of digits, add 1 to work in the regex
-    $seqdigits = get_config('tool_password', 'sequential_digits_input') + 1;
+    $seqdigits = get_config('tool_passwordvalidator', 'sequential_digits_input') + 1;
     $digitpattern = '/\d{'.$seqdigits.',}/u';
     $return = '';
 
     if (preg_match($digitpattern, $password) === 1) {
-        $return .= get_string('responsenumericsequence', 'tool_password');
+        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator');
     }
 
     return $return;
@@ -201,12 +201,12 @@ function sequential_digits($password) {
  *
  */
 function repeated_chars($password) {
-    $repeatchars = get_config('tool_password', 'repeated_chars_input');
+    $repeatchars = get_config('tool_passwordvalidator', 'repeated_chars_input');
     $characterpattern = '/(.)\1{'.$repeatchars.',}/';
     $return = '';
 
     if (preg_match($characterpattern, $password) === 1) {
-        $return .= get_string('responserepeatedcharacters', 'tool_password');
+        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator');
     }
     return $return;
 }
@@ -220,14 +220,14 @@ function repeated_chars($password) {
  *
  */
 function phrase_blacklist($password) {
-    $phrasesraw = get_config('tool_password', 'phrase_blacklist_input');
+    $phrasesraw = get_config('tool_passwordvalidator', 'phrase_blacklist_input');
     $phrases = explode(PHP_EOL, $phrasesraw);
     $return = '';
 
     foreach ($phrases as $string) {
         $tstring = trim($string);
         if (stripos($password, $tstring) !== false) {
-            $return .= get_string('responseblacklistphrase', 'tool_password');
+            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator');
             break;
         }
     }
@@ -253,7 +253,7 @@ function lockout_period($password, $user) {
         // get first elements timecreated, order from DB query
         $timechanged = reset($lastchanges)->timecreated;
     } catch (Exception $e) {
-        $return .= get_string('responsedatabaseerror', 'tool_password');
+        $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator');
         $failedconn = true;
     }
     $currenttime = time();
@@ -262,12 +262,12 @@ function lockout_period($password, $user) {
     $day = 24 * 60 * 60;
 
     // Set the time modifier based on configuration
-    $inputtime = get_config('tool_password', 'time_lockout_input');
+    $inputtime = get_config('tool_passwordvalidator', 'time_lockout_input');
 
     // check for failed connection so no errors from timechanged being unset
     if (!($failedconn)) {
         if ($timechanged >= ($currenttime - $inputtime)) {
-            $return .= get_string('responselockoutperiod', 'tool_password');
+            $return .= get_string('responselockoutperiod', 'tool_passwordvalidator');
         }
     }
     return $return;
@@ -295,7 +295,7 @@ function password_blacklist($password) {
     // Check for presence of hash in response
     $shorthash = substr($pwhash, 5);
     if (stripos($response, $shorthash) !== false) {
-        $return .= get_string('responsebreachedpassword', 'tool_password');
+        $return .= get_string('responsebreachedpassword', 'tool_passwordvalidator');
     }
     return $return;
 }
@@ -313,7 +313,7 @@ function config_checker() {
 
     // Check if a password policy is in place, not necessarily a fail
     if ($CFG->passwordpolicy == 1) {
-        $response .= get_string('configpasswordpolicy', 'tool_password');
+        $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator');
         // If notify is currently success
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
@@ -322,31 +322,31 @@ function config_checker() {
 
     // Minimum char enforcement is a fail
     if (($CFG->passwordpolicy == 1) && $CFG->minpassworddigits >= 1) {
-        $response .= get_string('configpassworddigits', 'tool_password');
+        $response .= get_string('configpassworddigits', 'tool_passwordvalidator');
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlower >= 1) {
-        $response .= get_string('configpasswordlowerletter', 'tool_password');
+        $response .= get_string('configpasswordlowerletter', 'tool_passwordvalidator');
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordupper >= 1) {
-        $response .= get_string('configpasswordupperletter', 'tool_password');
+        $response .= get_string('configpasswordupperletter', 'tool_passwordvalidator');
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordnonalphanum >= 1) {
-        $response .= get_string('configpasswordspecialchars', 'tool_password');
+        $response .= get_string('configpasswordspecialchars', 'tool_passwordvalidator');
         $type = 'notifyerror';
     }
 
     // Password rotation not beind enabled is a fail
     if ($CFG->passwordreuselimit < 1) {
-        $response .= get_string('configpasswordrotationempty', 'tool_password');
+        $response .= get_string('configpasswordrotationempty', 'tool_passwordvalidator');
         $type = 'notifyerror';
     }
 
     // If no errors at end, return a good message
     if ($type == 'notifysuccess') {
-        $response .= get_string('configpasswordgood', 'tool_password');
+        $response .= get_string('configpasswordgood', 'tool_passwordvalidator');
     }
 
     return array($response, $type);

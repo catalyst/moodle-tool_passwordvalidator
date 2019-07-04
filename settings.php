@@ -17,7 +17,7 @@
 /**
  *  Password Policy Checker Settings Page
  *
- * @package    tool_password
+ * @package    tool_passwordvalidator
  * @copyright  Peter Burnett <peterburnett@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,78 +30,78 @@ global $CFG;
 
 if ($hassiteconfig) {
 
-    $settings = new admin_settingpage('tool_password', get_string('pluginname', 'tool_password'));
+    $settings = new admin_settingpage('tool_passwordvalidator', get_string('pluginname', 'tool_passwordvalidator'));
 
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
         // ======================FORCED CONFIGURATIONS SETTINGS========================
         // Set to manually true if using forced configuration
-        $forcedconfig = true;
+        $forcedconfig = false;
         $template = 'ISM.php';
         if ($forcedconfig) {
             // Set to the template to use
             if (file_exists("templates/$template")) {
                 require_once("templates/$template");
-                $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_password') . $template, 'notifymessage');
+                $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $template, 'notifymessage');
             } else {
-                $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_password') . $template, 'notifyerror');
+                $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_passwordvalidator') . $template, 'notifyerror');
             }
-            $settings->add(new admin_setting_heading('tool_password/template_heading', '', $templatedesc));
+            $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
         }
 
         // IRAP Complexity Minimum
-        $settings->add(new admin_setting_configcheckbox('tool_password/irap_complexity', get_string('passwordirapcomplexityname', 'tool_password'),
-                    get_string('passwordirapcomplexitydesc', 'tool_password'), 1));
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/irap_complexity', get_string('passwordirapcomplexityname', 'tool_passwordvalidator'),
+                    get_string('passwordirapcomplexitydesc', 'tool_passwordvalidator'), 1));
 
-        $settings->add(new admin_setting_configtext('tool_password/simple_length_input', get_string('passwordirapcomplexitysimple', 'tool_password'),
-                    get_string('passwordirapcomplexitysimpledesc', 'tool_password'), 13, PARAM_INT));
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/simple_length_input', get_string('passwordirapcomplexitysimple', 'tool_passwordvalidator'),
+                    get_string('passwordirapcomplexitysimpledesc', 'tool_passwordvalidator'), 13, PARAM_INT));
 
-        $settings->add(new admin_setting_configtext('tool_password/complex_length_input', get_string('passwordirapcomplexitycomplex', 'tool_password'),
-                    get_string('passwordirapcomplexitycomplexdesc', 'tool_password'), 10, PARAM_INT));
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/complex_length_input', get_string('passwordirapcomplexitycomplex', 'tool_passwordvalidator'),
+                    get_string('passwordirapcomplexitycomplexdesc', 'tool_passwordvalidator'), 10, PARAM_INT));
 
         // IRAP Not only numbers
-        $settings->add(new admin_setting_configcheckbox('tool_password/irap_numbers', get_string('passwordirapnumbersname', 'tool_password'),
-                    get_string('passwordirapnumbersdesc', 'tool_password'), 1));
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/irap_numbers', get_string('passwordirapnumbersname', 'tool_passwordvalidator'),
+                    get_string('passwordirapnumbersdesc', 'tool_passwordvalidator'), 1));
 
         // Sequential digits settings.
-        $settings->add(new admin_setting_configtext('tool_password/sequential_digits_input', get_string('passworddigitsinputname', 'tool_password'),
-                    get_string('passworddigitsinputdesc', 'tool_password'), 2, PARAM_INT));
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/sequential_digits_input', get_string('passworddigitsinputname', 'tool_passwordvalidator'),
+                    get_string('passworddigitsinputdesc', 'tool_passwordvalidator'), 2, PARAM_INT));
 
         // Repeated characters settings
-        $settings->add(new admin_setting_configtext('tool_password/repeated_chars_input', get_string('passwordcharsinputname', 'tool_password'),
-                    get_string('passwordcharsinputdesc', 'tool_password'), 2, PARAM_INT));
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/repeated_chars_input', get_string('passwordcharsinputname', 'tool_passwordvalidator'),
+                    get_string('passwordcharsinputdesc', 'tool_passwordvalidator'), 2, PARAM_INT));
 
         // Personal information control
-        $settings->add(new admin_setting_configcheckbox('tool_password/personal_info', get_string('passwordpersonalinfoname', 'tool_password'),
-                    get_string('passwordpersonalinfodesc', 'tool_password'), 1));
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/personal_info', get_string('passwordpersonalinfoname', 'tool_passwordvalidator'),
+                    get_string('passwordpersonalinfodesc', 'tool_passwordvalidator'), 1));
 
         // Phrase blacklisting
-        $settings->add(new admin_setting_configcheckbox('tool_password/phrase_blacklist', get_string('passwordphrasename', 'tool_password'),
-                    get_string('passwordphrasedesc', 'tool_password'), 1));
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/phrase_blacklist', get_string('passwordphrasename', 'tool_passwordvalidator'),
+                    get_string('passwordphrasedesc', 'tool_passwordvalidator'), 1));
 
-        $settings->add(new admin_setting_configtextarea('tool_password/phrase_blacklist_input', get_string('passwordphraseinputname', 'tool_password'),
-                    get_string('passwordphraseinputdesc', 'tool_password'), 'moodle', PARAM_RAW));
+        $settings->add(new admin_setting_configtextarea('tool_passwordvalidator/phrase_blacklist_input', get_string('passwordphraseinputname', 'tool_passwordvalidator'),
+                    get_string('passwordphraseinputdesc', 'tool_passwordvalidator'), 'moodle', PARAM_RAW));
 
         // Password Change lockout period
-        $settings->add(new admin_setting_configtext('tool_password/time_lockout_input', get_string('passwordlockoutinputname', 'tool_password'),
-                    get_string('passwordlockoutinputdesc', 'tool_password'), 0, PARAM_INT));
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/time_lockout_input', get_string('passwordlockoutinputname', 'tool_passwordvalidator'),
+                    get_string('passwordlockoutinputdesc', 'tool_passwordvalidator'), 0, PARAM_INT));
 
         // Check against HaveIBeenPwned.com API
-        $settings->add(new admin_setting_configcheckbox('tool_password/password_blacklist', get_string('passwordblacklistname', 'tool_password'),
-                    get_string('passwordblacklistdesc', 'tool_password'), 1));
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/password_blacklist', get_string('passwordblacklistname', 'tool_passwordvalidator'),
+                    get_string('passwordblacklistdesc', 'tool_passwordvalidator'), 1));
 
         // Panel for Displaying controls that are incorrect/misconfigured
         $configcheckdesc = config_checker();
         $configdesc .= $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
-        $settings->add(new admin_setting_heading('tool_password/settings_heading', get_string('passwordsettingsheading', 'tool_password'), $configdesc));
+        $settings->add(new admin_setting_heading('tool_passwordvalidator/settings_heading', get_string('passwordsettingsheading', 'tool_passwordvalidator'), $configdesc));
 
         // Testing panel
         // Heading
-        $settings->add(new admin_setting_heading('tool_password/testing_heading', get_string('passwordtesterheading', 'tool_password'),
-                    get_string('passwordtesterheadingdesc', 'tool_password')));
+        $settings->add(new admin_setting_heading('tool_passwordvalidator/testing_heading', get_string('passwordtesterheading', 'tool_passwordvalidator'),
+                    get_string('passwordtesterheadingdesc', 'tool_passwordvalidator')));
 
         // Get current password configuration
-        $testpassword = get_config('tool_password', 'password_test_field');
+        $testpassword = get_config('tool_passwordvalidator', 'password_test_field');
         $testerdesc = '';
         // Only check if not empty
         if ($testpassword != '') {
@@ -120,9 +120,9 @@ if ($hassiteconfig) {
             $message = 'passwordtesterfail';
             $type = 'notifyerror';
         }
-        $testerdesc .= $OUTPUT->notification(get_string($message, 'tool_password').' '. $testervalidation, $type);
+        $testerdesc .= $OUTPUT->notification(get_string($message, 'tool_passwordvalidator').' '. $testervalidation, $type);
 
-        $settings->add(new admin_setting_configtext('tool_password/password_test_field', get_string('passwordtestername', 'tool_password'),
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/password_test_field', get_string('passwordtestername', 'tool_passwordvalidator'),
                     $testerdesc, '', PARAM_RAW));
     }
 }

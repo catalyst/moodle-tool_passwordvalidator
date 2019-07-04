@@ -17,7 +17,7 @@
 defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__.'/../lib.php');
 require_once(__DIR__.'../../../../../user/lib.php');
-class tool_password_password_testcase extends advanced_testcase {
+class tool_passwordvalidator_password_testcase extends advanced_testcase {
     public function test_complexity_length() {
         $goodresponse = '';
         $onlylowerstooshort = 'abcdefg';
@@ -120,7 +120,7 @@ class tool_password_password_testcase extends advanced_testcase {
 
     public function test_sequential_digits() {
         $this->resetAfterTest(true);
-        set_config('sequential_digits_input', 5, 'tool_password');
+        set_config('sequential_digits_input', 5, 'tool_passwordvalidator');
 
         $goodresponse = '';
         $noseqdigits = 'a1b2c3d4';
@@ -148,7 +148,7 @@ class tool_password_password_testcase extends advanced_testcase {
 
     public function test_repeated_chars() {
         $this->resetAfterTest(true);
-        set_config('repeated_chars_input', 4, 'tool_password');
+        set_config('repeated_chars_input', 4, 'tool_passwordvalidator');
 
         $goodresponse = '';
         $norepeatchars = 'a1b2c3d4';
@@ -175,7 +175,7 @@ class tool_password_password_testcase extends advanced_testcase {
 
     public function test_phrase_blacklisting() {
         $this->resetAfterTest(true);
-        set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space", 'tool_password');
+        set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space", 'tool_passwordvalidator');
 
         $goodresponse = '';
         $tooshort = 'abc123';
@@ -204,7 +204,7 @@ class tool_password_password_testcase extends advanced_testcase {
         $testpassword = 'testpassword';
 
         // Set timelock to 1 second
-        set_config('time_lockout_input', 2 , 'tool_password');
+        set_config('time_lockout_input', 2 , 'tool_passwordvalidator');
 
         // Create a user then 'fake add' a password to trigger the timelock
         $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
@@ -220,14 +220,14 @@ class tool_password_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, lockout_period($testpassword, $user));
 
         // Repeat with a slightly longer period
-        set_config('time_lockout_input', 4 , 'tool_password');
+        set_config('time_lockout_input', 4 , 'tool_passwordvalidator');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
         sleep(5);
         $this->assertEquals($goodresponse, lockout_period($testpassword, $user));
 
         // Then set to 24hrs (86400 seconds) ensure it takes values that large
-        set_config('time_lockout_input', 86400 , 'tool_password');
+        set_config('time_lockout_input', 86400 , 'tool_passwordvalidator');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
         sleep(2);
