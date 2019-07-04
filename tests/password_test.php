@@ -226,8 +226,8 @@ class tool_password_password_testcase extends advanced_testcase {
         sleep(5);
         $this->assertEquals($goodresponse, lockout_period($testpassword, $user));
 
-        // Then set config to 0 and test that it defaults to a 24hr period
-        set_config('time_lockout_input', 0 , 'tool_password');
+        // Then set to 24hrs (86400 seconds) ensure it takes values that large
+        set_config('time_lockout_input', 86400 , 'tool_password');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
         sleep(2);

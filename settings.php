@@ -37,13 +37,16 @@ if ($hassiteconfig) {
         // ======================FORCED CONFIGURATIONS SETTINGS========================
         // Set to manually true if using forced configuration
         $forcedconfig = true;
-        $template = 'NIST_ISM_2019.php';
+        $template = 'ISM.php';
         if ($forcedconfig) {
             // Set to the template to use
-            require_once("templates/$template");
-
-            $templatedesc .= $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_password') . $template, 'notifymessage');
-            $settings->add(new admin_setting_heading('tool_password/template_heading','', $templatedesc));
+            if (file_exists("templates/$template")) {
+                require_once("templates/$template");
+                $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_password') . $template, 'notifymessage');
+            } else {
+                $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_password') . $template, 'notifyerror');
+            }
+            $settings->add(new admin_setting_heading('tool_password/template_heading', '', $templatedesc));
         }
 
         // IRAP Complexity Minimum

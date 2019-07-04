@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * A tool to validate passwords against particular password policies.
  *
  * @package   tool_password
  * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
@@ -262,7 +263,7 @@ function lockout_period($password, $user) {
 
     // Set the time modifier based on configuration
     $inputtime = get_config('tool_password', 'time_lockout_input');
-    
+
     // check for failed connection so no errors from timechanged being unset
     if (!($failedconn)) {
         if ($timechanged >= ($currenttime - $inputtime)) {

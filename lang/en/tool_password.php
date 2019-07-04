@@ -25,6 +25,7 @@
  // Settings menu strings
 $string['pluginname'] = 'Password Policy Checker';
 $string['passwordforcedconfig'] = 'Settings are read only, configuration is forced in template file: ';
+$string['passwordbadconfigload'] = 'Unable to load template configuration file. Check variables are correct, and that template is inside the templates folder. - ';
 $string['passwordirapcomplexityname'] = 'Enforce ISM Complexity Standards';
 $string['passwordirapcomplexitydesc'] = 'Enforce ACSC Security Control 0421: Minimum password complexity. Passwords containing only letters must be at least 13 characters. Passwords containing at least 3 of 4: Lowercase letters, Uppercase letters, Numbers, Special characters, must be at least 10 characters.';
 $string['passwordirapcomplexitysimple'] = 'Minimum Simple Complexity Length';
