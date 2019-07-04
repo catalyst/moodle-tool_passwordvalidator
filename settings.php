@@ -25,6 +25,11 @@ defined('MOODLE_INTERNAL') || die;
 // Require validation library.
 require_once(__DIR__.'/../../../config.php');
 require_once('lib.php');
+
+// Require configuration file
+//require_once('templates/NIST_ISM_2019.php');
+
+
 global $CFG;
 
 if ($hassiteconfig) {
@@ -49,16 +54,10 @@ if ($hassiteconfig) {
                     get_string('passwordirapnumbersdesc', 'tool_password'), 1));
 
         // Sequential digits settings.
-        $settings->add(new admin_setting_configcheckbox('tool_password/sequential_digits', get_string('passworddigitsname', 'tool_password'),
-                    get_string('passworddigitsdesc', 'tool_password'), 1));
-
         $settings->add(new admin_setting_configtext('tool_password/sequential_digits_input', get_string('passworddigitsinputname', 'tool_password'),
                     get_string('passworddigitsinputdesc', 'tool_password'), 2, PARAM_INT));
 
         // Repeated characters settings
-        $settings->add(new admin_setting_configcheckbox('tool_password/repeated_chars', get_string('passwordcharsname', 'tool_password'),
-                    get_string('passwordcharsdesc', 'tool_password'), 1));
-
         $settings->add(new admin_setting_configtext('tool_password/repeated_chars_input', get_string('passwordcharsinputname', 'tool_password'),
                     get_string('passwordcharsinputdesc', 'tool_password'), 2, PARAM_INT));
 
@@ -74,18 +73,12 @@ if ($hassiteconfig) {
                     get_string('passwordphraseinputdesc', 'tool_password'), 'moodle', PARAM_RAW));
 
         // Password Change lockout period
-        $settings->add(new admin_setting_configcheckbox('tool_password/time_lockout', get_string('passwordlockoutname', 'tool_password'),
-                    get_string('passwordlockoutdesc', 'tool_password'), 1));
-
         $settings->add(new admin_setting_configtext('tool_password/time_lockout_input', get_string('passwordlockoutinputname', 'tool_password'),
                     get_string('passwordlockoutinputdesc', 'tool_password'), 0, PARAM_INT));
 
         // Check against HaveIBeenPwned.com API
         $settings->add(new admin_setting_configcheckbox('tool_password/password_blacklist', get_string('passwordblacklistname', 'tool_password'),
                     get_string('passwordblacklistdesc', 'tool_password'), 1));
-
-        $settings->add(new admin_setting_configcheckbox('tool_password/question_prompt', get_string('passwordquestion', 'tool_password'),
-                    get_string('passwordquestiondesc', 'tool_password'), 1));
 
         // Panel for Displaying controls that are incorrect/misconfigured
         $configcheckdesc = config_checker();

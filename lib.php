@@ -56,12 +56,12 @@ function password_validate($password, $test) {
         }
 
         // Check for sequential digits.
-        if (get_config('tool_password', 'sequential_digits')) {
+        if (get_config('tool_password', 'sequential_digits_input') > 0) {
             $errs .= sequential_digits($password);
         }
 
         // Check for repeated characters.
-        if (get_config('tool_password', 'repeated_chars')) {
+        if (get_config('tool_password', 'repeated_chars_input') > 0) {
             $errs .= repeated_chars($password);
         }
 
@@ -71,7 +71,7 @@ function password_validate($password, $test) {
         }
 
         // Check for password changes on the user account within lockout period.
-        if (get_config('tool_password', 'time_lockout')) {
+        if (get_config('tool_password', 'time_lockout_input') > 0) {
             $errs .= lockout_period($password, $USER);
         }
 
@@ -79,11 +79,6 @@ function password_validate($password, $test) {
         if (get_config('tool_password', 'password_blacklist')) {
             $errs .= password_blacklist($password);
         }
-
-        // If no errors, and selected in config, bring up questions form
-        /*if ($errs == '' && get_config('tool_password', 'question_prompt')) {
-            // TODO implementation here
-        }*/
 
         return $errs;
     }
@@ -267,14 +262,10 @@ function lockout_period($password, $user) {
 
     // Set the time modifier based on configuration
     $inputtime = get_config('tool_password', 'time_lockout_input');
-    if ($inputtime <= 0) {
-        $modifier = $day;
-    } else {
-        $modifier = $inputtime;
-    }
+    
     // check for failed connection so no errors from timechanged being unset
     if (!($failedconn)) {
-        if ($timechanged >= ($currenttime - $modifier)) {
+        if ($timechanged >= ($currenttime - $inputtime)) {
             $return .= get_string('responselockoutperiod', 'tool_password');
         }
     }
