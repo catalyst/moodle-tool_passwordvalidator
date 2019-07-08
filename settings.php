@@ -34,19 +34,13 @@ if ($hassiteconfig) {
 
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
-
-        /*$forcedconfig = get_enable_template();
-        $template = get_template();
-        if ($forcedconfig) {
-            // Set to the template to use
-            if (file_exists(__DIR__."/templates/$template")) {
-                require_once(__DIR__."/templates/$template");
-                $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $template, 'notifymessage');
-            } else {
-                $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_passwordvalidator') . $template, 'notifyerror');
-            }
+        
+        //Alert if using config template
+        $name = get_config('tool_passwordvalidator', 'chosen_template');
+        if (trim($name) != '') {
+            $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $name. '.php', 'notifymessage');
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
-        }*/
+        }
 
         // IRAP Complexity Minimum
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/irap_complexity', get_string('passwordirapcomplexityname', 'tool_passwordvalidator'),

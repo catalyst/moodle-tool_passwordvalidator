@@ -28,6 +28,7 @@
 // @codingStandardsIgnoreStart
 $CFG->forced_plugin_settings['tool_passwordvalidator']['irap_complexity'] = 1;
 // @codingStandardsIgnoreEnd
+$CFG->forced_plugin_settings['tool_passwordvalidator']['chosen_template'] = 'NIST_ISM_2019';
 $CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 13;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['complex_length_input'] = 10;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check'] = 1;
