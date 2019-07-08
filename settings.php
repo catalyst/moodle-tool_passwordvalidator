@@ -25,6 +25,7 @@ defined('MOODLE_INTERNAL') || die;
 // Require validation library.
 require_once(__DIR__.'/../../../config.php');
 require_once('lib.php');
+require_once('usersettings.php');
 
 global $CFG;
 
@@ -34,14 +35,13 @@ if ($hassiteconfig) {
 
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
-        // ======================FORCED CONFIGURATIONS SETTINGS========================
-        // Set to manually true if using forced configuration
-        $forcedconfig = false;
-        $template = 'ISM.php';
+        
+        $forcedconfig = get_enable_template();
+        $template = get_template();
         if ($forcedconfig) {
             // Set to the template to use
-            if (file_exists("templates/$template")) {
-                require_once("templates/$template");
+            if (file_exists(__DIR__."/templates/$template")) {
+                require_once(__DIR__."/templates/$template");
                 $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $template, 'notifymessage');
             } else {
                 $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_passwordvalidator') . $template, 'notifyerror');
@@ -92,7 +92,7 @@ if ($hassiteconfig) {
 
         // Panel for Displaying controls that are incorrect/misconfigured
         $configcheckdesc = config_checker();
-        $configdesc .= $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
+        $configdesc = $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
         $settings->add(new admin_setting_heading('tool_passwordvalidator/settings_heading', get_string('passwordsettingsheading', 'tool_passwordvalidator'), $configdesc));
 
         // Testing panel
@@ -120,7 +120,7 @@ if ($hassiteconfig) {
             $message = 'passwordtesterfail';
             $type = 'notifyerror';
         }
-        $testerdesc .= $OUTPUT->notification(get_string($message, 'tool_passwordvalidator').' '. $testervalidation, $type);
+        $testerdesc = $OUTPUT->notification(get_string($message, 'tool_passwordvalidator').' '. $testervalidation, $type);
 
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/password_test_field', get_string('passwordtestername', 'tool_passwordvalidator'),
                     $testerdesc, '', PARAM_RAW));

@@ -65,10 +65,10 @@ and the plugin will be installed. </p1>
 If this setting is not enabled, the settings page for this plugin will alert you, and the time lockout functionality of the plugin will not work. </p1>
 
 <h2> Templates </h2>
-<p1> This plugin allows for the use of templates, which force the configuration to match the specification inside of the template file. To enforce a template, edit the settings.php file. Edit the $forcedconfig variable to false:<br>
+<p1> This plugin allows for the use of templates, which force the configuration to match the specification inside of the template file. To enforce a template, edit the usersettings.php file. Edit the $usetemplate variable to true:<br>
   
 ```php
-$forcedconfig = true;
+$usetemplate = true;
 ```
 Then set the $template variable to be the name of the template, placed inside the /templates directory. <br>
 
