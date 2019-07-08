@@ -182,6 +182,7 @@ function dictionary_checker($password) {
 
             if ($dictword == $word) {
                 $foundcount++;
+                //TODO FIX BREAKING LOOP ON FIND
             }
         }
         rewind($dict);
@@ -189,10 +190,10 @@ function dictionary_checker($password) {
     $wordsreq = get_config('tool_passwordvalidator', 'dictionary_check');
 
     // If the amount of dictionary words found is 1, and there is only one word in the password
-    if (($foundcount == 1) && $wordcount == 1) {
+    if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
         $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator');
     }
-    return $return;
+    return $foundcount;
 }
 
 /**
