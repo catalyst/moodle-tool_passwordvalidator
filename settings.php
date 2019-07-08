@@ -63,7 +63,11 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/irap_numbers', get_string('passwordirapnumbersname', 'tool_passwordvalidator'),
                     get_string('passwordirapnumbersdesc', 'tool_passwordvalidator'), 1));
 
-        // Sequential digits settings.
+        // Minimum dictionary word settings
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/dictionary_check', get_string('passworddictcheckname', 'tool_passwordvalidator'),
+                    get_string('passworddictcheckdesc', 'tool_passwordvalidator'), 1));
+
+        // Sequential digits settings
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/sequential_digits_input', get_string('passworddigitsinputname', 'tool_passwordvalidator'),
                     get_string('passworddigitsinputdesc', 'tool_passwordvalidator'), 2, PARAM_INT));
 

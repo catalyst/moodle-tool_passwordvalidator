@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__.'/../../../config.php');
+require_once('usersettings.php');
+
 /**
  * Validates the password provided against the password policy configured in the plugin admin
  * settings menu. Calls all of the individual checks
@@ -50,6 +52,10 @@ function password_validate($password, $test) {
         if (get_config('tool_passwordvalidator', 'irap_numbers')) {
             $errs .= complexity_checker($password, false);
         }
+
+        if (get_config('tool_passwordvalidator', 'dictionary_check')) {
+            $errs .= dictionary_checker($password);
+        } 
 
         // Personal Information Check.
         if (get_config('tool_passwordvalidator', 'personal_info')) {
@@ -143,6 +149,50 @@ function complexity_checker($password, $complex) {
         if ($lowercase === 0 && $uppercase === 0) {
             $return .= get_string('responsenoletters', 'tool_passwordvalidator');
         }
+    }
+    return $return;
+}
+
+/**
+ * Checks the password composition for dictionary words. Splits based on spaces, then checks the number of occurances against a dictionary
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a string of any errors presented by the check, or an empty string for success.
+ *
+ */
+function dictionary_checker($password) {
+    $return = '';
+    // Strip special chars and numbers from password, to get raw words in array
+    $strippedpw = preg_replace("/[^a-zA-Z ]/", "", $password);
+    $wordarray = explode(' ', $strippedpw);
+    $wordcount = sizeof($wordarray);
+
+    //Read in dictionary file
+    $dictpath = __DIR__.'/dictionary/'.get_selected_dictionary();
+    try {
+        $dict = fopen($dictpath, 'r');
+    } catch (Exception $e) {
+        $return .= 'Error opening file';
+    }
+
+    //Check every line of file for exact match, then reset file pointer to start
+    $foundcount = 0;
+    foreach ($wordarray as $word){
+        while(!feof($dict)) {
+            $dictword = trim(fgets($dict));
+
+            if ($dictword == $word) {
+                $foundcount++;
+            }
+        }
+        rewind($dict);
+    }
+    $wordsreq = get_config('tool_passwordvalidator', 'dictionary_check');
+
+    //If the amount of dictionary words found is 1, and the only word found is a dictionary word
+    //MAYBE BUGGY FUNCTIONALITY
+    if (($foundcount == 1) && $wordcount == 1) {
+        $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator');
     }
     return $return;
 }

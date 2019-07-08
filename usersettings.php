@@ -31,6 +31,12 @@ function get_template() {
 
 function get_enable_template() {
     // SET TRUE OR FALSE HERE
-    $usetemplate = true;
+    $usetemplate = false;
     return $usetemplate;
+}
+
+function get_selected_dictionary(){
+    //Enter Dictionary path here
+    $dictionary = 'google-10000-english.txt';
+    return $dictionary;
 }

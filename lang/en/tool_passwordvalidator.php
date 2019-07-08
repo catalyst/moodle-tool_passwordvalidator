@@ -34,6 +34,8 @@ $string['passwordirapcomplexitycomplex'] = 'Minimum Complex Complexity Length';
 $string['passwordirapcomplexitycomplexdesc'] = 'Minimum length for complex passwords with 3 or more character sets.';
 $string['passwordirapnumbersname'] = 'Enforce Letters in Password';
 $string['passwordirapnumbersdesc'] = 'Enforce ACSC Security Control 0417: Password cannot be only numbers, or contain only numbers and characters.';
+$string['passworddictcheckname'] = 'Dictionary Word Count Checking';
+$string['passworddictcheckdesc'] = 'Enforce that passwords must not be based of a single dictionary word. Password will be stripped to letters, then split on spaces.';
 $string['passworddigitsname'] = 'Maximum Sequential Digits';
 $string['passworddigitsdesc'] = 'Enforce a maximum number of sequential digits.';
 $string['passworddigitsinputname'] = 'Maximum Sequential Digits Input';
@@ -69,6 +71,7 @@ $string['passwordquestiondesc'] = 'Prompt for security questions on password cha
 // Password validation responses
 $string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.<br>';
 $string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.<br>';
+$string['responsedictionaryfail'] = 'Password cannot be based of a single dictionary word. Add more words.';
 $string['responseidentifyinginformation'] = 'Password contains identifying information.<br>';
 $string['responsenumericsequence'] = 'Password contains numeric sequence.<br>';
 $string['responserepeatedcharacters'] = 'Password contains repeated characters.<br>';
