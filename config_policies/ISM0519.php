@@ -41,3 +41,4 @@ $CFG->forced_plugin_settings['tool_passwordvalidator']['phrase_blacklist'] = 0;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['phrase_blacklist_input'] = 'moodle';
 $CFG->forced_plugin_settings['tool_passwordvalidator']['time_lockout_input'] = 86400;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['password_blacklist'] = 0;
+
