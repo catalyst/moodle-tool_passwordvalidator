@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 set_config('irap_complexity', 1, 'tool_passwordvalidator');
 set_config('simple_length_input', 13, 'tool_passwordvalidator');
 set_config('complex_length_input', 10, 'tool_passwordvalidator');
+set_config('dictionary_check', 1, 'tool_passwordvalidator');
 set_config('irap_numbers', 1, 'tool_passwordvalidator');
 set_config('sequential_digits_input', 2, 'tool_passwordvalidator');
 set_config('repeated_chars_input', 2, 'tool_passwordvalidator');

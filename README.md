@@ -23,9 +23,9 @@ of a combination of lowercase letters, uppercase letters, numbers and/or special
 numbers and special characters, and must contain some letters. Enable this control to enforce that passwords are not constructed of only numeric characters or combinations
 of both numbers and special characters, and must contain letters </p1>
 
-<p1><b>Maximum Sequential Digits Input:</b> The Australian ISM recommends that passwords may not contain sequences of numbers, which may be a date or other significant number. This box allows for input of an integer value to be the maximum number of sequential digits enforced in the control above. This defaults to 2. It is recommended to not allow this control to be higher, as people may include dates in their password, e.g. DDM or YYY. Set this to 0 to disable this control. </p1>
+<p1><b>Dictionary Word Count Checking:</b> 
 
-<p1><b>Maximum Repeated Characters:</b>  </p1>
+<p1><b>Maximum Sequential Digits Input:</b> The Australian ISM recommends that passwords may not contain sequences of numbers, which may be a date or other significant number. This box allows for input of an integer value to be the maximum number of sequential digits enforced in the control above. This defaults to 2. It is recommended to not allow this control to be higher, as people may include dates in their password, e.g. DDM or YYY. Set this to 0 to disable this control. </p1>
 
 <p1><b>Maximum Repeated Characters Input:</b> This control stops users from constructing passwords that contain repeated series of the same character, such as 'TTTTTTTTTTTTT', which satisfies length requirements but is very easy to guess. This box allows for input of an integer value to be the maximum number of the same character sequentially inside the password.
 This defaults to 2, which allows for words that contain double letters, but excludes longer series of characters. Set this to 0 to disable this control.</p1>
