@@ -25,7 +25,7 @@ of both numbers and special characters, and must contain letters </p1>
 
 <p1><b>Dictionary Word Count Checking:</b> The Australian Cyber Security Centre recommends that passwords not be based off of a single dictionary word. This control checks words contained in passwords against a dictionary file, checking the number of occurences to ensure passwords are based off more than 1 word.</p1>
 
-<p1><b>Dictionary File Name:<b/> This box allows for inputs of a file to use as the dictionary file for checking against. The location that these files are stored in is /passwordvalidator/dictionary.</p1>
+<p1><b>Dictionary File Name:</b> This box allows for inputs of a file to use as the dictionary file for checking against. The location that these files are stored in is /passwordvalidator/dictionary.</p1>
 
 <p1><b>Maximum Sequential Digits Input:</b> The Australian ISM recommends that passwords may not contain sequences of numbers, which may be a date or other significant number. This box allows for input of an integer value to be the maximum number of sequential digits enforced in the control above. This defaults to 2. It is recommended to not allow this control to be higher, as people may include dates in their password, e.g. DDM or YYY. Set this to 0 to disable this control. </p1>
 
