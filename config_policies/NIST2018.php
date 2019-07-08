@@ -25,18 +25,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-set_config('irap_complexity', 1, 'tool_passwordvalidator');
-set_config('simple_length_input', 8, 'tool_passwordvalidator');
-set_config('complex_length_input', 8, 'tool_passwordvalidator');
-set_config('dictionary_check', 0, 'tool_passwordvalidator');
-set_config('irap_numbers', 0, 'tool_passwordvalidator');
-set_config('sequential_digits_input', 0, 'tool_passwordvalidator');
-set_config('repeated_chars_input', 0, 'tool_passwordvalidator');
-set_config('personal_info', 1, 'tool_passwordvalidator');
-set_config('phrase_blacklist', 1, 'tool_passwordvalidator');
-
-// Phrases should be added 'phrase1<br>phrase2<br>phrase3;
-set_config('phrase_blacklist_input', 'moodle', 'tool_passwordvalidator');
-
-set_config('time_lockout_input', 0, 'tool_passwordvalidator');
-set_config('password_blacklist', 1, 'tool_passwordvalidator');
+$CFG->forced_plugin_settings['tool_passwordvalidator']['irap_complexity'] = 1;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 8;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['complex_length_input'] = 8;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check'] = 0;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['irap_numbers'] = 0;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['sequential_digits_input'] = 0;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['repeated_chars_input'] = 0;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['personal_info'] = 1;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['phrase_blacklist'] = 1;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['phrase_blacklist_input'] = 'moodle';
+$CFG->forced_plugin_settings['tool_passwordvalidator']['time_lockout_input'] = 0;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['password_blacklist'] = 1;

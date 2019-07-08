@@ -36,7 +36,7 @@ if ($hassiteconfig) {
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
 
-        $forcedconfig = get_enable_template();
+        /*$forcedconfig = get_enable_template();
         $template = get_template();
         if ($forcedconfig) {
             // Set to the template to use
@@ -47,7 +47,7 @@ if ($hassiteconfig) {
                 $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_passwordvalidator') . $template, 'notifyerror');
             }
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
-        }
+        }*/
 
         // IRAP Complexity Minimum
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/irap_complexity', get_string('passwordirapcomplexityname', 'tool_passwordvalidator'),
@@ -66,6 +66,9 @@ if ($hassiteconfig) {
         // Minimum dictionary word settings
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/dictionary_check', get_string('passworddictcheckname', 'tool_passwordvalidator'),
                     get_string('passworddictcheckdesc', 'tool_passwordvalidator'), 1));
+
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/dictionary_check_file', get_string('passworddictcheckfilename', 'tool_passwordvalidator'),
+                    get_string('passworddictcheckfiledesc', 'tool_passwordvalidator'), 'google-10000-english.txt', PARAM_RAW));
 
         // Sequential digits settings
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/sequential_digits_input', get_string('passworddigitsinputname', 'tool_passwordvalidator'),

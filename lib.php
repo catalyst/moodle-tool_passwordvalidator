@@ -168,7 +168,7 @@ function dictionary_checker($password) {
     $wordcount = sizeof($wordarray);
 
     //Read in dictionary file
-    $dictpath = __DIR__.'/dictionary/'.get_selected_dictionary();
+    $dictpath = __DIR__.'/dictionary/'. get_config('tool_passwordvalidator', 'dictionary_check_file');
     try {
         $dict = fopen($dictpath, 'r');
     } catch (Exception $e) {
