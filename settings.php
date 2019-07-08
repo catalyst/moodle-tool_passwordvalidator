@@ -34,11 +34,12 @@ if ($hassiteconfig) {
 
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
-        
-        //Alert if using config template
+
+        // Alert if using config template
         $name = get_config('tool_passwordvalidator', 'chosen_template');
         if (trim($name) != '') {
-            $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $name.' at location: ' .__DIR__ . '/config_policies/'.$name.'.php', 'notifymessage');
+            $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $name.' at location: '
+             .__DIR__ . '/config_policies/'.$name.'.php', 'notifymessage');
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
         }
 
