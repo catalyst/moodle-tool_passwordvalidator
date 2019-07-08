@@ -61,6 +61,8 @@ as to the status of the password. For the purposes of password lockout testing a
 typically the administration account. </p1>
 
 <h2> Installation </h2>
+<p1><b>Requirements:</b> This plugin will work with any version of moodle from 3.6 onwards. It can be use with older installations of moodle, they just require a cherrypick of commit: https://github.com/Spudley/moodle/commit/99405aa7e2a34174a3eeaf9f9ffc9db3bc9f6192, which was integrated into Moodle core in version 3.6.
+
 <p1>To install the plugin simply drop it into the /path/to/moodle/admin/tool/passwordvalidator directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now, and the plugin will be installed. </p1>
 <p1>This plugin can be configured to have config settings forced as part of the global configuration. See the below section Templates on how to configure this.
 <p1>This plugin relies on the moodle core security setting "Password Rotation Limit" This must be set to at least 1, so that moodle stores the time that a password was last changed.
