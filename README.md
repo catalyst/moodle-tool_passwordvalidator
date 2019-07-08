@@ -68,11 +68,11 @@ If this setting is not enabled, the settings page for this plugin will alert you
 
 <h2> Templates </h2>
 <p1> This plugin comes with some templates, that enforce policies drawn from the particular cyber security standard. To use these forced configuration templates, users must include:
-```php
-if (file_exists(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php')) {
-    require(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php');
-}
-```
+
+    if (file_exists(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php')) {
+        require(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php');
+    }
+
 this code inside of the Moodle config.php or optional config-forced.php file. This will include the template commands inside of Moodle's core configuration.
 
 <h2> Unit Testing </h2>
