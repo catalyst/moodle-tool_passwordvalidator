@@ -54,7 +54,7 @@ function password_validate($password, $test) {
 
         if (get_config('tool_passwordvalidator', 'dictionary_check')) {
             $errs .= dictionary_checker($password);
-        } 
+        }
 
         // Personal Information Check.
         if (get_config('tool_passwordvalidator', 'personal_info')) {
@@ -164,9 +164,9 @@ function dictionary_checker($password) {
     // Strip special chars and numbers from password, to get raw words in array
     $strippedpw = preg_replace("/[^a-zA-Z ]/", "", $password);
     $wordarray = explode(' ', $strippedpw);
-    $wordcount = sizeof($wordarray);
+    $wordcount = count($wordarray);
 
-    //Read in dictionary file
+    // Read in dictionary file
     $dictpath = __DIR__.'/dictionary/'. get_config('tool_passwordvalidator', 'dictionary_check_file');
     try {
         $dict = fopen($dictpath, 'r');
@@ -174,10 +174,10 @@ function dictionary_checker($password) {
         $return .= 'Error opening file';
     }
 
-    //Check every line of file for exact match, then reset file pointer to start
+    // Check every line of file for exact match, then reset file pointer to start
     $foundcount = 0;
-    foreach ($wordarray as $word){
-        while(!feof($dict)) {
+    foreach ($wordarray as $word) {
+        while (!feof($dict)) {
             $dictword = trim(fgets($dict));
 
             if ($dictword == $word) {
@@ -188,8 +188,7 @@ function dictionary_checker($password) {
     }
     $wordsreq = get_config('tool_passwordvalidator', 'dictionary_check');
 
-    //If the amount of dictionary words found is 1, and the only word found is a dictionary word
-    //MAYBE BUGGY FUNCTIONALITY
+    // If the amount of dictionary words found is 1, and there is only one word in the password
     if (($foundcount == 1) && $wordcount == 1) {
         $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator');
     }

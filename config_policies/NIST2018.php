@@ -24,7 +24,10 @@
  * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+// Coding standards ignored due to no config inclusion or moodle internal check
+// @codingStandardsIgnoreStart
 $CFG->forced_plugin_settings['tool_passwordvalidator']['irap_complexity'] = 1;
+// @codingStandardsIgnoreEnd
 $CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 8;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['complex_length_input'] = 8;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check'] = 0;
