@@ -105,12 +105,12 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $onewordnondictionary = 'skamandlebop';
         $nondictnumbers = '123skamandlebop123';
         $nondictchars = '!@#skamandlebop!@#';
-        $twodictwords = 'magazinelettuce';
-        $twowordsnumber = 'magazine123lettuce';
-        $twowordschars = 'magazine!@#lettuce';
-        $twowordsspaces = 'magazine lettuce';
-        $twowordsspacesnumbers = 'magazine 123lettuce';
-        $twowordsspaceschars = 'magazine !@#lettuce';
+        $twodictwords = 'magazineindividuals';
+        $twowordsnumber = 'magazine123individuals';
+        $twowordschars = 'magazine!@#individuals';
+        $twowordsspaces = 'magazine individuals';
+        $twowordsspacesnumbers = 'magazine 123individuals';
+        $twowordsspaceschars = 'magazine !@#individuals';
         $allnums = '12345678';
         $allchars = '!@#$%^&*';
 

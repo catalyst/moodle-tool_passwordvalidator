@@ -69,13 +69,14 @@ typically the administration account. </p1>
 If this setting is not enabled, the settings page for this plugin will alert you, and the time lockout functionality of the plugin will not work. </p1>
 
 <h2> Templates </h2>
-<p1> This plugin comes with some templates, that enforce policies drawn from the particular cyber security standard. To use these forced configuration templates, users must include:
+<p1> This plugin comes with some templates, that enforce policies drawn from the particular cyber security standards. To use these forced configuration templates, users must include:
 
     if (file_exists(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php')) {
         require(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php');
     }
 
-this code inside of the Moodle config.php or optional config-forced.php file. This will include the template commands inside of Moodle's core configuration.
+this code inside of the Moodle config.php or optional config-forced.php file. This will include the template commands inside of Moodle's core configuration, and prevent
+changes from being made to the configurations.
 
 <h2> Unit Testing </h2>
 <p1> All of the password validation functionality has accompanying unit tests, that validate that the program is operating correctly. These tests can be executed via PHPUnit from the Moodle installation if it is installed.</p1>

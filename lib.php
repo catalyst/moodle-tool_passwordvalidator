@@ -162,7 +162,7 @@ function complexity_checker($password, $complex) {
 function dictionary_checker($password) {
     $return = '';
     // Strip special chars and numbers from password, to get raw words in array
-    $strippedpw = preg_replace("/[^a-zA-Z ]/", "", $password);
+    $strippedpw = trim(preg_replace("/[^a-zA-Z ]/", "", $password));
     $wordarray = explode(' ', $strippedpw);
     $wordcount = count($wordarray);
 
@@ -182,7 +182,6 @@ function dictionary_checker($password) {
 
             if ($dictword == $word) {
                 $foundcount++;
-                //TODO FIX BREAKING LOOP ON FIND
             }
         }
         rewind($dict);
@@ -193,7 +192,7 @@ function dictionary_checker($password) {
     if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
         $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator');
     }
-    return $foundcount;
+    return $return;
 }
 
 /**
