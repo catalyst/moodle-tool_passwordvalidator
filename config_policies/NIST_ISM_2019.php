@@ -28,6 +28,7 @@ $CFG->forced_plugin_settings['tool_passwordvalidator']['irap_complexity'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 13;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['complex_length_input'] = 10;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check'] = 1;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check_file'] = 'google-10000-english.txt';
 $CFG->forced_plugin_settings['tool_passwordvalidator']['irap_numbers'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['sequential_digits_input'] = 2;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['repeated_chars_input'] = 2;

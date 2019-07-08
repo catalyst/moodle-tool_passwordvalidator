@@ -23,7 +23,9 @@ of a combination of lowercase letters, uppercase letters, numbers and/or special
 numbers and special characters, and must contain some letters. Enable this control to enforce that passwords are not constructed of only numeric characters or combinations
 of both numbers and special characters, and must contain letters </p1>
 
-<p1><b>Dictionary Word Count Checking:</b> 
+<p1><b>Dictionary Word Count Checking:</b> The Australian Cyber Security Centre recommends that passwords not be based off of a single dictionary word. This control checks words contained in passwords against a dictionary file, checking the number of occurences to ensure passwords are based off more than 1 word.</p1>
+
+<p1><b>Dictionary File Name:<b/> This box allows for inputs of a file to use as the dictionary file for checking against. The location that these files are stored in is /passwordvalidator/dictionary.</p1>
 
 <p1><b>Maximum Sequential Digits Input:</b> The Australian ISM recommends that passwords may not contain sequences of numbers, which may be a date or other significant number. This box allows for input of an integer value to be the maximum number of sequential digits enforced in the control above. This defaults to 2. It is recommended to not allow this control to be higher, as people may include dates in their password, e.g. DDM or YYY. Set this to 0 to disable this control. </p1>
 
@@ -59,23 +61,19 @@ as to the status of the password. For the purposes of password lockout testing a
 typically the administration account. </p1>
 
 <h2> Installation </h2>
-<p1>To install the plugin simply drop it into the /path/to/moodle/admin/tool/password directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now,
-and the plugin will be installed. </p1>
+<p1>To install the plugin simply drop it into the /path/to/moodle/admin/tool/passwordvalidator directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now, and the plugin will be installed. </p1>
+<p1>This plugin can be configured to have config settings forced as part of the global configuration. See the below section Templates on how to configure this.
 <p1>This plugin relies on the moodle core security setting "Password Rotation Limit" This must be set to at least 1, so that moodle stores the time that a password was last changed.
 If this setting is not enabled, the settings page for this plugin will alert you, and the time lockout functionality of the plugin will not work. </p1>
 
 <h2> Templates </h2>
-<p1> This plugin allows for the use of templates, which force the configuration to match the specification inside of the template file. To enforce a template, edit the usersettings.php file. Edit the $usetemplate variable to true:<br>
-  
+<p1> This plugin comes with some templates, that enforce policies drawn from the particular cyber security standard. To use these forced configuration templates, users must include:
 ```php
-$usetemplate = true;
+if (file_exists(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php')) {
+    require(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php');
+}
 ```
-Then set the $template variable to be the name of the template, placed inside the /templates directory. <br>
-
-```php
-$template = 'NIST_ISM_2019.php';
-```
-Save the file. Then visit the plugin settings at Site Administration-> Plugins-> Admin tools-> Password Policy Validator, and the updated template settings will be loaded and applied.
+this code inside of the Moodle config.php or optional config-forced.php file. This will include the template commands inside of Moodle's core configuration.
 
 <h2> Unit Testing </h2>
 <p1> All of the password validation functionality has accompanying unit tests, that validate that the program is operating correctly. These tests can be executed via PHPUnit from the Moodle installation if it is installed.</p1>
