@@ -35,7 +35,7 @@ if ($hassiteconfig) {
 
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
-        
+
         $forcedconfig = get_enable_template();
         $template = get_template();
         if ($forcedconfig) {
