@@ -26,19 +26,19 @@
  */
 // Coding standards ignored due to no config inclusion or moodle internal check
 // @codingStandardsIgnoreStart
-$CFG->forced_plugin_settings['tool_passwordvalidator']['irap_complexity'] = 1;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['chosen_template'] = basename(__FILE__, '.php');
 // @codingStandardsIgnoreEnd
-$CFG->forced_plugin_settings['tool_passwordvalidator']['chosen_template'] = 'NIST_ISM_2019';
-$CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 13;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['complex_length_input'] = 10;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check_file'] = 'google-10000-english.txt';
+$CFG->forced_plugin_settings['tool_passwordvalidator']['irap_complexity'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['irap_numbers'] = 1;
-$CFG->forced_plugin_settings['tool_passwordvalidator']['sequential_digits_input'] = 2;
-$CFG->forced_plugin_settings['tool_passwordvalidator']['repeated_chars_input'] = 2;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['password_blacklist'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['personal_info'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['phrase_blacklist'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['phrase_blacklist_input'] = 'moodle';
+$CFG->forced_plugin_settings['tool_passwordvalidator']['repeated_chars_input'] = 2;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['sequential_digits_input'] = 2;
+$CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 13;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['time_lockout_input'] = 86400;
-$CFG->forced_plugin_settings['tool_passwordvalidator']['password_blacklist'] = 1;
 
