@@ -25,7 +25,6 @@ defined('MOODLE_INTERNAL') || die;
 // Require validation library.
 require_once(__DIR__.'/../../../config.php');
 require_once('lib.php');
-require_once('usersettings.php');
 
 global $CFG;
 
@@ -36,16 +35,17 @@ if ($hassiteconfig) {
     $ADMIN->add('tools', $settings);
     if (!during_initial_install()) {
 
-        $forcedconfig = get_enable_template();
-        $template = get_template();
-        if ($forcedconfig) {
-            // Set to the template to use
-            if (file_exists(__DIR__."/templates/$template")) {
-                require_once(__DIR__."/templates/$template");
-                $templatedesc = $OUTPUT->notification(get_string('passwordforcedconfig', 'tool_passwordvalidator') . $template, 'notifymessage');
-            } else {
-                $templatedesc = $OUTPUT->notification(get_string('passwordbadconfigload', 'tool_passwordvalidator') . $template, 'notifyerror');
-            }
+        // Alert if using config template
+        $name = get_config('tool_passwordvalidator', 'chosen_template');
+        if (trim($name) != '') {
+            // Construct the display text
+            $text = get_string('passwordforcedconfig', 'tool_passwordvalidator') . $name;
+            $text .= get_string('passwordconfigloc', 'tool_passwordvalidator');
+            $text .= (__DIR__ . get_string('passwordconfigpath', 'tool_passwordvalidator', $name).'<br>');
+            $text .= get_string("template$name", 'tool_passwordvalidator');
+
+            // Add the control
+            $templatedesc = $OUTPUT->notification($text, 'notifymessage');
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
         }
 
@@ -67,6 +67,9 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/dictionary_check', get_string('passworddictcheckname', 'tool_passwordvalidator'),
                     get_string('passworddictcheckdesc', 'tool_passwordvalidator'), 1));
 
+        $settings->add(new admin_setting_configtext('tool_passwordvalidator/dictionary_check_file', get_string('passworddictcheckfilename', 'tool_passwordvalidator'),
+                    get_string('passworddictcheckfiledesc', 'tool_passwordvalidator'), 'google-10000-english.txt', PARAM_FILE));
+
         // Sequential digits settings
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/sequential_digits_input', get_string('passworddigitsinputname', 'tool_passwordvalidator'),
                     get_string('passworddigitsinputdesc', 'tool_passwordvalidator'), 2, PARAM_INT));
@@ -84,7 +87,7 @@ if ($hassiteconfig) {
                     get_string('passwordphrasedesc', 'tool_passwordvalidator'), 1));
 
         $settings->add(new admin_setting_configtextarea('tool_passwordvalidator/phrase_blacklist_input', get_string('passwordphraseinputname', 'tool_passwordvalidator'),
-                    get_string('passwordphraseinputdesc', 'tool_passwordvalidator'), 'moodle', PARAM_RAW));
+                    get_string('passwordphraseinputdesc', 'tool_passwordvalidator'), 'moodle', PARAM_TEXT));
 
         // Password Change lockout period
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/time_lockout_input', get_string('passwordlockoutinputname', 'tool_passwordvalidator'),

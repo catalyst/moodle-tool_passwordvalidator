@@ -91,6 +91,51 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, complexity_checker($specialsandnumbers, false));
     }
 
+    public function test_dictionary_checking() {
+        $this->resetAfterTest(true);
+        set_config('dictionary_check_file', 'google-10000-english.txt', 'tool_passwordvalidator');
+
+        $goodresponse = '';
+        $onewordnumbers = '123magazine123';
+        $onewordchars = '!@#magazine!@#';
+        $onewordnumberandchar = '123magazine!@#';
+        $onewordnumberspace = '123 magazine';
+        $onewordcharspace = '!@# magazine';
+        $onewordcharandnumberspace = '!@# magazine 123';
+        $onewordnondictionary = 'skamandlebop';
+        $nondictnumbers = '123skamandlebop123';
+        $nondictchars = '!@#skamandlebop!@#';
+        $twodictwords = 'magazineindividuals';
+        $twowordsnumber = 'magazine123individuals';
+        $twowordschars = 'magazine!@#individuals';
+        $twowordsspaces = 'magazine individuals';
+        $twowordsspacesnumbers = 'magazine 123individuals';
+        $twowordsspaceschars = 'magazine !@#individuals';
+        $allnums = '12345678';
+        $allchars = '!@#$%^&*';
+
+        // Good strings, based on multiple dictionary words or none
+        $this->assertEquals($goodresponse, dictionary_checker($goodresponse));
+        $this->assertEquals($goodresponse, dictionary_checker($onewordnondictionary));
+        $this->assertEquals($goodresponse, dictionary_checker($nondictnumbers));
+        $this->assertEquals($goodresponse, dictionary_checker($nondictchars));
+        $this->assertEquals($goodresponse, dictionary_checker($twodictwords));
+        $this->assertEquals($goodresponse, dictionary_checker($twowordsnumber));
+        $this->assertEquals($goodresponse, dictionary_checker($twowordschars));
+        $this->assertEquals($goodresponse, dictionary_checker($twowordsspaces));
+        $this->assertEquals($goodresponse, dictionary_checker($twowordsspacesnumbers));
+        $this->assertEquals($goodresponse, dictionary_checker($twowordsspaceschars));
+        $this->assertEquals($goodresponse, dictionary_checker($allnums));
+        $this->assertEquals($goodresponse, dictionary_checker($allchars));
+
+        $this->assertNotEquals($goodresponse, dictionary_checker($onewordnumbers));
+        $this->assertNotEquals($goodresponse, dictionary_checker($onewordchars));
+        $this->assertNotEquals($goodresponse, dictionary_checker($onewordnumberandchar));
+        $this->assertNotEquals($goodresponse, dictionary_checker($onewordnumberspace));
+        $this->assertNotEquals($goodresponse, dictionary_checker($onewordcharspace));
+        $this->assertNotEquals($goodresponse, dictionary_checker($onewordcharandnumberspace));
+    }
+
     public function test_personal_information() {
         $this->resetAfterTest(true);
         // Generate user account to test against
