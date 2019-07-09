@@ -2,6 +2,8 @@
 <img src="https://travis-ci.org/catalyst/moodle-tool_password.svg?branch=master">
 </a>
 
+# Password Policy Enforcer
+
 A tool for enforcing various security standards and guidelines for passwords for Moodle. This plugin aims for compliance with
 the Australian Information Security Manual (currently May 2019), and above that, the NIST standards from the document 800-63B.
 
@@ -15,8 +17,8 @@ for any configuration, while enforcing safe, sensible guidelines for passwords.
 * [Templates](#templates)
 * [Unit Testing](#templates)
 
-<a name="security-controls"/>
-## Security Controls
+## Security Controls <a name="security-controls"/>
+
 **ISM Complexity Standards:** The Australian ISM recommends a minimum password length of 13 characters for passwords consisting of only letters,
 both uppercase and lowercase. For passwords that contain at least 3 of the the following: lowercase letters, uppercase letters, numbers,
 special characters, the minimum length must be 10 characters. Enable this control to enforce this minimum length policy.
@@ -59,18 +61,15 @@ should be entered on a new line each. Phrases are case-insensitive, e.g. moodle 
 checks the hash of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the
 catalogued breaches.
 
-<a name="moodle-configuration-checker"/>
-## Moodle Configuration Checker
+## Moodle Configuration Checker <a name="moodle-configuration-checker"/>
 This will automatically check the moodle configuration for settings that are either relied on by the plugin, or conflict with the plugin. It checks the password policy enforced by Moodle, which should be disabled and the plugin used instead, as well as the configuration settings of the policy if the policy is enabled. It is not recommended to enforce a minimum number of specific types of characters, such as uppercase letters, lowercase letters, special characters, and non-alphanumberic characters.
 
-<a name="password-tester"/>
-## Password Tester
+## Password Tester <a name="password-tester"/>
 The password tester allows admins to enter a password. Upon saving changes to the settings, the password will be validated against the above configuration, and the user will be alerted
 as to the status of the password. For the purposes of password lockout testing and information testing, the password will be checked against the current user account accessing the settings,
 typically the administration account.
 
-<a name="installation"/>
-## Installation
+## Installation <a name="installation"/>
 **Requirements:** This plugin will work with any version of moodle from 3.6 onwards. It can be use with older installations of moodle, they just require a cherrypick of commit: https://github.com/Spudley/moodle/commit/99405aa7e2a34174a3eeaf9f9ffc9db3bc9f6192, which was integrated into Moodle core in version 3.6.
 
 To install the plugin simply drop it into the /path/to/moodle/admin/tool/passwordvalidator directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now, and the plugin will be installed.
@@ -78,8 +77,7 @@ This plugin can be configured to have config settings forced as part of the glob
 This plugin relies on the moodle core security setting "Password Rotation Limit" This must be set to at least 1, so that moodle stores the time that a password was last changed.
 If this setting is not enabled, the settings page for this plugin will alert you, and the time lockout functionality of the plugin will not work.
 
-<a name="templates"/>
-## Templates
+## Templates <a name="templates"/>
 This plugin comes with some templates, that enforce policies drawn from the particular cyber security standards. To use these forced configuration templates, users must include:
 
 ```php
@@ -89,6 +87,6 @@ require(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.p
 this code inside of the Moodle config.php or optional config-forced.php file. This will include the template commands inside of Moodle's core configuration, and prevent
 changes from being made to the configurations.
 
-<a name="unit-testing"/>
-## Unit Testing
+
+## Unit Testing <a name="unit-testing"/>
 All of the password validation functionality has accompanying unit tests, that validate that the program is operating correctly. These tests can be executed via PHPUnit from the Moodle installation if it is installed.
