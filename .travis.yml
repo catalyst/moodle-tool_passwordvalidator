@@ -15,12 +15,14 @@ cache:
 
 php:
   - 5.6
-  - 7.0
+  - 7.1
 
 env:
   global:
     - DB=pgsql
   matrix:
+    - MOODLE_BRANCH=MOODLE_32_STABLE
+    - MOODLE_BRANCH=MOODLE_33_STABLE
     - MOODLE_BRANCH=MOODLE_34_STABLE
     - MOODLE_BRANCH=MOODLE_35_STABLE
     - MOODLE_BRANCH=MOODLE_36_STABLE
@@ -30,7 +32,7 @@ env:
 matrix:
   include:
     # Test with MySQL
-    - php: 7.0
+    - php: 7.1
       env: DB=mysqli MOODLE_BRANCH=master
     # Test with PHP 7.1
     - php: 7.1
@@ -46,7 +48,7 @@ matrix:
       env: MOODLE_BRANCH=MOODLE_36_STABLE
       - php: 5.6
       env: MOODLE_BRANCH=MOODLE_37_STABLE
-      
+
 before_install:
   - cd ../..
   - composer selfupdate
