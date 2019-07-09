@@ -113,6 +113,9 @@ if ($hassiteconfig) {
         // Only check if not empty
         if ($testpassword != '') {
             $testervalidation = password_validate($testpassword, true);
+        } else {
+            // If PW is empty, set validation to empty. Messagebox later checks for empty pw
+            $testervalidation = '';
         }
 
         if ((trim($testervalidation) == '') && (trim($testpassword) !== '')) {
@@ -123,14 +126,14 @@ if ($hassiteconfig) {
             // If password is empty, notify empty
             $message = 'passwordtesterempty';
             $type = 'notifymessage';
-        } else if (trim($testervalidation) !== '') {
+        } else if ((trim($testervalidation) !== '') && (trim($testpassword) !== '')) {
             $message = 'passwordtesterfail';
             $type = 'notifyerror';
         }
         $testerdesc = $OUTPUT->notification(get_string($message, 'tool_passwordvalidator').' '. $testervalidation, $type);
 
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/password_test_field', get_string('passwordtestername', 'tool_passwordvalidator'),
-                    $testerdesc, '', PARAM_RAW));
+                    $testerdesc, '', PARAM_TEXT));
     }
 }
 
