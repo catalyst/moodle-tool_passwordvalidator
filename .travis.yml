@@ -42,7 +42,11 @@ matrix:
       env: MOODLE_BRANCH=MOODLE_34_STABLE
     - php: 5.6
       env: MOODLE_BRANCH=MOODLE_35_STABLE
-
+    - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_36_STABLE
+      - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_37_STABLE
+      
 before_install:
   - cd ../..
   - composer selfupdate
