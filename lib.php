@@ -141,12 +141,12 @@ function complexity_checker($password, $complex) {
     }
 
     if ((strlen($password) < $minchars) && $complex) {
-        $return .= get_string('responseminimumlength', 'tool_passwordvalidator');
+        $return .= get_string('responseminimumlength', 'tool_passwordvalidator').'<br>';
     }
 
     if (!($complex)) {
         if ($lowercase === 0 && $uppercase === 0) {
-            $return .= get_string('responsenoletters', 'tool_passwordvalidator');
+            $return .= get_string('responsenoletters', 'tool_passwordvalidator').'<br>';
         }
     }
     return $return;
@@ -190,7 +190,7 @@ function dictionary_checker($password) {
 
     // If the amount of dictionary words found is 1, and there is only one word in the password
     if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
-        $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator');
+        $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator').'<br>';
     }
     return $return;
 }
@@ -212,7 +212,7 @@ function personal_information($password) {
 
     foreach ($badstrings as $string) {
         if (stripos($password, $string) !== false) {
-            $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator');
+            $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator').'<br>';
             break;
         }
     }
@@ -234,7 +234,7 @@ function sequential_digits($password) {
     $return = '';
 
     if (preg_match($digitpattern, $password) === 1) {
-        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator');
+        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator').'<br>';
     }
 
     return $return;
@@ -254,7 +254,7 @@ function repeated_chars($password) {
     $return = '';
 
     if (preg_match($characterpattern, $password) === 1) {
-        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator');
+        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator').'<br>';
     }
     return $return;
 }
@@ -275,7 +275,7 @@ function phrase_blacklist($password) {
     foreach ($phrases as $string) {
         $tstring = trim($string);
         if (stripos($password, $tstring) !== false) {
-            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator');
+            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator').'<br>';
             break;
         }
     }
@@ -301,7 +301,7 @@ function lockout_period($password, $user) {
         // get first elements timecreated, order from DB query
         $timechanged = reset($lastchanges)->timecreated;
     } catch (Exception $e) {
-        $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator');
+        $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator').'<br>';
         $failedconn = true;
     }
     $currenttime = time();
@@ -315,7 +315,7 @@ function lockout_period($password, $user) {
     // check for failed connection so no errors from timechanged being unset
     if (!($failedconn)) {
         if ($timechanged >= ($currenttime - $inputtime)) {
-            $return .= get_string('responselockoutperiod', 'tool_passwordvalidator');
+            $return .= get_string('responselockoutperiod', 'tool_passwordvalidator').'<br>';
         }
     }
     return $return;
@@ -343,7 +343,7 @@ function password_blacklist($password) {
     // Check for presence of hash in response
     $shorthash = substr($pwhash, 5);
     if (stripos($response, $shorthash) !== false) {
-        $return .= get_string('responsebreachedpassword', 'tool_passwordvalidator');
+        $return .= get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
     }
     return $return;
 }
@@ -361,7 +361,7 @@ function config_checker() {
 
     // Check if a password policy is in place, not necessarily a fail
     if ($CFG->passwordpolicy == 1) {
-        $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator');
+        $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator').'<br>';
         // If notify is currently success
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
@@ -370,31 +370,31 @@ function config_checker() {
 
     // Minimum char enforcement is a fail
     if (($CFG->passwordpolicy == 1) && $CFG->minpassworddigits >= 1) {
-        $response .= get_string('configpassworddigits', 'tool_passwordvalidator');
+        $response .= get_string('configpassworddigits', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlower >= 1) {
-        $response .= get_string('configpasswordlowerletter', 'tool_passwordvalidator');
+        $response .= get_string('configpasswordlowerletter', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordupper >= 1) {
-        $response .= get_string('configpasswordupperletter', 'tool_passwordvalidator');
+        $response .= get_string('configpasswordupperletter', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordnonalphanum >= 1) {
-        $response .= get_string('configpasswordspecialchars', 'tool_passwordvalidator');
+        $response .= get_string('configpasswordspecialchars', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
 
     // Password rotation not beind enabled is a fail
     if ($CFG->passwordreuselimit < 1) {
-        $response .= get_string('configpasswordrotationempty', 'tool_passwordvalidator');
+        $response .= get_string('configpasswordrotationempty', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
 
     // If no errors at end, return a good message
     if ($type == 'notifysuccess') {
-        $response .= get_string('configpasswordgood', 'tool_passwordvalidator');
+        $response .= get_string('configpasswordgood', 'tool_passwordvalidator').'<br>';
     }
 
     return array($response, $type);

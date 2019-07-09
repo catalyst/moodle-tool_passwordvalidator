@@ -71,26 +71,26 @@ $string['passwordquestion'] = 'Prompt Security Questions';
 $string['passwordquestiondesc'] = 'Prompt for security questions on password change.';
 
 // Password validation responses
-$string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.<br>';
-$string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.<br>';
-$string['responsedictionaryfail'] = 'Password cannot be based of a single dictionary word. Add more words.<br>';
-$string['responseidentifyinginformation'] = 'Password contains identifying information.<br>';
-$string['responsenumericsequence'] = 'Password contains numeric sequence.<br>';
-$string['responserepeatedcharacters'] = 'Password contains repeated characters.<br>';
-$string['responseblacklistphrase'] = 'Password contains blacklisted phrase such as service name.<br>';
-$string['responsedatabaseerror'] = 'Error retrieving information from database.<br>';
-$string['responselockoutperiod'] = 'Password already changed recently. Please try again later.<br>';
-$string['responsebreachedpassword'] = 'Password found in online breached passwords collection.<br>';
+$string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.';
+$string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.';
+$string['responsedictionaryfail'] = 'Password cannot be based of a single dictionary word. Add more words.';
+$string['responseidentifyinginformation'] = 'Password contains identifying information.';
+$string['responsenumericsequence'] = 'Password contains numeric sequence.';
+$string['responserepeatedcharacters'] = 'Password contains repeated characters.';
+$string['responseblacklistphrase'] = 'Password contains blacklisted phrase such as service name.';
+$string['responsedatabaseerror'] = 'Error retrieving information from database.';
+$string['responselockoutperiod'] = 'Password already changed recently. Please try again later.';
+$string['responsebreachedpassword'] = 'Password found in online breached passwords collection.';
 
 // Moodle config checker strings
-$string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.<br>';
+$string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.';
 $string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1 for the password reset lockout period.
- It is recommended to set this value to atleast 1, but higher is better. ACSC recommends not reusing passwords within  8 changes. <br>';
-$string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.<br>';
-$string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.<br>';
-$string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';
-$string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.<br>';
-$string['configpasswordgood'] = 'No incorrect moodle password configurations found.<br>';
+ It is recommended to set this value to atleast 1, but higher is better. ACSC recommends not reusing passwords within  8 changes.';
+$string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.';
+$string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.';
+$string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.';
+$string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.';
+$string['configpasswordgood'] = 'No incorrect moodle password configurations found.';
 
 /*
  * Privacy provider (GDPR)
