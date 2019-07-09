@@ -26,6 +26,8 @@
 $string['pluginname'] = 'Password Validator';
 $string['passwordforcedconfig'] = 'Settings are read only, configuration is forced in template file: ';
 $string['passwordbadconfigload'] = 'Unable to load template configuration file. Check variables are correct, and that template is inside the templates folder. - ';
+$string['passwordconfigloc'] = ' at location: ';
+$string['passwordconfigpath'] = '/config_policies/{$a}.php';
 $string['passwordirapcomplexityname'] = 'Enforce ISM Complexity Standards';
 $string['passwordirapcomplexitydesc'] = 'Enforce ACSC Security Control 0421: Minimum password complexity. Passwords containing only letters must be at least 13 characters. Passwords containing at least 3 of 4: Lowercase letters, Uppercase letters, Numbers, Special characters, must be at least 10 characters.';
 $string['passwordirapcomplexitysimple'] = 'Minimum Simple Complexity Length';
@@ -92,6 +94,10 @@ $string['configpasswordlowerletter'] = 'It appears that the enforced password po
 $string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.';
 $string['configpasswordgood'] = 'No incorrect moodle password configurations found.';
 
+// Template Description Strings
+$string['templateNIST_ISM_2019'] = 'This template enforces recommendations from both the Australian ISM, as well as the NIST password recommendations. The strongest template implemented by default.';
+$string['templateNIST2018'] = 'This template enforces recommendations from the NIST password recommendations. Does not include complexity requirements on the password composition.';
+$string['templateISM0519'] = 'This template enforces recommendations from the Australian ISM May 2019. Enforces minimum lengths for different password complexities, and character sets.';
 /*
  * Privacy provider (GDPR)
  */
