@@ -68,7 +68,7 @@ if ($hassiteconfig) {
                     get_string('passworddictcheckdesc', 'tool_passwordvalidator'), 1));
 
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/dictionary_check_file', get_string('passworddictcheckfilename', 'tool_passwordvalidator'),
-                    get_string('passworddictcheckfiledesc', 'tool_passwordvalidator'), 'google-10000-english.txt', PARAM_RAW));
+                    get_string('passworddictcheckfiledesc', 'tool_passwordvalidator'), 'google-10000-english.txt', PARAM_FILE));
 
         // Sequential digits settings
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/sequential_digits_input', get_string('passworddigitsinputname', 'tool_passwordvalidator'),
@@ -87,7 +87,7 @@ if ($hassiteconfig) {
                     get_string('passwordphrasedesc', 'tool_passwordvalidator'), 1));
 
         $settings->add(new admin_setting_configtextarea('tool_passwordvalidator/phrase_blacklist_input', get_string('passwordphraseinputname', 'tool_passwordvalidator'),
-                    get_string('passwordphraseinputdesc', 'tool_passwordvalidator'), 'moodle', PARAM_RAW));
+                    get_string('passwordphraseinputdesc', 'tool_passwordvalidator'), 'moodle', PARAM_TEXT));
 
         // Password Change lockout period
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/time_lockout_input', get_string('passwordlockoutinputname', 'tool_passwordvalidator'),
