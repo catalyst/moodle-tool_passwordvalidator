@@ -7,7 +7,7 @@ notifications:
 sudo: false
 
 addons:
-  postgresql: "9.6"
+  postgresql: "9.6" 
 
 cache:
   directories:
