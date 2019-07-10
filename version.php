@@ -17,16 +17,16 @@
 /**
  * Version details.
  *
- * @package    tool_password
+ * @package    tool_passwordvalidator
  * @copyright  2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019062801;
-$plugin->release   = 2019062801; // Match release exactly to version.
-$plugin->requires  = 2014050800;
+$plugin->version   = 2019071000;
+$plugin->release   = 2019071000; // Match release exactly to version.
+$plugin->requires  = 2016052300;
 $plugin->component = 'tool_passwordvalidator';
 $plugin->maturity  = MATURITY_STABLE;
 
