@@ -206,8 +206,13 @@ function dictionary_checker($password) {
 function personal_information($password) {
     // Check for fname, lname, city, username
     global $USER;
-    $badstrings = array($USER->firstname, $USER->lastname,
+    // Protection from $USER var not being set
+    try {
+        $badstrings = array($USER->firstname, $USER->lastname,
     $USER->city, $USER->username);
+    } catch (Exception $e) {
+        return get_string('responsenouser', 'tool_passwordvalidator').'<br>';
+    }
     $return = '';
 
     foreach ($badstrings as $string) {
