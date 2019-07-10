@@ -209,7 +209,7 @@ function personal_information($password) {
     // Protection from $USER var not being set
     try {
         $badstrings = array($USER->firstname, $USER->lastname,
-    $USER->city, $USER->username);
+        $USER->city, $USER->username);
     } catch (Exception $e) {
         return get_string('responsenouser', 'tool_passwordvalidator').'<br>';
     }
