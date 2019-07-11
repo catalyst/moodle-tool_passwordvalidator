@@ -23,7 +23,7 @@
  */
 defined('MOODLE_INTERNAL') || die;
 // Require validation library.
-require_once('lib.php');
+require_once(__DIR__ . '/lib.php');
 
 global $CFG;
 
