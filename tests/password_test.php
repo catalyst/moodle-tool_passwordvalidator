@@ -159,16 +159,16 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $badcity = 'abctestcityabc';
 
         // Empty password, no data to be found
-        $this->assertEquals($goodresponse, personal_information($safestring));
+        $this->assertEquals($goodresponse, personal_information($safestring, $user));
 
         // Safe strings
-        $this->assertEquals($goodresponse, personal_information($safestring));
+        $this->assertEquals($goodresponse, personal_information($safestring, $user));
 
         // Bad strings
-        $this->assertNotEquals($goodresponse, personal_information($badfname));
-        $this->assertNotEquals($goodresponse, personal_information($badlname));
-        $this->assertNotEquals($goodresponse, personal_information($badcity));
-        $this->assertNotEquals($goodresponse, personal_information($badusername));
+        $this->assertNotEquals($goodresponse, personal_information($badfname, $user));
+        $this->assertNotEquals($goodresponse, personal_information($badlname, $user));
+        $this->assertNotEquals($goodresponse, personal_information($badcity, $user));
+        $this->assertNotEquals($goodresponse, personal_information($badusername, $user));
     }
 
     public function test_sequential_digits() {

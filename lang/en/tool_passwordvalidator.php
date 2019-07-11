@@ -99,6 +99,15 @@ $string['configpasswordgood'] = 'No incorrect moodle password configurations fou
 $string['templateNIST_ISM_2019'] = 'This template enforces recommendations from both the Australian ISM, as well as the NIST password recommendations. The strongest template implemented by default.';
 $string['templateNIST2018'] = 'This template enforces recommendations from the NIST password recommendations. Does not include complexity requirements on the password composition.';
 $string['templateISM0519'] = 'This template enforces recommendations from the Australian ISM May 2019. Enforces minimum lengths for different password complexities, and character sets.';
+
+// Validation Form Strings
+$string['validatesettingstring'] = 'Configuration and Validation Tester';
+$string['validatesettingspage'] = 'Password Validation Configuration';
+$string['validatesettingspasswordbox'] = 'Enter a password to test:';
+$string['validatesettingsusernamebox'] = 'Enter user account data to test configured password against:';
+$string['validatesettingsradioemail'] = 'Email Address';
+$string['validatesettingsradiousername'] = 'Username';
+$string['validatesettingsradiodesc'] = 'Select the type of account data to match user account against';
 /*
  * Privacy provider (GDPR)
  */

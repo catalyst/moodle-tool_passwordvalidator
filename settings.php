@@ -22,16 +22,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die;
-// Require validation library.
-require_once(__DIR__ . '/lib.php');
 
 global $CFG;
 
 if ($hassiteconfig) {
 
-    $settings = new admin_settingpage('tool_passwordvalidator', get_string('pluginname', 'tool_passwordvalidator'));
+    // Create validator category for page and external page
+    $ADMIN->add('tools', new admin_category('validator', get_string('pluginname', 'tool_passwordvalidator')));
 
-    $ADMIN->add('tools', $settings);
+    $settings = new admin_settingpage('validatorsettings', get_string('validatesettingspage', 'tool_passwordvalidator'));
+
+    // Add External admin page for validation
+    $ADMIN->add('validator', new admin_externalpage('tool_passwordvalidator_form',
+    get_string('validatesettingstring', 'tool_passwordvalidator'),
+    new moodle_url('/admin/tool/passwordvalidator/validate.php')));
+
+    $ADMIN->add('validator', $settings);
+
     if (!during_initial_install()) {
 
         // Alert if using config template
@@ -95,44 +102,6 @@ if ($hassiteconfig) {
         // Check against HaveIBeenPwned.com API
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/password_blacklist', get_string('passwordblacklistname', 'tool_passwordvalidator'),
                     get_string('passwordblacklistdesc', 'tool_passwordvalidator'), 1));
-
-        // Panel for Displaying controls that are incorrect/misconfigured
-        $configcheckdesc = config_checker();
-        $configdesc = $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
-        $settings->add(new admin_setting_heading('tool_passwordvalidator/settings_heading', get_string('passwordsettingsheading', 'tool_passwordvalidator'), $configdesc));
-
-        // Testing panel
-        // Heading
-        $settings->add(new admin_setting_heading('tool_passwordvalidator/testing_heading', get_string('passwordtesterheading', 'tool_passwordvalidator'),
-                    get_string('passwordtesterheadingdesc', 'tool_passwordvalidator')));
-
-        // Get current password configuration
-        $testpassword = get_config('tool_passwordvalidator', 'password_test_field');
-        $testerdesc = '';
-        // Only check if not empty
-        if ($testpassword != '') {
-            $testervalidation = password_validate($testpassword, true);
-        } else {
-            // If PW is empty, set validation to empty. Messagebox later checks for empty pw
-            $testervalidation = '';
-        }
-
-        if ((trim($testervalidation) == '') && (trim($testpassword) !== '')) {
-            // If no validation errors and pass isnt empty
-            $message = 'passwordtesterpass';
-            $type = 'notifysuccess';
-        } else if (trim($testpassword) == '') {
-            // If password is empty, notify empty
-            $message = 'passwordtesterempty';
-            $type = 'notifymessage';
-        } else if ((trim($testervalidation) !== '') && (trim($testpassword) !== '')) {
-            $message = 'passwordtesterfail';
-            $type = 'notifyerror';
-        }
-        $testerdesc = $OUTPUT->notification(get_string($message, 'tool_passwordvalidator').' '. $testervalidation, $type);
-
-        $settings->add(new admin_setting_configtext('tool_passwordvalidator/password_test_field', get_string('passwordtestername', 'tool_passwordvalidator'),
-                    $testerdesc, '', PARAM_TEXT));
     }
 }
 
