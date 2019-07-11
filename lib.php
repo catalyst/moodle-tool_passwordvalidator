@@ -21,7 +21,7 @@
  * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__.'/../../../config.php');
+defined('MOODLE_INTERNAL') || die;
 
 /**
  * Validates the password provided against the password policy configured in the plugin admin
@@ -206,8 +206,13 @@ function dictionary_checker($password) {
 function personal_information($password) {
     // Check for fname, lname, city, username
     global $USER;
-    $badstrings = array($USER->firstname, $USER->lastname,
-    $USER->city, $USER->username);
+    // Protection from $USER var not being set
+    try {
+        $badstrings = array($USER->firstname, $USER->lastname,
+        $USER->city, $USER->username);
+    } catch (Exception $e) {
+        return get_string('responsenouser', 'tool_passwordvalidator').'<br>';
+    }
     $return = '';
 
     foreach ($badstrings as $string) {

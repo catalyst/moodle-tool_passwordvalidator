@@ -1,5 +1,5 @@
-<a href="https://travis-ci.org/catalyst/moodle-tool_password">
-<img src="https://travis-ci.org/catalyst/moodle-tool_password.svg?branch=master">
+<a href="https://travis-ci.org/catalyst/moodle-tool_passwordvalidator">
+<img src="https://travis-ci.org/catalyst/moodle-tool_passwordvalidator.svg?branch=master">
 </a>
 
 # Password Policy Enforcer
