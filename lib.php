@@ -304,7 +304,11 @@ function lockout_period($password, $user) {
     try {
         $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
         // get first elements timecreated, order from DB query
-        $timechanged = reset($lastchanges)->timecreated;
+        if (!empty($lastchanges)) {
+            $timechanged = reset($lastchanges)->timecreated;
+        } else {
+            $timechanged = 0;
+        }
     } catch (Exception $e) {
         $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator').'<br>';
         $failedconn = true;
