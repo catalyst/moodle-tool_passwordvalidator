@@ -63,7 +63,6 @@ class validate_form extends moodleform {
         $mform->setType('testerinput', PARAM_RAW);
         $mform->setDefault('testerinput', $defusername);
 
-
         $this->add_action_buttons();
     }
 
@@ -72,7 +71,7 @@ class validate_form extends moodleform {
         // Set tester password for validation check
         set_config('password_test_field', $data['testerpassword'], 'tool_passwordvalidator');
         if ($data['yesno'] == 1) {
-            //Set type and value
+            // Set type and value
             set_config('test_field', $data['testerinput'], 'tool_passwordvalidator');
             set_config('test_field_type', 'email', 'tool_passwordvalidator');
         } else {

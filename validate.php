@@ -60,7 +60,7 @@ if ($testertype == 'username') {
     } catch (Exception $e) {
         $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator').'<br>';
         $failedconn = true;
-    } 
+    }
 } else if ($testertype == 'email') {
     // Get record of user from database if email supplied
     try {
@@ -68,9 +68,8 @@ if ($testertype == 'username') {
     } catch (Exception $e) {
         $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator').'<br>';
         $failedconn = true;
-    } 
+    }
 }
-
 
 
 // Don't check if testpassword is empty. If record exists for optional user, check pw against that account. Else, against currenlty logged in account
