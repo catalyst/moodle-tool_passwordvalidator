@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->libdir/formslib.php");
 
 
-class password_test_form extends moodleform {
+class test_password_form extends moodleform {
 
     public function definition() {
 
@@ -60,14 +60,15 @@ class password_test_form extends moodleform {
         if (empty($otheruser)) {
             // if not found, try username
             $otheruser = $DB->get_record('user', array('email' => ($testerinput)));
+            if (empty($otheruser)) {
+                $otheruser = $USER;
+            }
         }
 
         // Don't check if testpassword is empty. If record exists for optional user, check pw against that account. Else, against currenlty logged in account
         $testervalidation = '';
-        if ($testpassword != '' && (!empty($otheruser))) {
+        if ($testpassword != '') {
             $testervalidation = password_validate($testpassword, true, $otheruser);
-        } else if ($testpassword != '' && (empty($otheruser))) {
-            $testervalidation = password_validate($testpassword, true, $USER);
         }
 
         $errors['testerpassword'] = $testervalidation;
