@@ -33,12 +33,11 @@ defined('MOODLE_INTERNAL') || die;
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
-function password_validate($password, $test) {
-    // Only execute checks if user isn't admin or is test mode.c
+function password_validate($password, $test, $user) {
+    // Only execute checks if user isn't admin or is test mode.
     // Here so admin can force passwords
     if ((!(is_siteadmin()) || $test == true)) {
         $errs = '';
-        global $USER;
 
         // ACSC Security Control 0421
         // Check for character sets.
@@ -58,7 +57,7 @@ function password_validate($password, $test) {
 
         // Personal Information Check.
         if (get_config('tool_passwordvalidator', 'personal_info')) {
-            $errs .= personal_information($password);
+            $errs .= personal_information($password, $user);
         }
 
         // Check for sequential digits.
@@ -78,7 +77,7 @@ function password_validate($password, $test) {
 
         // Check for password changes on the user account within lockout period.
         if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
-            $errs .= lockout_period($password, $USER);
+            $errs .= lockout_period($password, $user);
         }
 
         // Check against HaveIBeenPwned.com password breach API
@@ -88,6 +87,8 @@ function password_validate($password, $test) {
 
         return $errs;
     }
+
+    return '';
 }
 
 /**
@@ -99,7 +100,8 @@ function password_validate($password, $test) {
  *
  */
 function tool_passwordvalidator_check_password_policy($password) {
-    return password_validate($password, false);
+    global $USER;
+    return password_validate($password, false, $USER);
 }
 
 /**
@@ -203,13 +205,12 @@ function dictionary_checker($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function personal_information($password) {
+function personal_information($password, $user) {
     // Check for fname, lname, city, username
-    global $USER;
     // Protection from $USER var not being set
     try {
-        $badstrings = array($USER->firstname, $USER->lastname,
-        $USER->city, $USER->username);
+        $badstrings = array($user->firstname, $user->lastname,
+        $user->city, $user->username);
     } catch (Exception $e) {
         return get_string('responsenouser', 'tool_passwordvalidator').'<br>';
     }
