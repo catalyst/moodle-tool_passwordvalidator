@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die;
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
-function password_validate($password, $test, $user) {
+function tool_passwordvalidator_password_validate($password, $test, $user) {
     // Only execute checks if user isn't admin or is test mode.
     // Here so admin can force passwords
     if ((!(is_siteadmin()) || $test == true)) {
@@ -42,47 +42,47 @@ function password_validate($password, $test, $user) {
         // ACSC Security Control 0421
         // Check for character sets.
         if (get_config('tool_passwordvalidator', 'irap_complexity')) {
-            $errs .= complexity_checker($password, true);
+            $errs .= tool_passwordvalidator_complexity_checker($password, true);
         }
 
         // ACSC Security Control 0417
         // Not only numbers
         if (get_config('tool_passwordvalidator', 'irap_numbers')) {
-            $errs .= complexity_checker($password, false);
+            $errs .= tool_passwordvalidator_complexity_checker($password, false);
         }
 
         if (get_config('tool_passwordvalidator', 'dictionary_check')) {
-            $errs .= dictionary_checker($password);
+            $errs .= tool_passwordvalidator_dictionary_checker($password);
         }
 
         // Personal Information Check.
         if (get_config('tool_passwordvalidator', 'personal_info')) {
-            $errs .= personal_information($password, $user);
+            $errs .= tool_passwordvalidator_personal_information($password, $user);
         }
 
         // Check for sequential digits.
         if (get_config('tool_passwordvalidator', 'sequential_digits_input') > 0) {
-            $errs .= sequential_digits($password);
+            $errs .= tool_passwordvalidator_sequential_digits($password);
         }
 
         // Check for repeated characters.
         if (get_config('tool_passwordvalidator', 'repeated_chars_input') > 0) {
-            $errs .= repeated_chars($password);
+            $errs .= tool_passwordvalidator_repeated_chars($password);
         }
 
         // Check for blacklist phrases - eg Service name
         if (get_config('tool_passwordvalidator', 'phrase_blacklist')) {
-            $errs .= phrase_blacklist($password);
+            $errs .= tool_passwordvalidator_phrase_blacklist($password);
         }
 
         // Check for password changes on the user account within lockout period.
         if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
-            $errs .= lockout_period($password, $user);
+            $errs .= tool_passwordvalidator_lockout_period($password, $user);
         }
 
         // Check against HaveIBeenPwned.com password breach API
         if (get_config('tool_passwordvalidator', 'password_blacklist')) {
-            $errs .= password_blacklist($password);
+            $errs .= tool_passwordvalidator_password_blacklist($password);
         }
 
         return $errs;
@@ -101,7 +101,8 @@ function password_validate($password, $test, $user) {
  */
 function tool_passwordvalidator_check_password_policy($password) {
     global $USER;
-    return password_validate($password, false, $USER);
+    return tool_passwordvalidator_password_validate($password, false, $USER);
+
 }
 
 /**
@@ -114,7 +115,7 @@ function tool_passwordvalidator_check_password_policy($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function complexity_checker($password, $complex) {
+function tool_passwordvalidator_complexity_checker($password, $complex) {
     $return = '';
     $lowercasepattern = '/[a-z]/';
     $lowercase = preg_match($lowercasepattern, $password);
@@ -161,7 +162,7 @@ function complexity_checker($password, $complex) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function dictionary_checker($password) {
+function tool_passwordvalidator_dictionary_checker($password) {
     $return = '';
     // Strip special chars and numbers from password, to get raw words in array
     $strippedpw = trim(preg_replace("/[^a-zA-Z ]/", "", $password));
@@ -207,7 +208,8 @@ function dictionary_checker($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function personal_information($password, $user) {
+
+function  tool_passwordvalidator_personal_information($password, $user) {
     // Check for fname, lname, city, username
     // Protection from $USER var not being set
     try {
@@ -239,7 +241,7 @@ function personal_information($password, $user) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function sequential_digits($password) {
+function tool_passwordvalidator_sequential_digits($password) {
     // get maximum allowed number of digits, add 1 to work in the regex
     $seqdigits = get_config('tool_passwordvalidator', 'sequential_digits_input') + 1;
     $digitpattern = '/\d{'.$seqdigits.',}/u';
@@ -260,7 +262,7 @@ function sequential_digits($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function repeated_chars($password) {
+function tool_passwordvalidator_repeated_chars($password) {
     $repeatchars = get_config('tool_passwordvalidator', 'repeated_chars_input');
     $characterpattern = '/(.)\1{'.$repeatchars.',}/';
     $return = '';
@@ -279,7 +281,7 @@ function repeated_chars($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function phrase_blacklist($password) {
+function tool_passwordvalidator_phrase_blacklist($password) {
     $phrasesraw = get_config('tool_passwordvalidator', 'phrase_blacklist_input');
     $phrases = explode(PHP_EOL, $phrasesraw);
     $return = '';
@@ -304,7 +306,7 @@ function phrase_blacklist($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function lockout_period($password, $user) {
+function tool_passwordvalidator_lockout_period($password, $user) {
     global $DB;
 
     $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
@@ -344,7 +346,7 @@ function lockout_period($password, $user) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function password_blacklist($password) {
+function tool_passwordvalidator_password_blacklist($password) {
     $return = '';
     $api = 'https://api.pwnedpasswords.com/range/';
     // Get first 5 chars of hash to search API for
@@ -369,7 +371,7 @@ function password_blacklist($password) {
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-function config_checker() {
+function tool_passwordvalidator_config_checker() {
     global $CFG;
     $response = '';
     $type = 'notifysuccess';
