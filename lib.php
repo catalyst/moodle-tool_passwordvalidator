@@ -298,32 +298,35 @@ function phrase_blacklist($password) {
  *
  */
 function lockout_period($password, $user) {
-    $return = '';
     global $DB;
-    $failedconn = false;
-    try {
-        $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
-        // get first elements timecreated, order from DB query
+
+    $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
+    // get first elements timecreated, order from DB query
+    if (!empty($lastchanges)) {
         $timechanged = reset($lastchanges)->timecreated;
-    } catch (Exception $e) {
-        $return .= get_string('responsedatabaseerror', 'tool_passwordvalidator').'<br>';
-        $failedconn = true;
+    } else {
+        $timechanged = 0;
     }
+
     $currenttime = time();
 
-    // Calculate 24 hr constant in seconds
-    $day = 24 * 60 * 60;
+    // Get moodle day in seconds constant
+    $day = DAYSECS;
 
     // Set the time modifier based on configuration
     $inputtime = get_config('tool_passwordvalidator', 'time_lockout_input');
 
-    // check for failed connection so no errors from timechanged being unset
-    if (!($failedconn)) {
-        if ($timechanged >= ($currenttime - $inputtime)) {
-            $return .= get_string('responselockoutperiod', 'tool_passwordvalidator').'<br>';
-        }
+    // Default to 1 day if time not set
+    if ($inputtime == '') {
+        $inputtime = $day;
     }
-    return $return;
+
+    // Check if currenttime is within the lockout period
+    if ($timechanged >= ($currenttime - $inputtime)) {
+        return get_string('responselockoutperiod', 'tool_passwordvalidator').'<br>';
+    }
+
+    return '';
 }
 
 /**
