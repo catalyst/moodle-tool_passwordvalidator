@@ -30,13 +30,13 @@ if ($hassiteconfig) {
     // Create validator category for page and external page
     $ADMIN->add('tools', new admin_category('validator', get_string('pluginname', 'tool_passwordvalidator')));
 
-    $settings = new admin_settingpage('validatorsettings', get_string('validatesettingspage', 'tool_passwordvalidator'));
-
     // Add External admin page for validation
     $ADMIN->add('validator', new admin_externalpage('tool_passwordvalidator_form',
-    get_string('validatesettingstring', 'tool_passwordvalidator'),
+    get_string('testpasswordpagestring', 'tool_passwordvalidator'),
     new moodle_url('/admin/tool/passwordvalidator/test_password.php')));
 
+    // Add main plugin configuration page
+    $settings = new admin_settingpage('validatorsettings', get_string('testpasswordpage', 'tool_passwordvalidator'));
     $ADMIN->add('validator', $settings);
 
     if (!during_initial_install()) {

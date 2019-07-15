@@ -34,14 +34,14 @@ class test_password_form extends moodleform {
         $mform = $this->_form;
 
         // Add Password entry form
-        $mform->addElement('text', 'testerpassword', get_string('validatesettingspasswordbox', 'tool_passwordvalidator'));
+        $mform->addElement('text', 'testerpassword', get_string('testpasswordpagepasswordbox', 'tool_passwordvalidator'));
         $mform->setType('testerpassword', PARAM_RAW);
 
         // Add optional username checker
-        $mform->addElement('text', 'testerinput', get_string('validatesettingsusernamebox', 'tool_passwordvalidator'));
+        $mform->addElement('text', 'testerinput', get_string('testpasswordpageusernamebox', 'tool_passwordvalidator'));
         $mform->setType('testerinput', PARAM_RAW);
 
-        $this->add_action_buttons(true, get_string('validatesettingstestbutton', 'tool_passwordvalidator'));
+        $this->add_action_buttons(true, get_string('testpasswordpagetestbutton', 'tool_passwordvalidator'));
     }
 
     public function validation($data, $files) {

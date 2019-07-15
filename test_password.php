@@ -47,7 +47,7 @@ else if ($fromform = $form->get_data()) {
 
 // Build the page output.
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('validatesettingstring', 'tool_passwordvalidator'));
+echo $OUTPUT->heading(get_string('testpasswordpagestring', 'tool_passwordvalidator'));
 
 // Configuration Checker
 echo '<br>';
