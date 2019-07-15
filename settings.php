@@ -35,7 +35,7 @@ if ($hassiteconfig) {
     // Add External admin page for validation
     $ADMIN->add('validator', new admin_externalpage('tool_passwordvalidator_form',
     get_string('validatesettingstring', 'tool_passwordvalidator'),
-    new moodle_url('/admin/tool/passwordvalidator/validate.php')));
+    new moodle_url('/admin/tool/passwordvalidator/password_test.php')));
 
     $ADMIN->add('validator', $settings);
 

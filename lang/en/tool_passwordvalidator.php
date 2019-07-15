@@ -104,10 +104,11 @@ $string['templateISM0519'] = 'This template enforces recommendations from the Au
 $string['validatesettingstring'] = 'Configuration and Validation Tester';
 $string['validatesettingspage'] = 'Password Validation Configuration';
 $string['validatesettingspasswordbox'] = 'Enter a password to test:';
-$string['validatesettingsusernamebox'] = 'Enter user account data to test configured password against:';
+$string['validatesettingsusernamebox'] = 'Enter user account email or username to test configured password against:';
 $string['validatesettingsradioemail'] = 'Email Address';
 $string['validatesettingsradiousername'] = 'Username';
 $string['validatesettingsradiodesc'] = 'Select the type of account data to match user account against';
+$string['validatesettingstestbutton'] = 'Test Password';
 /*
  * Privacy provider (GDPR)
  */
