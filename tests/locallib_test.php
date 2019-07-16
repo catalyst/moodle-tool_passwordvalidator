@@ -23,7 +23,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once(__DIR__.'/../lib.php');
+require_once(__DIR__.'/../locallib.php');
 require_once(__DIR__.'../../../../../user/lib.php');
 class tool_passwordvalidator_password_testcase extends advanced_testcase {
 
