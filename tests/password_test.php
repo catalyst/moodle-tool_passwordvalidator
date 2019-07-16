@@ -26,124 +26,107 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__.'/../lib.php');
 require_once(__DIR__.'../../../../../user/lib.php');
 class tool_passwordvalidator_password_testcase extends advanced_testcase {
-    public function test_complexity_length() {
-        $goodresponse = '';
-        $onlylowerstooshort = 'abcdefg';
-        $onlylowerslong = 'aabbccddeeffgg';
-        $onlyupperstooshort = 'ABCDEFG';
-        $onlyupperslong = 'AABBCCDDEEFFGG';
-        $specialcharsonlytooshort = '!@!@#$';
-        $specialcharsonlylong = '!@#$%^&*()!@#$%^&*()';
-        $upperlettersandnumberstooshort = 'TESTPASS1';
-        $upperlettersandnumberslong = 'TESTPASS11111';
-        $lowerlettersandnumberstooshort = 'testpass1';
-        $lowerlettersandnumberslong = 'testpass11111';
-        $lowerlettersandspecialtooshort = 'tester!@#';
-        $lowerlettersandspeciallong = 'testerpass!@#';
-        $upperlettersandspecialtooshort = 'TESTER!@#';
-        $upperlettersandspeciallong = 'TESTERPASS@#@%';
-        $onlynumbersandspeciallong = '1234567!@#$%%^';
-        $onlynumbersandspecialshort = '1234567!@#';
 
-        // Assert error message if provided empty pw
-        $this->assertNotEquals($goodresponse, complexity_checker($goodresponse, true));
-
-        // Assert error message for too short passwords
-        $this->assertNotEquals($goodresponse, complexity_checker($onlylowerstooshort, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($onlyupperstooshort, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($upperlettersandnumberstooshort, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($lowerlettersandnumberstooshort, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($upperlettersandspecialtooshort, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($lowerlettersandspecialtooshort, true));
-
-        // Only numbers and special characters, length req only
-        $this->assertEquals($goodresponse, complexity_checker($onlynumbersandspeciallong, true));
-        $this->assertEquals($goodresponse, complexity_checker($specialcharsonlylong, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($onlynumbersandspecialshort, true));
-        $this->assertNotEquals($goodresponse, complexity_checker($specialcharsonlytooshort, true));
-
-        // Assert empty response for success
-        $this->assertEquals($goodresponse, complexity_checker($onlylowerslong, true));
-        $this->assertEquals($goodresponse, complexity_checker($onlyupperslong, true));
-        $this->assertEquals($goodresponse, complexity_checker($upperlettersandnumberslong, true));
-        $this->assertEquals($goodresponse, complexity_checker($lowerlettersandnumberslong, true));
-        $this->assertEquals($goodresponse, complexity_checker($lowerlettersandspeciallong, true));
-        $this->assertEquals($goodresponse, complexity_checker($upperlettersandspeciallong, true));
+    // ===========================COMPLEXITY LENGTH TESTS============================
+    public static function complexity_length_provider() {
+        return [
+            // Data array [Password, passes validation]
+            'goodresponse' => ['', false],
+            'onlylowerstooshort' => ['abcdefg', false],
+            'onlylowerslong' => ['aabbccddeeffgg', true],
+            'onlyupperstooshort' => ['ABCDEFG', false],
+            'onlyupperslong' => ['AABBCCDDEEFFGG', true],
+            'specialcharsonlytooshort' => ['!@!@#$', false],
+            'specialcharsonlylong' => ['!@#$%^&*()!@#$%^&*()', true],
+            'upperlettersandnumberstooshort' => ['TESTPASS1', false],
+            'upperlettersandnumberslong' => ['TESTPASS11111', true],
+            'lowerlettersandnumberstooshort' => ['testpass1', false],
+            'lowerlettersandnumberslong' => ['testpass11111', true],
+            'lowerlettersandspecialtooshort' => ['tester!@#', false],
+            'lowerlettersandspeciallong' => ['testerpass!@#', true],
+            'upperlettersandspecialtooshort' => ['TESTER!@#', false],
+            'upperlettersandspeciallong' => ['TESTERPASS@#@%', true],
+            'onlynumbersandspeciallong' => ['1234567!@#$%%^', true],
+            'onlynumbersandspecialshort' => ['1234567!@#', false]
+        ];
     }
 
-    public function test_complexity_chars() {
+    /**
+     * @dataProvider complexity_length_provider
+     */
+    public function test_complexity_length($password, $good) {
         $goodresponse = '';
-        $onlylowers = 'abcdefg';
-        $onlyuppers = 'ABCDEFG';
-        $onlynumbers = '1234567';
-        $onlyspecials = '!@#$%^&';
-        $lowersanduppers = 'abcDEFG';
-        $lowersandnumbers = 'abcd123';
-        $lowerandspecials = 'abcd!@#';
-        $uppersandnumbers = 'ABCD123';
-        $uppersandspecials = 'ABCD!@#';
-        $specialsandnumbers = '123$%^&';
 
-        // All with letters should equal
-        $this->assertEquals($goodresponse, complexity_checker($onlylowers, false));
-        $this->assertEquals($goodresponse, complexity_checker($onlyuppers, false));
-        $this->assertEquals($goodresponse, complexity_checker($lowersanduppers, false));
-        $this->assertEquals($goodresponse, complexity_checker($lowersandnumbers, false));
-        $this->assertEquals($goodresponse, complexity_checker($lowerandspecials, false));
-        $this->assertEquals($goodresponse, complexity_checker($uppersandnumbers, false));
-        $this->assertEquals($goodresponse, complexity_checker($uppersandspecials, false));
-
-        // All with no letters should not equal
-        $this->assertNotEquals($goodresponse, complexity_checker($onlynumbers, false));
-        $this->assertNotEquals($goodresponse, complexity_checker($onlyspecials, false));
-        $this->assertNotEquals($goodresponse, complexity_checker($specialsandnumbers, false));
+        // test the data provider strings against the expected response
+        $this->assertEquals($good, complexity_checker($password, true) == $goodresponse );
     }
 
-    public function test_dictionary_checking() {
+    // ===========================COMPLEXITY CHARS TESTS============================
+    public static function complexity_chars_provider() {
+        return [
+            // Data array [Password, passes validation]
+            'goodresponse' => ['', false],
+            'onlylowers' => ['abcdefg', true],
+            'onlyuppers' => ['ABCDEFG', true],
+            'onlynumbers' => ['1234567', false],
+            'onlyspecials' => ['!@#$%^&', false],
+            'lowersanduppers' => ['abcDEFG', true],
+            'lowersandnumbers' => ['abcd123', true],
+            'lowerandspecials' => ['abcd!@#', true],
+            'uppersandnumbers' => ['ABCD123', true],
+            'uppersandspecials' => ['ABCD!@#', true],
+            'specialsandnumbers' => ['123$%^&', false]
+        ];
+    }
+
+    /**
+     * @dataProvider complexity_chars_provider
+     */
+    public function test_complexity_chars($password, $good) {
+        $goodresponse = '';
+
+        // test the data provider strings against the expected response
+        $this->assertEquals($good, complexity_checker($password, false) == $goodresponse );
+    }
+
+    // ===========================DICTIONARY CHECKING TESTS============================
+    public static function dictionary_checking_provider() {
+        return [
+            // Data array [Password, passes validation]
+            'goodresponse' => ['', true],
+            'onewordnumbers' => ['123magazine123', false],
+            'onewordchars' => ['!@#magazine!@#', false],
+            'onewordnumberandchar' => ['123magazine!@#', false],
+            'onewordnumberspace' => ['123 magazine', false],
+            'onewordcharspace' => ['!@# magazine', false],
+            'onewordcharandnumberspace' => ['!@# magazine 123', false],
+            'onewordnondictionary' => ['skamandlebop', true],
+            'nondictnumbers' => ['123skamandlebop123', true],
+            'nondictchars' => ['!@#skamandlebop!@#', true],
+            'twodictwords' => ['magazineindividuals', true],
+            'twowordsnumber' => ['magazine123individuals', true],
+            'twowordschars' => ['magazine!@#individuals', true],
+            'twowordsspaces' => ['magazine individuals', true],
+            'twowordsspacesnumbers' => ['magazine 123individuals', true],
+            'twowordsspaceschars' => ['magazine !@#individuals', true],
+            'allnums' => ['12345678', true],
+            'allchars' => ['!@#$%^&*', true]
+        ];
+    }
+
+    /**
+     * @dataProvider dictionary_checking_provider
+     */
+    public function test_dictionary_checking($password, $good) {
         $this->resetAfterTest(true);
         set_config('dictionary_check_file', 'google-10000-english.txt', 'tool_passwordvalidator');
-
         $goodresponse = '';
-        $onewordnumbers = '123magazine123';
-        $onewordchars = '!@#magazine!@#';
-        $onewordnumberandchar = '123magazine!@#';
-        $onewordnumberspace = '123 magazine';
-        $onewordcharspace = '!@# magazine';
-        $onewordcharandnumberspace = '!@# magazine 123';
-        $onewordnondictionary = 'skamandlebop';
-        $nondictnumbers = '123skamandlebop123';
-        $nondictchars = '!@#skamandlebop!@#';
-        $twodictwords = 'magazineindividuals';
-        $twowordsnumber = 'magazine123individuals';
-        $twowordschars = 'magazine!@#individuals';
-        $twowordsspaces = 'magazine individuals';
-        $twowordsspacesnumbers = 'magazine 123individuals';
-        $twowordsspaceschars = 'magazine !@#individuals';
-        $allnums = '12345678';
-        $allchars = '!@#$%^&*';
 
-        // Good strings, based on multiple dictionary words or none
-        $this->assertEquals($goodresponse, dictionary_checker($goodresponse));
-        $this->assertEquals($goodresponse, dictionary_checker($onewordnondictionary));
-        $this->assertEquals($goodresponse, dictionary_checker($nondictnumbers));
-        $this->assertEquals($goodresponse, dictionary_checker($nondictchars));
-        $this->assertEquals($goodresponse, dictionary_checker($twodictwords));
-        $this->assertEquals($goodresponse, dictionary_checker($twowordsnumber));
-        $this->assertEquals($goodresponse, dictionary_checker($twowordschars));
-        $this->assertEquals($goodresponse, dictionary_checker($twowordsspaces));
-        $this->assertEquals($goodresponse, dictionary_checker($twowordsspacesnumbers));
-        $this->assertEquals($goodresponse, dictionary_checker($twowordsspaceschars));
-        $this->assertEquals($goodresponse, dictionary_checker($allnums));
-        $this->assertEquals($goodresponse, dictionary_checker($allchars));
-
-        $this->assertNotEquals($goodresponse, dictionary_checker($onewordnumbers));
-        $this->assertNotEquals($goodresponse, dictionary_checker($onewordchars));
-        $this->assertNotEquals($goodresponse, dictionary_checker($onewordnumberandchar));
-        $this->assertNotEquals($goodresponse, dictionary_checker($onewordnumberspace));
-        $this->assertNotEquals($goodresponse, dictionary_checker($onewordcharspace));
-        $this->assertNotEquals($goodresponse, dictionary_checker($onewordcharandnumberspace));
+         // test the data provider strings against the expected response
+         $this->assertEquals($good, dictionary_checker($password) == $goodresponse );
     }
 
+    // ===========================PERSONAL INFORMATION TESTS============================
     public function test_personal_information() {
         $this->resetAfterTest(true);
         // Generate user account to test against
@@ -169,63 +152,119 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, personal_information($badlname, $user));
         $this->assertNotEquals($goodresponse, personal_information($badcity, $user));
         $this->assertNotEquals($goodresponse, personal_information($badusername, $user));
+
+        // Extra Unit tests for malformed user account with empty strings
+        $baduser = $this->getDataGenerator()->create_user(array('username' => 'baduser', 'firstname' => '',
+                            'lastname' => '', 'city' => ''));
+        $this->setUser($baduser);
+        global $USER;
+
+        // Verify logged in as the bad user
+        $this->assertEquals('', $USER->firstname);
+
+        $badusername2 = '123baduser123';
+        $badfirstname = 'firstname';
+        $badlastname = 'lastname';
+        $badusercity = 'badcity';
+
+        // Check for empty string data from user account
+        $this->assertNotEquals($goodresponse, personal_information($badusername2, $baduser));
+
+        $this->assertEquals($goodresponse, personal_information($badfirstname, $baduser));
+        $this->assertEquals($goodresponse, personal_information($badlastname, $baduser));
+        $this->assertEquals($goodresponse, personal_information($badusercity, $baduser));
+
+        // Manually null user values
+        $baduser->firstname = null;
+        $baduser->lastname = null;
+        $baduser->username = null;
+        $baduser->city = null;
+
+        // Verify account values are nulled.
+        $this->assertEquals(null, $baduser->firstname);
+        $this->assertEquals(null, $baduser->lastname);
+        $this->assertEquals(null, $baduser->username);
+        $this->assertEquals(null, $baduser->city);
+
+        // If user account data is null, it should return a good response, as null shouldnt be found inside the password
+        $this->assertEquals($goodresponse, personal_information($badusername2, $baduser));
+        $this->assertEquals($goodresponse, personal_information($badfirstname, $baduser));
+        $this->assertEquals($goodresponse, personal_information($badlastname, $baduser));
+        $this->assertEquals($goodresponse, personal_information($badusercity, $baduser));
+
+        // Create user with single char values
+        $singleuser = $this->getDataGenerator()->create_user(array('username' => 'aa', 'firstname' => 'b',
+                                'lastname' => 'c', 'city' => '  '));
+
+        $singleusername = 'contains aa';
+        $singlefirstname = 'contains b';
+        $singlelastname = 'contains c';
+        $singlecity = 'contains space';
+
+        // strings with multiple chars should be checked and fail
+        $this->assertNotEquals($goodresponse, personal_information($singleusername, $singleuser));
+
+        // string with single chars shouldnt be checked, and pass
+        $this->assertEquals($goodresponse, personal_information($singlefirstname, $singleuser));
+        $this->assertEquals($goodresponse, personal_information($singlelastname, $singleuser));
+        $this->assertEquals($goodresponse, personal_information($singlecity, $singleuser));
     }
 
-    public function test_sequential_digits() {
+    // ===========================SEQUENTIAL DIGITS TESTS============================
+    public static function sequential_digits_provider() {
+        return [
+            // Data array [Password, passes validation]
+            'goodresponse' => ['', true],
+            'noseqdigits' => ['a1b2c3d4', true],
+            'safeseqdigits' => ['a11b22c33', true],
+            'maxseqdigits' => ['a11111b22222', true],
+            'overseqdigits' => ['a111111b222222', false],
+            'nodigits' => ['abcd!@#$', true],
+            'nodigitsrepeatsafe' => ['aaabbb', true],
+            'nodigitsrepeatmax' => ['aaaaabbbbb', true],
+            'nodigitsrepeatover' => ['aaaaaabbbbbb', true]
+        ];
+    }
+
+    /**
+     * @dataProvider sequential_digits_provider
+     */
+    public function test_sequential_digits($password, $good) {
         $this->resetAfterTest(true);
         set_config('sequential_digits_input', 5, 'tool_passwordvalidator');
-
         $goodresponse = '';
-        $noseqdigits = 'a1b2c3d4';
-        $safeseqdigits = 'a11b22c33';
-        $maxseqdigits = 'a11111b22222';
-        $overseqdigits = 'a111111b222222';
-        $nodigits = 'abcd!@#$';
-        $nodigitsrepeatsafe = 'aaabbb';
-        $nodigitsrepeatmax = 'aaaaabbbbb';
-        $nodigitsrepeatover = 'aaaaaabbbbbb';
 
-        // Safe variables
-        $this->assertEquals($goodresponse, sequential_digits($goodresponse));
-        $this->assertEquals($goodresponse, sequential_digits($noseqdigits));
-        $this->assertEquals($goodresponse, sequential_digits($safeseqdigits));
-        $this->assertEquals($goodresponse, sequential_digits($maxseqdigits));
-        $this->assertEquals($goodresponse, sequential_digits($nodigits));
-        $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatsafe));
-        $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatmax));
-        $this->assertEquals($goodresponse, sequential_digits($nodigitsrepeatover));
-
-        // Over the limit
-        $this->assertNotEquals($goodresponse, sequential_digits($overseqdigits));
+         // test the data provider strings against the expected response
+         $this->assertEquals($good, sequential_digits($password) == $goodresponse );
     }
 
-    public function test_repeated_chars() {
+    // ===========================REPEATED CHARS TESTS============================
+    public static function repeated_chars_provider() {
+        return [
+            'goodresponse' => ['', true],
+            'norepeatchars' => ['a1b2c3d4', true],
+            'saferepeatchars' => ['aa1bb2cc3', true],
+            'maxrepeatchars' => ['aaaa1bbbb2cccc3', true],
+            'overrepeatchars' => ['aaaaa1bbbbb2ccccc3', false],
+            'noletterssafe' => ['1122', true],
+            'nolettersmax' => ['11112222', true],
+            'nolettersover' => ['1111122222', false]
+        ];
+    }
+
+    /**
+     * @dataProvider repeated_chars_provider
+     */
+    public function test_repeated_chars($password, $good) {
         $this->resetAfterTest(true);
         set_config('repeated_chars_input', 4, 'tool_passwordvalidator');
-
         $goodresponse = '';
-        $norepeatchars = 'a1b2c3d4';
-        $saferepeatchars = 'aa1bb2cc3';
-        $maxrepeatchars = 'aaaa1bbbb2cccc3';
-        $overrepeatchars = 'aaaaa1bbbbb2ccccc3';
-        $noletterssafe = '1122';
-        $nolettersmax = '11112222';
-        $nolettersover = '1111122222';
 
-        // Safe variables
-        $this->assertEquals($goodresponse, repeated_chars($goodresponse));
-        $this->assertEquals($goodresponse, repeated_chars($norepeatchars));
-        $this->assertEquals($goodresponse, repeated_chars($saferepeatchars));
-        $this->assertEquals($goodresponse, repeated_chars($maxrepeatchars));
-        $this->assertEquals($goodresponse, repeated_chars($noletterssafe));
-        $this->assertEquals($goodresponse, repeated_chars($nolettersmax));
-
-        // Over the limit, with letters or without
-        $this->assertNotEquals($goodresponse, repeated_chars($overrepeatchars));
-        $this->assertNotEquals($goodresponse, repeated_chars($nolettersover));
-
+        // test the data provider strings against the expected response
+        $this->assertEquals($good, repeated_chars($password) == $goodresponse);
     }
 
+    // ===========================PHRASE BLACKLISTING TESTS============================
     public function test_phrase_blacklisting() {
         $this->resetAfterTest(true);
         set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space", 'tool_passwordvalidator');
@@ -248,6 +287,7 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, phrase_blacklist($badphrase3));
     }
 
+    // ===========================LOCKOUT PERIOD TESTS============================
     public function test_lockout_period() {
         $this->resetAfterTest(true);
         global $CFG;
@@ -287,6 +327,7 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, lockout_period($testpassword, $user));
     }
 
+    // ===========================PASSWORD BLACKLIST TESTS============================
     public function test_password_blacklist() {
         // Due to constant data breaches etc, there is a chance one day these tests
         // may fail, as the passwords chosen as the safe test version may actually
@@ -302,6 +343,34 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
 
         // verified leaked password
         $this->assertNotEquals($goodresponse, password_blacklist($badpassword));
+    }
+
+    // ===========================PASSWORD VALIDATE TESTS============================
+    public function test_password_validate() {
+        $this->resetAfterTest(true);
+        $goodresponse = '';
+        $badpassword = 'password';
+        $admindatapassword = 'admin password check';
+
+        // set account to admin account
+        $this->setAdminUser();
+        global $USER;
+
+        // Test that checks arent executed from an Admin account if test mode is off
+        $this->assertEquals($goodresponse, password_validate($badpassword, false, $USER));
+
+        // Test that checks are run when test mode is enabled
+        $this->assertNotEquals($goodresponse, password_validate($badpassword, true, $USER));
+
+        // Test that check for user data fails
+        $this->assertNotEquals($goodresponse, password_validate($admindatapassword, true, $USER));
+
+        // Create a new user, with different information
+        $newuser = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
+        'lastname' => 'user', 'city' => 'testcity'));
+
+        // Check that check for user data passes with a different user
+        $this->assertEquals($goodresponse, password_validate($admindatapassword, false, $newuser));
     }
 }
 
