@@ -340,7 +340,7 @@ function tool_passwordvalidator_password_blacklist($password) {
 
     // Get API response
     $url = $api .= $searchstring;
-    $response = file_get_contents($url);
+    $response = download_file_content($url);
 
     // Check for presence of hash in response
     $shorthash = substr($pwhash, 5);
