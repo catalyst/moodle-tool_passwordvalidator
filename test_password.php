@@ -24,7 +24,7 @@
 require_once(dirname(__FILE__) . '/../../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once(__DIR__.'/test_password_form.php');
-require_once(__DIR__.'/lib.php');
+require_once(__DIR__.'/locallib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -52,7 +52,7 @@ echo $OUTPUT->heading(get_string('testpasswordpagestring', 'tool_passwordvalidat
 // Configuration Checker
 echo '<br>';
 echo '<h4>Moodle Configuration Checker</h4>';
-$configcheckdesc = config_checker();
+$configcheckdesc = tool_passwordvalidator_config_checker();
 echo $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
 echo '<br>';
 
