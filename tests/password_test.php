@@ -153,7 +153,7 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, personal_information($badcity, $user));
         $this->assertNotEquals($goodresponse, personal_information($badusername, $user));
 
-        // Extra Unit tests for malformed user account, Need to be changed once changes from PR #20 are merged
+        // Extra Unit tests for malformed user account with empty strings
         $baduser = $this->getDataGenerator()->create_user(array('username' => 'baduser', 'firstname' => '',
                             'lastname' => '', 'city' => ''));
         $this->setUser($baduser);
@@ -191,6 +191,23 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertEquals($goodresponse, personal_information($badfirstname, $baduser));
         $this->assertEquals($goodresponse, personal_information($badlastname, $baduser));
         $this->assertEquals($goodresponse, personal_information($badusercity, $baduser));
+
+        // Create user with single char values
+        $singleuser = $this->getDataGenerator()->create_user(array('username' => 'aa', 'firstname' => 'b',
+                                'lastname' => 'c', 'city' => '  '));
+
+        $singleusername = 'contains aa';
+        $singlefirstname = 'contains b';
+        $singlelastname = 'contains c';
+        $singlecity = 'contains space';
+
+        // strings with multiple chars should be checked and fail
+        $this->assertNotEquals($goodresponse, personal_information($singleusername, $singleuser));
+
+        // string with single chars shouldnt be checked, and pass
+        $this->assertEquals($goodresponse, personal_information($singlefirstname, $singleuser));
+        $this->assertEquals($goodresponse, personal_information($singlelastname, $singleuser));
+        $this->assertEquals($goodresponse, personal_information($singlecity, $singleuser));
     }
 
     // ===========================SEQUENTIAL DIGITS TESTS============================

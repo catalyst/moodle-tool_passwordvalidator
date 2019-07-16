@@ -194,6 +194,8 @@ function dictionary_checker($password) {
     if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
         $return .= get_string('responsedictionaryfail', 'tool_passwordvalidator').'<br>';
     }
+
+    fclose($dict);
     return $return;
 }
 
@@ -217,9 +219,13 @@ function personal_information($password, $user) {
     $return = '';
 
     foreach ($badstrings as $string) {
-        if (stripos($password, $string) !== false) {
-            $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator').'<br>';
-            break;
+        $string = trim($string);
+        // Ignore strings if they are too short
+        if (strlen($string) > 1) {
+            if (stripos($password, $string) !== false) {
+                $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator').'<br>';
+                break;
+            }
         }
     }
     return $return;
