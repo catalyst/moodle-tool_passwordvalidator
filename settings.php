@@ -97,7 +97,7 @@ if ($hassiteconfig) {
 
         // Password Change lockout period
         $settings->add(new admin_setting_configduration('tool_passwordvalidator/time_lockout_input', get_string('passwordlockoutinputname', 'tool_passwordvalidator'),
-                    get_string('passwordlockoutinputdesc', 'tool_passwordvalidator'), DAYSECS, 1));
+                    get_string('passwordlockoutinputdesc', 'tool_passwordvalidator'), DAYSECS, MINSECS));
 
         // Check against HaveIBeenPwned.com API
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/password_blacklist', get_string('passwordblacklistname', 'tool_passwordvalidator'),
