@@ -75,7 +75,7 @@ $string['passwordquestiondesc'] = 'Prompt for security questions on password cha
 // Password validation responses
 $string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.';
 $string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.';
-$string['responsedictionaryfail'] = 'Password cannot be based of a single dictionary word, consider adding more words. Word found: ';
+$string['responsedictionaryfailoneword'] = 'Password cannot be based of a single dictionary word: {$a}, consider adding more words.';
 $string['responseidentifyinginformation'] = 'Password contains identifying information.';
 $string['responsenumericsequence'] = 'Password contains numeric sequence.';
 $string['responserepeatedcharacters'] = 'Password contains repeated characters.';
