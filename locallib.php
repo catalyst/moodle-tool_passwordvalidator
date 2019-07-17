@@ -55,8 +55,8 @@ function tool_passwordvalidator_password_validate($password, $test, $user) {
         }
 
         // Personal Information Check.
-        if (get_config('tool_passwordvalidator', 'personal_info')) {
-            $errs .= tool_passwordvalidator_personal_information($password, $user);
+        if (get_config('tool_passwordvalidator', 'personal_info') && (!empty($user->id))) {
+                $errs .= tool_passwordvalidator_personal_information($password, $user);
         }
 
         // Check for sequential digits.
@@ -75,7 +75,7 @@ function tool_passwordvalidator_password_validate($password, $test, $user) {
         }
 
         // Check for password changes on the user account within lockout period.
-        if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
+        if ((get_config('tool_passwordvalidator', 'time_lockout_input') > 0) && !empty($user->id)) {
             $errs .= tool_passwordvalidator_lockout_period($password, $user);
         }
 
@@ -199,12 +199,9 @@ function tool_passwordvalidator_dictionary_checker($password) {
 function  tool_passwordvalidator_personal_information($password, $user) {
     // Check for fname, lname, city, username
     // Protection from $USER var not being set
-    try {
-        $badstrings = array($user->firstname, $user->lastname,
-        $user->city, $user->username);
-    } catch (Exception $e) {
-        return get_string('responsenouser', 'tool_passwordvalidator').'<br>';
-    }
+    $badstrings = array($user->firstname, $user->lastname,
+    $user->city, $user->username);
+
     $return = '';
 
     foreach ($badstrings as $string) {
