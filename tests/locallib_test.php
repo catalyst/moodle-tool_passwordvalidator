@@ -357,21 +357,15 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->setAdminUser();
         global $USER;
 
-        // Test that checks arent executed from an Admin account if test mode is off
-        $this->assertEquals($goodresponse, tool_passwordvalidator_password_validate($badpassword, false, $USER));
-
-        // Test that checks are run when test mode is enabled
-        $this->assertNotEquals($goodresponse, tool_passwordvalidator_password_validate($badpassword, true, $USER));
-
         // Test that check for user data fails
-        $this->assertNotEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, true, $USER));
+        $this->assertNotEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, $USER));
 
         // Create a new user, with different information
         $newuser = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
         'lastname' => 'user', 'city' => 'testcity'));
 
         // Check that check for user data passes with a different user
-        $this->assertEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, false, $newuser));
+        $this->assertEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, $newuser));
     }
 }
 

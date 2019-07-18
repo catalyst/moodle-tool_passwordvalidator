@@ -68,7 +68,7 @@ class test_password_form extends moodleform {
         // Don't check if testpassword is empty. If record exists for optional user, check pw against that account. Else, against currenlty logged in account
         $testervalidation = '';
         if ($testpassword != '') {
-            $testervalidation = tool_passwordvalidator_password_validate($testpassword, true, $otheruser);
+            $testervalidation = tool_passwordvalidator_password_validate($testpassword, $otheruser);
         }
 
         $errors['testerpassword'] = $testervalidation;
