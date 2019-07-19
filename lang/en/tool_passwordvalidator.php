@@ -75,15 +75,15 @@ $string['passwordquestion'] = 'Prompt Security Questions';
 $string['passwordquestiondesc'] = 'Prompt for security questions on password change.';
 
 // Password validation responses
-$string['responseminimumlength'] = 'Password does not meet minimum length requirements. Passwords of only letters and numbers must be length 13. Adding numbers and special characters must be length 10.';
+$string['responseminimumlength'] = 'Password must have at least {$a} characters.';
 $string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.';
 $string['responsedictionaryfailoneword'] = 'Password cannot be based of a single dictionary word: {$a}, consider adding more words.';
-$string['responseidentifyinginformation'] = 'Password contains identifying information.';
-$string['responsenumericsequence'] = 'Password contains numeric sequence.';
-$string['responserepeatedcharacters'] = 'Password contains repeated characters.';
-$string['responseblacklistphrase'] = 'Password contains blacklisted phrase such as service name.';
+$string['responseidentifyinginformation'] = 'Password contains identifying information: {$a}';
+$string['responsenumericsequence'] = 'Password contains numeric sequence longer than: {$a}.';
+$string['responserepeatedcharacters'] = 'Password contains repeated characters longer than: {$a}.';
+$string['responseblacklistphrase'] = 'Password contains blacklisted phrase: {$a}.';
 $string['responsedatabaseerror'] = 'Error retrieving information from database.';
-$string['responselockoutperiod'] = 'Password already changed recently. Please try again later.';
+$string['responselockoutperiod'] = 'Password already changed recently. Please try again in: {$a}.';
 $string['responsebreachedpassword'] = 'Password found in online breached passwords collection.';
 $string['responsenouser'] = 'No user account found for password personal information query.';
 

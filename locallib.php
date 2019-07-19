@@ -121,10 +121,10 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
     if (($lowercase === 1) && ($uppercase === 1)) {
         if (($specialchars === 1) || ($numbers === 1)) {
             // At least 3 character sets found
-            $minchars = 10;
+            $minchars = get_config('tool_passwordvalidator', 'complex_length_input');
         } else {
             // Less than 3 charsets
-            $minchars = 13;
+            $minchars = get_config('tool_passwordvalidator', 'simple_length_input');
         }
     } else {
         // Less than 3 charsets
@@ -132,7 +132,7 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
     }
 
     if ((strlen($password) < $minchars) && $complex) {
-        $return .= get_string('responseminimumlength', 'tool_passwordvalidator').'<br>';
+        $return .= get_string('responseminimumlength', 'tool_passwordvalidator', $minchars).'<br>';
     }
 
     if (!($complex)) {
@@ -211,7 +211,7 @@ function  tool_passwordvalidator_personal_information($password, $user) {
         // Ignore strings if they are too short
         if (strlen($string) > 1) {
             if (stripos($password, $string) !== false) {
-                $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator').'<br>';
+                $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator', $string).'<br>';
                 break;
             }
         }
@@ -234,7 +234,7 @@ function tool_passwordvalidator_sequential_digits($password) {
     $return = '';
 
     if (preg_match($digitpattern, $password) === 1) {
-        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator').'<br>';
+        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator', ($seqdigits - 1)).'<br>';
     }
 
     return $return;
@@ -254,7 +254,7 @@ function tool_passwordvalidator_repeated_chars($password) {
     $return = '';
 
     if (preg_match($characterpattern, $password) === 1) {
-        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator').'<br>';
+        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator', $repeatchars).'<br>';
     }
     return $return;
 }
@@ -275,7 +275,7 @@ function tool_passwordvalidator_phrase_blacklist($password) {
     foreach ($phrases as $string) {
         $tstring = trim($string);
         if (stripos($password, $tstring) !== false) {
-            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator').'<br>';
+            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator', $tstring).'<br>';
             break;
         }
     }
@@ -295,30 +295,29 @@ function tool_passwordvalidator_phrase_blacklist($password) {
 function tool_passwordvalidator_lockout_period($password, $user) {
     global $DB;
 
-    $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC');
+    $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC', 'timecreated', 0, 1);
     // get first elements timecreated, order from DB query
     if (!empty($lastchanges)) {
         $timechanged = reset($lastchanges)->timecreated;
     } else {
-        $timechanged = 0;
+        // No timechange found, return passed validation
+        return '';
     }
 
     $currenttime = time();
-
-    // Get moodle day in seconds constant
-    $day = DAYSECS;
 
     // Set the time modifier based on configuration
     $inputtime = get_config('tool_passwordvalidator', 'time_lockout_input');
 
     // Default to 1 day if time not set
     if ($inputtime == '') {
-        $inputtime = $day;
+        $inputtime = DAYSECS;
     }
 
     // Check if currenttime is within the lockout period
     if ($timechanged >= ($currenttime - $inputtime)) {
-        return get_string('responselockoutperiod', 'tool_passwordvalidator').'<br>';
+        $timerem = format_time($inputtime - ($currenttime - $timechanged));
+        return get_string('responselockoutperiod', 'tool_passwordvalidator', $timerem).'<br>';
     }
 
     return '';
