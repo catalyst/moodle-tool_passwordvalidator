@@ -84,6 +84,7 @@ $string['responsedatabaseerror'] = 'Error retrieving information from database.'
 $string['responselockoutperiod'] = 'Password already changed recently. Please try again later.';
 $string['responsebreachedpassword'] = 'Password found in online breached passwords collection.';
 $string['responsenouser'] = 'No user account found for password personal information query.';
+$string['responseapierror'] = 'Service HaveIBeenPwned.com password API was not responsive.';
 
 // Moodle config checker strings
 $string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.';
