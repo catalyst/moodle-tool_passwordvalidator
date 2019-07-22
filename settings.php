@@ -55,6 +55,10 @@ if ($hassiteconfig) {
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
         }
 
+        //Plugin on/off control
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/enable_plugin', get_string('passwordenablename', 'tool_passwordvalidator'),
+                    get_string('passwordenabledesc', 'tool_passwordvalidator'), 0));
+
         // IRAP Complexity Minimum
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/irap_complexity', get_string('passwordirapcomplexityname', 'tool_passwordvalidator'),
                     get_string('passwordirapcomplexitydesc', 'tool_passwordvalidator'), 1));
