@@ -109,4 +109,4 @@ $string['testpasswordpagetestbutton'] = 'Test Password';
 /*
  * Privacy provider (GDPR)
  */
-$string["privacy:no_data_reason"] = "The Password Policy Checker plugin does not store any personal data.";
+$string["privacy:metadata"] = "The Password Policy Checker plugin does not store any personal data.";
