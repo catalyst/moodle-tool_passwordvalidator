@@ -38,3 +38,4 @@ class provider implements
         return 'privacy:metadata';
     }
 }
+
