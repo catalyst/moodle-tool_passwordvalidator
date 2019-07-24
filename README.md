@@ -80,6 +80,8 @@ Installation
 
 To install the plugin simply drop it into the /path/to/moodle/admin/tool/passwordvalidator directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now, and the plugin will be installed.
 
+When the plugin is first installed, controls will have default values that enforce strong passwords, however the plugin will not perform any validation. Enable the control 'Enable Plugin' to perform validation. It is recommended to review the default security control values before enabling the plugin. 
+
 For more instructions on installation, visit [the Moodle Plugin Installation Guide](https://docs.moodle.org/37/en/Installing_plugins)
 
 This plugin can be configured to have config settings forced as part of the global configuration. See the below section [Templates](#templates) on how to configure this.
@@ -94,7 +96,7 @@ This plugin comes with some templates, that enforce policies drawn from the part
 require(__DIR__.'/admin/tool/passwordvalidator/config_policies/<TEMPLATE HERE>.php');
 ```
 
-this code inside of the Moodle config.php or optional config-forced.php file. This will include the template commands inside of Moodle's core configuration, and prevent
+this code inside of the Moodle config.php file. This will include the template commands inside of Moodle's core configuration, and prevent
 changes from being made to the configurations.
 
 
@@ -125,5 +127,5 @@ This plugin was developed by Catalyst IT Australia:
 
 https://www.catalyst-au.net/
 
-<img alt="Catalyst IT" src="https://cdn.rawgit.com/CatalystIT-AU/moodle-auth_saml2/master/pix/catalyst-logo.svg" width="400">
+<a href="https://www.catalyst-au.net/"><img alt="Catalyst IT" src="https://cdn.rawgit.com/CatalystIT-AU/moodle-auth_saml2/master/pix/catalyst-logo.svg" width="400"></a>
 
