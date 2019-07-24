@@ -55,7 +55,7 @@ if ($hassiteconfig) {
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
         }
 
-        //Plugin on/off control
+        // Plugin on/off control
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/enable_plugin', get_string('passwordenablename', 'tool_passwordvalidator'),
                     get_string('passwordenabledesc', 'tool_passwordvalidator'), 0));
 
