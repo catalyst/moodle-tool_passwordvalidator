@@ -17,8 +17,8 @@
 /**
  * Password Validation Settings form
  *
- * @package     tool_trigger
- * @copyright   Matt Porritt <mattp@catalyst-au.net>
+ * @package     tool_passwordvalidator
+ * @copyright   Peter Burnett <peterburnett@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
