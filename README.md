@@ -21,6 +21,8 @@ for any configuration, while enforcing safe, sensible guidelines for passwords.
 
 Security Controls
 -----------------
+**Enable Plugin:** This control enables or disables the plugin. This is set by off by default, to prevent admins from setting an unwanted password policy simply by installing the plugin. It is recommended to configure a suitable password policy, and then enable this control to begin enforcing it.
+
 **ISM Complexity Standards:** The Australian ISM recommends a minimum password length of 13 characters for passwords consisting of only letters,
 both uppercase and lowercase. For passwords that contain at least 3 of the the following: lowercase letters, uppercase letters, numbers,
 special characters, the minimum length must be 10 characters. Enable this control to enforce this minimum length policy.

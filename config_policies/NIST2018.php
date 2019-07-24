@@ -28,6 +28,7 @@
 // @codingStandardsIgnoreStart
 $CFG->forced_plugin_settings['tool_passwordvalidator']['chosen_template'] = basename(__FILE__, '.php');
 // @codingStandardsIgnoreEnd
+$CFG->forced_plugin_settings['tool_passwordvalidator']['enable_plugin'] = 1;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['complex_length_input'] = 8;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check'] = 0;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['dictionary_check_file'] = 'google-10000-english.txt';

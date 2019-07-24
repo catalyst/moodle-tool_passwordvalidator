@@ -32,8 +32,14 @@ defined('MOODLE_INTERNAL') || die;
  *
  */
 function tool_passwordvalidator_check_password_policy($password) {
-    global $USER;
-    require_once(__DIR__.'/locallib.php');
-    return tool_passwordvalidator_password_validate($password, false, $USER);
+    if (get_config('tool_passwordvalidator', 'enable_plugin')) {
+        // If plugin is enabled, execute validation
+        global $USER;
+        require_once(__DIR__.'/locallib.php');
+        return tool_passwordvalidator_password_validate($password, false, $USER);
+    } else {
+        // Return empty, 'passed validation'
+        return '';
+    }
 }
 
