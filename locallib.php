@@ -315,8 +315,9 @@ function tool_passwordvalidator_lockout_period($password, $user) {
     }
 
     // Check if currenttime is within the lockout period
-    if ($timechanged >= ($currenttime - $inputtime)) {
-        $timerem = format_time($inputtime - ($currenttime - $timechanged));
+    $timeleft = $inputtime - ($currenttime - $timechanged);
+    if ($timeleft > 0) {
+        $timerem = format_time($timeleft);
         return get_string('responselockoutperiod', 'tool_passwordvalidator', $timerem).'<br>';
     }
 
