@@ -32,65 +32,64 @@
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
-function tool_passwordvalidator_password_validate($password, $test, $user) {
+function tool_passwordvalidator_password_validate($password, $user) {
     // Only execute checks if user isn't admin or is test mode.
     // Here so admin can force passwords
-    if ((!(is_siteadmin()) || $test == true)) {
-        $errs = '';
+    $errs = '';
 
-        // ACSC Security Control 0421
-        // Check for character sets.
-        if (get_config('tool_passwordvalidator', 'irap_complexity')) {
-            $errs .= tool_passwordvalidator_complexity_checker($password, true);
+    // ACSC Security Control 0421
+    // Check for character sets.
+    if (get_config('tool_passwordvalidator', 'irap_complexity')) {
+        $errs .= tool_passwordvalidator_complexity_checker($password, true);
+    }
+
+    // ACSC Security Control 0417
+    // Not only numbers
+    if (get_config('tool_passwordvalidator', 'irap_numbers')) {
+        $errs .= tool_passwordvalidator_complexity_checker($password, false);
+    }
+
+    if (get_config('tool_passwordvalidator', 'dictionary_check')) {
+        $errs .= tool_passwordvalidator_dictionary_checker($password);
+    }
+
+    // Checks based on user object
+    if (!empty($user->id)) {
+        // Personal Information Check.
+        if (get_config('tool_passwordvalidator', 'personal_info')) {
+            $errs .= tool_passwordvalidator_personal_information($password, $user);
         }
 
-        // ACSC Security Control 0417
-        // Not only numbers
-        if (get_config('tool_passwordvalidator', 'irap_numbers')) {
-            $errs .= tool_passwordvalidator_complexity_checker($password, false);
-        }
-
-        if (get_config('tool_passwordvalidator', 'dictionary_check')) {
-            $errs .= tool_passwordvalidator_dictionary_checker($password);
-        }
-
-        // Checks based on user object
-        if (!empty($user->id)) {
-            // Personal Information Check.
-            if (get_config('tool_passwordvalidator', 'personal_info')) {
-                $errs .= tool_passwordvalidator_personal_information($password, $user);
-            }
-
-            // Check for password changes on the user account within lockout period.
-            if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
+        // Check for password changes on the user account within lockout period.
+        if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
+            // If siteadmin, ignore this check
+            if (!is_siteadmin()) {
                 $errs .= tool_passwordvalidator_lockout_period($password, $user);
             }
         }
-
-        // Check for sequential digits.
-        if (get_config('tool_passwordvalidator', 'sequential_digits_input') > 0) {
-            $errs .= tool_passwordvalidator_sequential_digits($password);
-        }
-
-        // Check for repeated characters.
-        if (get_config('tool_passwordvalidator', 'repeated_chars_input') > 0) {
-            $errs .= tool_passwordvalidator_repeated_chars($password);
-        }
-
-        // Check for blacklist phrases - eg Service name
-        if (get_config('tool_passwordvalidator', 'phrase_blacklist')) {
-            $errs .= tool_passwordvalidator_phrase_blacklist($password);
-        }
-
-        // Check against HaveIBeenPwned.com password breach API
-        if (get_config('tool_passwordvalidator', 'password_blacklist')) {
-            $errs .= tool_passwordvalidator_password_blacklist($password);
-        }
-
-        return $errs;
     }
 
-    return '';
+    // Check for sequential digits.
+    if (get_config('tool_passwordvalidator', 'sequential_digits_input') > 0) {
+        $errs .= tool_passwordvalidator_sequential_digits($password);
+    }
+
+    // Check for repeated characters.
+    if (get_config('tool_passwordvalidator', 'repeated_chars_input') > 0) {
+        $errs .= tool_passwordvalidator_repeated_chars($password);
+    }
+
+    // Check for blacklist phrases - eg Service name
+    if (get_config('tool_passwordvalidator', 'phrase_blacklist')) {
+        $errs .= tool_passwordvalidator_phrase_blacklist($password);
+    }
+
+    // Check against HaveIBeenPwned.com password breach API
+    if (get_config('tool_passwordvalidator', 'password_blacklist')) {
+        $errs .= tool_passwordvalidator_password_blacklist($password);
+    }
+
+    return $errs;
 }
 
 /**
@@ -200,9 +199,21 @@ function tool_passwordvalidator_dictionary_checker($password) {
  */
 
 function  tool_passwordvalidator_personal_information($password, $user) {
+    // Protection from malformed accounts, if they have an id but no data
     // Check for fname, lname, city, username
-    $badstrings = array($user->firstname, $user->lastname,
-    $user->city, $user->username);
+    $badstrings = array();
+    if (!empty($user->firstname)) {
+        array_push($badstrings, $user->firstname);
+    }
+    if (!empty($user->lastname)) {
+        array_push($badstrings, $user->lastname);
+    }
+    if (!empty($user->city)) {
+        array_push($badstrings, $user->city);
+    }
+    if (!empty($user->username)) {
+        array_push($badstrings, $user->username);
+    }
 
     $return = '';
 
@@ -333,6 +344,8 @@ function tool_passwordvalidator_lockout_period($password, $user) {
  *
  */
 function tool_passwordvalidator_password_blacklist($password) {
+    global $CFG;
+    require_once($CFG->libdir.'/filelib.php');
     $return = '';
     $api = 'https://api.pwnedpasswords.com/range/';
     // Get first 5 chars of hash to search API for
