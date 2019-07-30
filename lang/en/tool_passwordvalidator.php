@@ -111,10 +111,10 @@ $string['testpasswordpageusernamebox'] = 'Enter user account email or username t
 $string['testpasswordpagetestbutton'] = 'Test Password';
 
 // Password Policy Strings
-$string['passwordpolicynotemplate'] = 'compliance with a custom set of security controls. Please refer to error messages for more specific information';
-$string['passwordpolicyNIST_ISM_2019'] = 'compliance with policy recommendations set out by NIST, and some aspects of the Australian ISM 2019';
-$string['passwordpolicyNIST2018'] = 'compliance with policy recommendations set out by NIST';
-$string['passwordpolicyISM0519'] = 'compliance with policy recommendations on complexity set out by the Australian ISM 2019';
+$string['passwordpolicynotemplate'] = 'compliance with a custom set of security controls';
+$string['passwordpolicyNIST_ISM_2019'] = 'compliance with NIST 2018, and Australian ISM 2019';
+$string['passwordpolicyNIST2018'] = 'compliance with NIST 2018';
+$string['passwordpolicyISM0519'] = 'compliance with Australian ISM 2019';
 /*
  * Privacy provider (GDPR)
  */

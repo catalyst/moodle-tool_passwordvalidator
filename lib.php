@@ -55,8 +55,7 @@ function tool_passwordvalidator_print_password_policy() {
         // Check for templates being active
         $template = get_config('tool_passwordvalidator', 'chosen_template');
         if ($template != '') {
-            $stringname = "passwordpolicy$template";
-            return get_string($stringname, 'tool_passwordvalidator');
+            return get_string("passwordpolicy$template", 'tool_passwordvalidator');
         } else {
             // Inform no template use
             return get_string('passwordpolicynotemplate', 'tool_passwordvalidator');
