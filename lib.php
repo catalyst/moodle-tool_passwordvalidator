@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die;
  * with test mode disabled.
  *
  * @param string $password The password to be validated.
+ * @param stdClass $user A user object to perform validation against if preset. Defaults to null
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
@@ -43,3 +44,25 @@ function tool_passwordvalidator_check_password_policy($password, $user = null) {
     }
 }
 
+/**
+ * Function for the printing of the password policy
+ *
+ * @return string Returns a string of any errors presented by the checks, or an empty string for success.
+ *
+ */
+function tool_passwordvalidator_print_password_policy() {
+    if (get_config('tool_passwordvalidator', 'enable_plugin')) {
+        // Check for templates being active
+        $template = get_config('tool_passwordvalidator', 'chosen_template');
+        if ($template != '') {
+            $stringname = "passwordpolicy$template";
+            return get_string($stringname, 'tool_passwordvalidator');
+        } else {
+            // Inform no template use
+            return get_string('passwordpolicynotemplate', 'tool_passwordvalidator');
+        }
+    } else {
+        // Return empty, 'no current policy enabled
+        return '';
+    }
+}

@@ -375,13 +375,19 @@ function tool_passwordvalidator_config_checker() {
     $response = '';
     $type = 'notifysuccess';
 
-    // Check if a password policy is in place, not necessarily a fail
-    if ($CFG->passwordpolicy == 1) {
+    // Check if a password policy is in place, inform users of visibility of password policy
+    if ($CFG->passwordpolicy != 1) {
         $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator').'<br>';
         // If notify is currently success
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
         }
+    }
+
+    // Minimum length enforcement is a fail
+    if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlength >= 1) {
+        $response .= get_string('configpasswordminlength', 'tool_passwordvalidator').'<br>';
+        $type = 'notifyerror';
     }
 
     // Minimum char enforcement is a fail
