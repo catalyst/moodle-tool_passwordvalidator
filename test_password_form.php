@@ -47,6 +47,7 @@ class test_password_form extends moodleform {
     public function validation($data, $files) {
         global $DB;
         global $USER;
+        require_once(__DIR__.'/lib.php');
         $errors = parent::validation($data, $files);
 
         // PASSWORD VALIDATION TEST
@@ -73,7 +74,7 @@ class test_password_form extends moodleform {
         // Don't check if testpassword is empty. If record exists for optional user, check pw against that account. Else, against currenlty logged in account
         $testervalidation = '';
         if ($testpassword != '') {
-            $testervalidation = tool_passwordvalidator_password_validate($testpassword, $otheruser);
+            $testervalidation = tool_passwordvalidator_check_password_policy($testpassword, $otheruser);
         }
 
         $errors['testerpassword'] = $testervalidation;
