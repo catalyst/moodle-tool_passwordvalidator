@@ -96,7 +96,7 @@ $string['configpasswordspecialchars'] = 'It appears that the enforced password p
 $string['configpasswordminlength'] = 'It appears that the enforced password policy requires at least one character. It is recommend to set this control to 0, and enforce minimum length using this plugin.';
 $string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.';
 $string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.';
-$string['configpasswordgood'] = 'No incorrect moodle password configurations found.';
+$string['configpasswordgood'] = 'Moodle configuration appears to be correct.';
 
 // Template Description Strings
 $string['templateNIST_ISM_2019'] = 'This template enforces recommendations from both the Australian ISM, as well as the NIST password recommendations. The strongest template implemented by default.';
