@@ -88,11 +88,12 @@ $string['responsebreachedpassword'] = 'Password found in online breached passwor
 $string['responsenouser'] = 'No user account found for password personal information query.';
 
 // Moodle config checker strings
-$string['configpasswordpolicy'] = 'It appears that a password policy is in place. Consider disabling this and enforcing a policy using the plugin.';
+$string['configpasswordpolicy'] = 'It appears that the "Password Policy" control is disabled. If this control is disabled, new users will not be able to view information about the password policy when setting their password.';
 $string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1 for the password reset lockout period.
  It is recommended to set this value to atleast 1, but higher is better. ACSC recommends not reusing passwords within  8 changes.';
 $string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.';
 $string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.';
+$string['configpasswordminlength'] = 'It appears that the enforced password policy requires at least one character. It is recommend to set this control to 0, and enforce minimum length using this plugin.';
 $string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.';
 $string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.';
 $string['configpasswordgood'] = 'No incorrect moodle password configurations found.';
@@ -108,6 +109,12 @@ $string['testpasswordpage'] = 'Password Validation Configuration';
 $string['testpasswordpagepasswordbox'] = 'Enter a password to test:';
 $string['testpasswordpageusernamebox'] = 'Enter user account email or username to test configured password against:';
 $string['testpasswordpagetestbutton'] = 'Test Password';
+
+// Password Policy Strings
+$string['passwordpolicynotemplate'] = 'compliance with a custom set of security controls';
+$string['passwordpolicyNIST_ISM_2019'] = 'compliance with NIST 2018, and Australian ISM 2019';
+$string['passwordpolicyNIST2018'] = 'compliance with NIST 2018';
+$string['passwordpolicyISM0519'] = 'compliance with Australian ISM 2019';
 /*
  * Privacy provider (GDPR)
  */

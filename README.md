@@ -67,7 +67,18 @@ catalogued breaches.
 
 Moodle Configuration Checker
 ----------------------------
-This will automatically check the moodle configuration for settings that are either relied on by the plugin, or conflict with the plugin. It checks the password policy enforced by Moodle, which should be disabled and the plugin used instead, as well as the configuration settings of the policy if the policy is enabled. It is not recommended to enforce a minimum number of specific types of characters, such as uppercase letters, lowercase letters, special characters, and non-alphanumberic characters.
+This will automatically check the moodle configuration for settings that are either relied on by the plugin, or conflict with the plugin. It checks the password policy enforced by Moodle, and the controls within the policy. It is recommended to have the Moodle control "Password Policy" enabled, as it is required for new users to view information about the password policy inside of the plugin. It is recommended to set all of the controls for Password Policy to 0, as it is better to use the password policy controls inside this plugin. The specific controls that should be 0 are Password Length, Digits, Lowercase Letters, Uppercase Letters, Non-alphanumeric characters and Consecutive Identical characters.
+
+Alternatively, to enfore the correct configuration, add these lines to config.php:
+``` php
+$CFG->passwordpolicy = true;
+$CFG->minpasswordlength = 0;
+$CFG->minpassworddigits = 0;
+$CFG->minpasswordlower = 0;
+$CFG->minpasswordupper = 0;
+$CFG->minpasswordnonalphanum = 0;
+$CFG->maxconsecutiveidentchars = 0;
+```
 
 Password Tester
 ---------------
