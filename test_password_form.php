@@ -56,11 +56,16 @@ class test_password_form extends moodleform {
         $otheruser = '';
 
         // try input as username first, then email
-        $otheruser = $DB->get_record('user', array('username' => ($testerinput)));
-        if (empty($otheruser)) {
-            // if not found, try username
-            $otheruser = $DB->get_record('user', array('email' => ($testerinput)));
-            if (empty($otheruser)) {
+        $foundusers = $DB->get_records('user', array('username' => ($testerinput)));
+        if (!empty($foundusers)) {
+            // Get first matching username record
+            $otheruser = reset($foundusers);
+        } else {
+            $foundusers = $DB->get_records('user', array('email' => ($testerinput)));
+            if (!empty($foundusers)) {
+                // Get first matching email record (should be unique)
+                $otheruser = reset($foundusers);
+            } else {
                 $otheruser = $USER;
             }
         }
