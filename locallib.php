@@ -354,12 +354,23 @@ function tool_passwordvalidator_password_blacklist($password) {
 
     // Get API response
     $url = $api .= $searchstring;
-    $response = download_file_content($url);
+    $response = download_file_content($url, null, null, false, 5, 5);
+    if ($response == false) {
+        // Logged in user object for failed web request event trigger
+        global $USER;
 
-    // Check for presence of hash in response
-    $shorthash = substr($pwhash, 5);
-    if (stripos($response, $shorthash) !== false) {
-        $return .= get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
+        // Create error event, and log it
+        $systemcontext = context_user::instance($USER->id);
+        $failmessage = get_string('responseapierror', 'tool_passwordvalidator');
+        $event = \core\event\webservice_login_failed::create(array('context' => $systemcontext, 'other' => array('reason' => $failmessage, 'method' => '')));
+        $event->trigger();
+        return '';
+    } else {
+        // Check for presence of hash in response
+        $shorthash = substr($pwhash, 5);
+        if (stripos($response, $shorthash) !== false) {
+            $return .= get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
+        }
     }
     return $return;
 }
