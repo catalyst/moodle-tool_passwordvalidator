@@ -26,24 +26,19 @@ require_once($CFG->libdir . '/adminlib.php');
 require_once(__DIR__.'/test_password_form.php');
 require_once(__DIR__.'/locallib.php');
 
-defined('MOODLE_INTERNAL') || die();
-
 admin_externalpage_setup('tool_passwordvalidator_form');
 
 $prevurl = ($CFG->wwwroot.'/admin/category.php?category=validator');
+$success = false;
+$configcheckdesc = tool_passwordvalidator_config_checker();
 
 $form = new test_password_form();
 
 if ($form->is_cancelled()) {
-
     redirect($prevurl);
-
+} else if ($fromform = $form->get_data()) {
+    $success = true;
 }
-// @codingStandardsIgnoreStart
-else if ($fromform = $form->get_data()) {
-    // Empty, forces form to run validation to update config
-}
-// @codingStandardsIgnoreEnd
 
 // Build the page output.
 echo $OUTPUT->header();
@@ -51,13 +46,16 @@ echo $OUTPUT->heading(get_string('testpasswordpagestring', 'tool_passwordvalidat
 
 // Configuration Checker
 echo '<br>';
-echo '<h4>Moodle Configuration Checker</h4>';
-$configcheckdesc = tool_passwordvalidator_config_checker();
+echo $OUTPUT->heading(get_string('testpasswordconfigchecker', 'tool_passwordvalidator'), 4);
 echo $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
 echo '<br>';
 
 // Display password validation form
-echo '<h4>Password Validation Tester</h4>';
+echo $OUTPUT->heading(get_string('testpasswordvalidationtester', 'tool_passwordvalidator'), 4);
+if ($success) {
+    echo $OUTPUT->notification(get_string('testpasswordvalidationpassed', 'tool_passwordvalidator'), 'notifysuccess');
+}
+
 $form->display();
 
 echo $OUTPUT->footer();
