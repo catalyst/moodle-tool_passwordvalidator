@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die;
+
 /**
  * Validates the password provided against the password policy configured in the plugin admin
  * settings menu. Calls all of the individual checks

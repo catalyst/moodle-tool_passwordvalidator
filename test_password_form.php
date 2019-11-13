@@ -77,7 +77,9 @@ class test_password_form extends moodleform {
             $testervalidation = tool_passwordvalidator_check_password_policy($testpassword, $otheruser);
         }
 
-        $errors['testerpassword'] = $testervalidation;
+        if (!empty($testervalidation)) {
+            $errors['testerpassword'] = $testervalidation;
+        }
 
         return $errors;
     }
