@@ -52,6 +52,10 @@ before_install:
 
 install:
   - moodle-plugin-ci install -vvv
+  - >
+    if [ "$MOODLE_BRANCH" == 'MOODLE_34_STABLE' ] || [ "$MOODLE_BRANCH" == 'MOODLE_35_STABLE' ]; then
+      (cd moodle; git fetch origin master; git cherry-pick 99405aa7e2a34174a3eeaf9f9ffc9db3bc9f6192;);
+    fi
 
 script:
   - moodle-plugin-ci validate

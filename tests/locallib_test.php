@@ -367,5 +367,41 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         // Check that check for user data passes with a different user
         $this->assertEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, $newuser));
     }
+
+    // This test ensures that the end to end flow of check_password_policy is working
+    public function test_password_change_api() {
+        $this->resetAfterTest(true);
+        global $CFG;
+
+        // Require strong config to test with
+        require(__DIR__.'/../config_policies/NIST_ISM_2019.php');
+        $CFG->passwordpolicy = true;
+        $CFG->minpasswordlength = 0;
+        $CFG->minpassworddigits = 0;
+        $CFG->minpasswordlower = 0;
+        $CFG->minpasswordupper = 0;
+        $CFG->minpasswordnonalphanum = 0;
+        $CFG->maxconsecutiveidentchars = 0;
+
+        // Setup user to test against
+        $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
+                         'lastname' => 'user', 'city' => 'testcity'));
+        $this->setUser($user);
+
+        $badpassword = 'testpassword';
+        $goodpassword = 'tree grass bush shrub';
+
+        // Test good password
+        $errors = '';
+        $result = check_password_policy($goodpassword, $errors);
+
+        $this->assertTrue($result);
+        $this->assertEmpty($errors);
+
+        // Test bad password
+        $result = check_password_policy($badpassword, $errors);
+        $this->assertFalse($result);
+        $this->assertNotEmpty($errors);
+    }
 }
 
