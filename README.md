@@ -13,6 +13,7 @@ for any configuration, while enforcing safe, sensible guidelines for passwords.
 * [Security Controls](#security-controls)
 * [Moodle Configuration Checker](#moodle-configuration-checker)
 * [Password Tester](#password-tester)
+* [Branches](#branches)
 * [Installation](#installation)
 * [Templates](#templates)
 * [Testing](#testing)
@@ -85,11 +86,17 @@ Password Tester
 The password tester allows admins to enter a password. Upon clicking 'Test Password', the password will be validated against the above configuration, and the user will be alerted as to the status of the password. For the purposes of password lockout testing and information testing, the password will be checked against the current user account accessing the settings, typically the administration account, by default.
 To test passwords against other user accounts, enter the username or email address of the account to test against in the box underneath the password entry box. The plugin will attempt to match this to a user account, and validate the password against that account. If no valid user account can be located, the password will be matched against the current logged in account, as if nothing were entered into the box.
 
+Branches
+--------
+For all Moodle versions, use the master branch.
+
 Installation
 ------------
 **Requirements:** This plugin will work with any version of moodle from 3.6 onwards. It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit: https://github.com/moodle/moodle/commit/99405aa7e2a34174a3eeaf9f9ffc9db3bc9f6192, which was integrated into Moodle core in version 3.6.
 
-To install the plugin simply drop it into the /path/to/moodle/admin/tool/passwordvalidator directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now, and the plugin will be installed.
+Note: Only PHP 7.0 or greater is supported by this plugin.
+
+To install the plugin simply drop it into the ```/path/to/moodle/admin/tool/passwordvalidator``` directory. When moodle is accessed it will prompt for installation of the plugin. Press upgrade database now, and the plugin will be installed.
 
 When the plugin is first installed, controls will have default values that enforce strong passwords, however the plugin will not perform any validation. Enable the control 'Enable Plugin' to perform validation. It is recommended to review the default security control values before enabling the plugin. 
 
