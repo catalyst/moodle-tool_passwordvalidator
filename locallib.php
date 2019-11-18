@@ -362,9 +362,8 @@ function tool_passwordvalidator_password_blacklist($password) {
         global $USER;
 
         // Create error event, and log it
-        $systemcontext = context_user::instance($USER->id);
         $failmessage = get_string('responseapierror', 'tool_passwordvalidator');
-        $event = \core\event\webservice_login_failed::create(array('context' => $systemcontext, 'other' => array('reason' => $failmessage, 'method' => '')));
+        $event = \core\event\webservice_login_failed::create(array('other' => array('reason' => $failmessage, 'method' => '')));
         $event->trigger();
         return '';
     } else {
