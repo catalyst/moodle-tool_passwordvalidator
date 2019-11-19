@@ -92,7 +92,7 @@ The Australian ISM recommends that users are not able to change their passwords 
 
 ### Check Password Against Blacklist
 
-IST recommends that passwords are checked against a blacklist of known bad passwords from data breaches. Enabling this control checks the **hash** of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the catalogued breaches. The API only receives a partial hash so even if haveibeenpwned was compromised your good password hashes haven't been leaked. 
+NIST recommends that passwords are checked against a blacklist of known bad passwords from data breaches. Enabling this control checks the **hash** of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the catalogued breaches. The API only receives a partial hash so even if haveibeenpwned was compromised your good password hashes haven't been leaked. 
 
 See the full details here:
 
