@@ -153,7 +153,7 @@ https://github.com/moodle/moodle/commit/ad9c96e531
 
 ### Before Moodle 3.6
 
-It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit which was integrated into Moodle core in version 3.6:
+In 3.6 the check_password_policy callback was added:
 
 https://tracker.moodle.org/browse/MDL-61694
 
