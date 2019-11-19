@@ -145,7 +145,7 @@ https://github.com/moodle/moodle/commit/32f805e079
 
 ### Before Moodle 3.7
 
-In 3.7 the check_password_policy callback was extend to pass in $user object:
+In 3.7 the check_password_policy callback was extended to pass in the $user object:
 
 https://tracker.moodle.org/browse/MDL-66123
 
