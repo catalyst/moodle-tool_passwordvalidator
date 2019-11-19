@@ -2,6 +2,8 @@
 <img src="https://travis-ci.org/catalyst/moodle-tool_passwordvalidator.svg?branch=master">
 </a>
 
+https://moodle.org/plugins/tool_passwordvalidator
+
 # Password Policy Enforcer
 
 A tool for enforcing various security standards and guidelines for passwords for Moodle. This plugin aims for compliance with
