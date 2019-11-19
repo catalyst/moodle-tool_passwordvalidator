@@ -124,7 +124,28 @@ For all Moodle versions, use the master branch.
 
 Installation
 ------------
-**Requirements:** This plugin will work with any version of moodle from 3.6 onwards. It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit: https://github.com/moodle/moodle/commit/99405aa7e2a34174a3eeaf9f9ffc9db3bc9f6192, which was integrated into Moodle core in version 3.6.
+
+### Moodle 3.7+
+
+This plugin will work with any version of moodle from 3.7 onwards.
+
+### Before Moodle 3.7
+
+In 3.7 the check_password_policy callback was extend to pass in $user object:
+
+https://github.com/moodle/moodle/commit/ad9c96e531
+
+https://tracker.moodle.org/browse/MDL-66123
+
+### Before Moodle 3.6
+
+It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit which was integrated into Moodle core in version 3.6:
+
+https://github.com/moodle/moodle/commit/99405aa7e2 
+
+https://tracker.moodle.org/browse/MDL-61694
+
+### PHP7.0+
 
 Note: Only PHP 7.0 or greater is supported by this plugin.
 
