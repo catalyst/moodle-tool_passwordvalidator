@@ -133,10 +133,12 @@ This plugin will fully work with any version of moodle from 3.8 onwards.
 
 ### Before Moodle 3.8
 
-In 3.8 print_password_policy allows callbacks to add extra help text:
+In 3.8 print_password_policy allows callbacks to add extra help text, and fixed a related bug:
+
+https://tracker.moodle.org/browse/MDL-66280
+https://github.com/moodle/moodle/commit/e40ea418f4
 
 https://tracker.moodle.org/browse/MDL-66278
-
 https://github.com/moodle/moodle/commit/32f805e079
 
 ### Before Moodle 3.7
@@ -144,7 +146,6 @@ https://github.com/moodle/moodle/commit/32f805e079
 In 3.7 the check_password_policy callback was extend to pass in $user object:
 
 https://tracker.moodle.org/browse/MDL-66123
-
 https://github.com/moodle/moodle/commit/ad9c96e531
 
 ### Before Moodle 3.6
@@ -152,7 +153,6 @@ https://github.com/moodle/moodle/commit/ad9c96e531
 It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit which was integrated into Moodle core in version 3.6:
 
 https://tracker.moodle.org/browse/MDL-61694
-
 https://github.com/moodle/moodle/commit/99405aa7e2 
 
 ### PHP7.0+
