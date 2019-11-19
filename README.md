@@ -125,25 +125,35 @@ For all Moodle versions, use the master branch.
 Installation
 ------------
 
-### Moodle 3.7+
+Depending on version you may need to backport certain API's:
 
-This plugin will work with any version of moodle from 3.7 onwards.
+### Moodle 3.8+
+
+This plugin will fully work with any version of moodle from 3.8 onwards.
+
+### Before Moodle 3.8
+
+In 3.8 print_password_policy allows callbacks to add extra help text:
+
+https://tracker.moodle.org/browse/MDL-66278
+
+https://github.com/moodle/moodle/commit/32f805e079
 
 ### Before Moodle 3.7
 
 In 3.7 the check_password_policy callback was extend to pass in $user object:
 
-https://github.com/moodle/moodle/commit/ad9c96e531
-
 https://tracker.moodle.org/browse/MDL-66123
+
+https://github.com/moodle/moodle/commit/ad9c96e531
 
 ### Before Moodle 3.6
 
 It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit which was integrated into Moodle core in version 3.6:
 
-https://github.com/moodle/moodle/commit/99405aa7e2 
-
 https://tracker.moodle.org/browse/MDL-61694
+
+https://github.com/moodle/moodle/commit/99405aa7e2 
 
 ### PHP7.0+
 
