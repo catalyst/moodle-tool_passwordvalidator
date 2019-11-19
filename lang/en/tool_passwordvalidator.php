@@ -23,7 +23,7 @@
  */
 
  // Settings menu strings
-$string['pluginname'] = 'Password Validator';
+$string['pluginname'] = 'Password validator';
 $string['passwordenablename'] = 'Enable plugin';
 $string['passwordenabledesc'] = 'Check to enable password validation.';
 $string['passwordforcedconfig'] = 'Settings are read only, configuration is forced in template file: ';
@@ -107,7 +107,7 @@ $string['testpasswordpagestring'] = 'Configuration and validation tester';
 $string['testpasswordpage'] = 'Password validation configuration';
 $string['testpasswordpagepasswordbox'] = 'Enter a password to test:';
 $string['testpasswordpageusernamebox'] = 'Enter user account email or username to test configured password against:';
-$string['testpasswordpagetestbutton'] = 'Test Password';
+$string['testpasswordpagetestbutton'] = 'Test password';
 $string['testpasswordconfigchecker'] = 'Moodle configuration checker';
 $string['testpasswordvalidationtester'] = 'Password validation tester';
 $string['testpasswordvalidationpassed'] = 'Password successfully passed validation testing.';
@@ -120,4 +120,4 @@ $string['passwordpolicyISM0519'] = 'compliance with Australian ISM 2019';
 /*
  * Privacy provider (GDPR)
  */
-$string["privacy:metadata"] = "The Password Policy Checker plugin does not store any personal data.";
+$string["privacy:metadata"] = "The Password policy checker plugin does not store any personal data.";
