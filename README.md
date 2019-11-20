@@ -2,6 +2,8 @@
 <img src="https://travis-ci.org/catalyst/moodle-tool_passwordvalidator.svg?branch=master">
 </a>
 
+https://moodle.org/plugins/tool_passwordvalidator
+
 # Password Policy Enforcer
 
 A tool for enforcing various security standards and guidelines for passwords for Moodle. This plugin aims for compliance with
@@ -92,7 +94,7 @@ The Australian ISM recommends that users are not able to change their passwords 
 
 ### Check Password Against Blacklist
 
-IST recommends that passwords are checked against a blacklist of known bad passwords from data breaches. Enabling this control checks the **hash** of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the catalogued breaches. The API only receives a partial hash so even if haveibeenpwned was compromised your good password hashes haven't been leaked. 
+NIST recommends that passwords are checked against a blacklist of known bad passwords from data breaches. Enabling this control checks the **hash** of the password against the HaveIBeenPwned breached passwords API, and disallows passwords that have been found in any of the catalogued breaches. The API only receives a partial hash so even if haveibeenpwned was compromised your good password hashes haven't been leaked. 
 
 See the full details here:
 
@@ -124,7 +126,42 @@ For all Moodle versions, use the master branch.
 
 Installation
 ------------
-**Requirements:** This plugin will work with any version of moodle from 3.6 onwards. It can be use with older installations of Moodle back to 3.1, they just require a cherrypick of commit: https://github.com/moodle/moodle/commit/99405aa7e2a34174a3eeaf9f9ffc9db3bc9f6192, which was integrated into Moodle core in version 3.6.
+
+Depending on version you may need to backport certain API's:
+
+### Moodle 3.8+
+
+This plugin will fully work with any version of moodle from 3.8 onwards.
+
+### Before Moodle 3.8
+
+In 3.8 print_password_policy allows callbacks to add extra help text, and fixed a related bug:
+
+https://tracker.moodle.org/browse/MDL-66280
+
+https://github.com/moodle/moodle/commit/e40ea418f4
+
+https://tracker.moodle.org/browse/MDL-66278
+
+https://github.com/moodle/moodle/commit/32f805e079
+
+### Before Moodle 3.7
+
+In 3.7 the check_password_policy callback was extended to pass in the $user object:
+
+https://tracker.moodle.org/browse/MDL-66123
+
+https://github.com/moodle/moodle/commit/ad9c96e531
+
+### Before Moodle 3.6
+
+In 3.6 the check_password_policy callback was added:
+
+https://tracker.moodle.org/browse/MDL-61694
+
+https://github.com/moodle/moodle/commit/99405aa7e2 
+
+### PHP7.0+
 
 Note: Only PHP 7.0 or greater is supported by this plugin.
 
