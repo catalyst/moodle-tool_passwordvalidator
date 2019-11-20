@@ -348,32 +348,29 @@ function tool_passwordvalidator_lockout_period($password, $user) {
 function tool_passwordvalidator_password_blacklist($password) {
     global $CFG;
     require_once($CFG->libdir.'/filelib.php');
-    $return = '';
     $api = 'https://api.pwnedpasswords.com/range/';
-    // Get first 5 chars of hash to search API for
     $pwhash = sha1($password);
-    $searchstring = substr($pwhash, 0, 5);
+    $searchstring = substr($pwhash, 0, 5); // Get first 5 chars of hash to search API for.
 
     // Get API response
-    $url = $api .= $searchstring;
-    $response = download_file_content($url, null, null, false, 5, 5);
-    if ($response == false) {
-        // Logged in user object for failed web request event trigger
-        global $USER;
+    $url = $api . $searchstring;
+    $response = download_file_content($url, null, null, false, 5, 5); // 5 second timeout.
 
-        // Create error event, and log it
+    if ($response == false) {
+        // API not available, create error event, and log it.
         $failmessage = get_string('responseapierror', 'tool_passwordvalidator');
         $event = \core\event\webservice_login_failed::create(array('other' => array('reason' => $failmessage, 'method' => '')));
         $event->trigger();
         return '';
-    } else {
-        // Check for presence of hash in response
-        $shorthash = substr($pwhash, 5);
-        if (stripos($response, $shorthash) !== false) {
-            $return .= get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
-        }
     }
-    return $return;
+
+    // Check for presence of hash in response.
+    $shorthash = substr($pwhash, 5);
+    if (stripos($response, $shorthash) !== false) {
+        return get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
+    }
+
+    return '';
 }
 
 /**
