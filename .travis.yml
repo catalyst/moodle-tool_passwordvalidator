@@ -33,10 +33,10 @@ env:
 matrix:
   include:
     # Test with MySQL
-    - php: 7.1
+    - php: 7.3
       env: DB=mysqli MOODLE_BRANCH=master
-    # Test with PHP 7.1
-    - php: 7.1
+    # Test with PHP 7.3
+    - php: 7.3
       env: MOODLE_BRANCH=master
   exclude:
     - php: 7.3
@@ -45,9 +45,14 @@ matrix:
       env: MOODLE_BRANCH=MOODLE_35_STABLE
 
 before_install:
+  - export MOODLE_VERSION=$(echo "$MOODLE_BRANCH" | cut -d'_' -f 2)
+  - phpenv config-rm xdebug.ini
+  - if [ "$MOODLE_VERSION" = 36 ] || [ "$MOODLE_VERSION" -le 34 ]; then NVMVERSION=8.9; else NVMVERSION=14.0.0; fi
+  - nvm install $NVMVERSION;
+  - nvm use $NVMVERSION;
   - cd ../..
   - composer selfupdate
-  - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^1
+  - composer create-project -n --no-dev moodlerooms/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -58,13 +63,13 @@ install:
     fi
 
 script:
-  - moodle-plugin-ci validate
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
   - moodle-plugin-ci codechecker
-  - moodle-plugin-ci csslint
-  - moodle-plugin-ci shifter
-  - moodle-plugin-ci jshint
+  - moodle-plugin-ci validate
+  - moodle-plugin-ci savepoints
+  - moodle-plugin-ci mustache
+  - moodle-plugin-ci grunt
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
