@@ -27,6 +27,7 @@ $string['pluginname'] = 'Password validator';
 $string['passwordenablename'] = 'Enable plugin';
 $string['passwordenabledesc'] = 'Check to enable password validation.';
 $string['passwordforcedconfig'] = 'Settings are read only, configuration is forced in template file: ';
+$string['passwordforcedconfigmanual'] = 'Settings are read only, configuration is set in a forced configuration file.';
 $string['passwordbadconfigload'] = 'Unable to load template configuration file. Check variables are correct, and that template is inside the templates folder. - ';
 $string['passwordconfigloc'] = ' at location: ';
 $string['passwordconfigpath'] = '/config_policies/{$a}.php';

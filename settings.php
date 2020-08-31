@@ -41,16 +41,26 @@ if ($hassiteconfig) {
 
     if (!during_initial_install()) {
 
-        // Alert if using config template
+        // Alert if using config template or forced settings.
         $name = get_config('tool_passwordvalidator', 'chosen_template');
+        $message = false;
         if (trim($name) != '') {
+            $message = true;
+
             // Construct the display text
             $text = get_string('passwordforcedconfig', 'tool_passwordvalidator') . $name;
             $text .= get_string('passwordconfigloc', 'tool_passwordvalidator');
             $text .= (__DIR__ . get_string('passwordconfigpath', 'tool_passwordvalidator', $name).'<br>');
             $text .= get_string("template$name", 'tool_passwordvalidator');
 
-            // Add the control
+        } else if (!empty($CFG->forced_plugin_settings['tool_passwordvalidator']['enable_plugin'])) {
+            $message = true;
+
+            // Construct the display text
+            $text = get_string('passwordforcedconfigmanual', 'tool_passwordvalidator');
+        }
+        // Add the control
+        if ($message) {
             $templatedesc = $OUTPUT->notification($text, 'notifymessage');
             $settings->add(new admin_setting_heading('tool_passwordvalidator/template_heading', '', $templatedesc));
         }
@@ -108,5 +118,3 @@ if ($hassiteconfig) {
                     get_string('passwordblacklistdesc', 'tool_passwordvalidator'), 1));
     }
 }
-
-
