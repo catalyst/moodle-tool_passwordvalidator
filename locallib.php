@@ -154,40 +154,58 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
 function tool_passwordvalidator_dictionary_checker($password) {
     $return = '';
     // Strip special chars and numbers from password, to get raw words in array
+    
     $strippedpw = trim(preg_replace("/[^a-zA-Z ]/", "", $password));
+    //$strippedpw = trim(preg_replace("/[-_., ]/", " ", $password)); WORKS, WRONG IDEA
     $wordarray = explode(' ', $strippedpw);
     $wordcount = count($wordarray);
 
-    // Read in dictionary file
-    $dictpath = __DIR__.'/dictionary/'. get_config('tool_passwordvalidator', 'dictionary_check_file');
-    try {
-        $dict = fopen($dictpath, 'r');
-    } catch (Exception $e) {
-        $return .= 'Error opening file';
-    }
+    $dictsraw = get_config('tool_passwordvalidator', 'dictionary_check_file');
+    $dicts = explode(PHP_EOL, $dictsraw);
 
-    // Check every line of file for exact match, then reset file pointer to start
-    $foundcount = 0;
-    $lastword = '';
-    foreach ($wordarray as $word) {
-        while (!feof($dict)) {
-            $dictword = trim(fgets($dict));
-
-            if ($dictword == $word) {
-                $foundcount++;
-                $lastword = $word;
-            }
+    foreach ($dicts as $dict) {
+        //Check if there is already an error, if so, exit loop
+        if ($return != ''){
+            break;
         }
-        rewind($dict);
-    }
-    $wordsreq = get_config('tool_passwordvalidator', 'dictionary_check');
+        
+        // Read in dictionary file
+        $dict = trim($dict);
+        $dictpath = __DIR__.'/dictionary/'. $dict;
+        try {
+            $dict = fopen($dictpath, 'r');
+        } catch (Exception $e) {
+            $return .= 'Error opening file';
+        }
 
-    // If the amount of dictionary words found is 1, and there is only one word in the password
-    if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
-        $return .= get_string('responsedictionaryfailoneword', 'tool_passwordvalidator', $lastword) . '<br>';
+        // Check every line of file for exact match, then reset file pointer to start
+        $foundcount = 0;
+        $lastword = '';
+        foreach ($wordarray as $word) {
+            while (!feof($dict)) {
+                $dictword = trim(fgets($dict));
+
+                /*if (stripos($word, $dictword) !== false) {
+                    $return .= $dictword . " ";
+                    $foundcount++;
+                    $lastword = $dictword;                          BROKEN
+                }*/
+                if ($dictword == $word) {
+                    $foundcount++;
+                    $lastword = $word;
+                }
+            }
+            rewind($dict);
+        }
+
+        // If the amount of dictionary words found is 1, and there is only one word in the password
+        if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
+            $return .= get_string('responsedictionaryfailoneword', 'tool_passwordvalidator', $lastword) . '<br>';
+        }
+
+        fclose($dict);
     }
 
-    fclose($dict);
     return $return;
 }
 
