@@ -22,8 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- // Settings menu strings
 $string['pluginname'] = 'Password validator';
+
+$string['configpasswordpolicy'] = 'It appears that the "Password Policy" control is disabled. If this control is disabled, new users will not be able to view information about the password policy when setting their password.';
+$string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1 for the password reset lockout period.
+ It is recommended to set this value to atleast 1, but higher is better. ACSC recommends not reusing passwords within  8 changes.';
+$string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.';
+$string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.';
+$string['configpasswordminlength'] = 'It appears that the enforced password policy requires at least one character. It is recommend to set this control to 0, and enforce minimum length using this plugin.';
+$string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.';
+$string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.';
+$string['configpasswordgood'] = 'Moodle configuration appears to be correct.';
 $string['passwordenablename'] = 'Enable plugin';
 $string['passwordenabledesc'] = 'Check to enable password validation.';
 $string['passwordforcedconfig'] = 'Settings are read only, configuration is forced in template file: ';
@@ -63,6 +72,10 @@ $string['passwordlockoutinputname'] = 'Password change lockout period input';
 $string['passwordlockoutinputdesc'] = 'Enforce a lockout period on users changing passwords. Time entered will be the period during which users cannot change their passwords. Enter a number in seconds, or 0 to disable this control.';
 $string['passwordblacklistname'] = 'Check password against blacklist';
 $string['passwordblacklistdesc'] = 'Securely check passwords against the haveibeenpwned.com Breached passwords API.';
+$string['passwordpolicynotemplate'] = 'compliance with a custom set of security controls';
+$string['passwordpolicyNIST_ISM_2019'] = 'compliance with NIST 2018, and Australian ISM 2019';
+$string['passwordpolicyNIST2018'] = 'compliance with NIST 2018';
+$string['passwordpolicyISM0519'] = 'compliance with Australian ISM 2019';
 $string['passwordsettingsheading'] = 'Moodle configuration checker';
 $string['passwordsettingsheadingdesc'] = 'Checks current moodle configuration and alerts users to any conflicts with the plugin, or insecure settings';
 $string['passwordtesterheading'] = 'Password validation tester';
@@ -73,7 +86,6 @@ $string['passwordtesterpass'] = 'Pass: Tester password passed validation setting
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: <br>';
 $string['passwordtesterempty'] = 'No password entered to test.';
 
-// Password validation responses
 $string['responseminimumlength'] = 'Password must have at least {$a} characters.';
 $string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.';
 $string['responsedictionaryfailoneword'] = 'Password cannot be based of a single dictionary word: {$a}, consider adding more words.';
@@ -86,24 +98,9 @@ $string['responselockoutperiod'] = 'Password already changed recently. Please tr
 $string['responsebreachedpassword'] = 'Password found in online breached passwords collection.';
 $string['responsenouser'] = 'No user account found for password personal information query.';
 $string['responseapierror'] = 'Service HaveIBeenPwned.com password API was not responsive.';
-
-// Moodle config checker strings
-$string['configpasswordpolicy'] = 'It appears that the "Password Policy" control is disabled. If this control is disabled, new users will not be able to view information about the password policy when setting their password.';
-$string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1 for the password reset lockout period.
- It is recommended to set this value to atleast 1, but higher is better. ACSC recommends not reusing passwords within  8 changes.';
-$string['configpassworddigits'] = 'It appears that the enforced password policy requires at least one number. NIST recommends not enforcing mandatory characters in passwords.';
-$string['configpasswordspecialchars'] = 'It appears that the enforced password policy requires at least one alphanumeric character. NIST recommends not enforcing mandatory characters in password.';
-$string['configpasswordminlength'] = 'It appears that the enforced password policy requires at least one character. It is recommend to set this control to 0, and enforce minimum length using this plugin.';
-$string['configpasswordlowerletter'] = 'It appears that the enforced password policy requires at least one lowercase letter. NIST recommends not enforcing mandatory characters in passwords.';
-$string['configpasswordupperletter'] = 'It appears that the enforced password policy requires at least one uppercase letter. NIST recommends not enforcing mandatory characters in passwords.';
-$string['configpasswordgood'] = 'Moodle configuration appears to be correct.';
-
-// Template Description Strings
 $string['templateNIST_ISM_2019'] = 'This template enforces recommendations from both the Australian ISM, as well as the NIST password recommendations. The strongest template implemented by default.';
 $string['templateNIST2018'] = 'This template enforces recommendations from the NIST password recommendations. Does not include complexity requirements on the password composition.';
 $string['templateISM0519'] = 'This template enforces recommendations from the Australian ISM May 2019. Enforces minimum lengths for different password complexities, and character sets.';
-
-// Password Test Form Strings
 $string['testpasswordpagestring'] = 'Configuration and validation tester';
 $string['testpasswordpage'] = 'Password validation configuration';
 $string['testpasswordpagepasswordbox'] = 'Enter a password to test:';
@@ -112,13 +109,4 @@ $string['testpasswordpagetestbutton'] = 'Test password';
 $string['testpasswordconfigchecker'] = 'Moodle configuration checker';
 $string['testpasswordvalidationtester'] = 'Password validation tester';
 $string['testpasswordvalidationpassed'] = 'Password successfully passed validation testing.';
-
-// Password Policy Strings
-$string['passwordpolicynotemplate'] = 'compliance with a custom set of security controls';
-$string['passwordpolicyNIST_ISM_2019'] = 'compliance with NIST 2018, and Australian ISM 2019';
-$string['passwordpolicyNIST2018'] = 'compliance with NIST 2018';
-$string['passwordpolicyISM0519'] = 'compliance with Australian ISM 2019';
-/*
- * Privacy provider (GDPR)
- */
 $string["privacy:metadata"] = "The Password policy checker plugin does not store any personal data.";
