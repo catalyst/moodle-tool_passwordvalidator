@@ -27,10 +27,8 @@ require_once(__DIR__.'/../locallib.php');
 require_once(__DIR__.'../../../../../user/lib.php');
 class tool_passwordvalidator_password_testcase extends advanced_testcase {
 
-    // ===========================COMPLEXITY LENGTH TESTS============================
     public static function complexity_length_provider() {
         return [
-            // Data array [Password, passes validation]
             'goodresponse' => ['', false],
             'onlylowerstooshort' => ['abcdefg', false],
             'onlylowerslong' => ['aabbccddeeffgg', true],
@@ -56,15 +54,11 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
      */
     public function test_complexity_length($password, $good) {
         $goodresponse = '';
-
-        // test the data provider strings against the expected response
         $this->assertEquals($good, tool_passwordvalidator_complexity_checker($password, true) == $goodresponse );
     }
 
-    // ===========================COMPLEXITY CHARS TESTS============================
     public static function complexity_chars_provider() {
         return [
-            // Data array [Password, passes validation]
             'goodresponse' => ['', false],
             'onlylowers' => ['abcdefg', true],
             'onlyuppers' => ['ABCDEFG', true],
@@ -84,15 +78,11 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
      */
     public function test_complexity_chars($password, $good) {
         $goodresponse = '';
-
-        // test the data provider strings against the expected response
         $this->assertEquals($good, tool_passwordvalidator_complexity_checker($password, false) == $goodresponse );
     }
 
-    // ===========================DICTIONARY CHECKING TESTS============================
     public static function dictionary_checking_provider() {
         return [
-            // Data array [Password, passes validation]
             'goodresponse' => ['', true],
             'onewordnumbers' => ['123magazine123', false],
             'onewordchars' => ['!@#magazine!@#', false],
@@ -122,15 +112,12 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         set_config('dictionary_check_file', 'google-10000-english.txt', 'tool_passwordvalidator');
         $goodresponse = '';
 
-         // test the data provider strings against the expected response
          $this->assertEquals($good, tool_passwordvalidator_dictionary_checker($password) == $goodresponse );
 
     }
 
-    // ===========================PERSONAL INFORMATION TESTS============================
     public function test_personal_information() {
         $this->resetAfterTest(true);
-        // Generate user account to test against
         $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
                          'lastname' => 'user', 'city' => 'testcity'));
         $this->setUser($user);
@@ -142,25 +129,25 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $badusername = 'abcPHPUnitabc';
         $badcity = 'abctestcityabc';
 
-        // Empty password, no data to be found
+        // Empty password, no data to be found.
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($safestring, $user));
 
-        // Safe strings
+        // Safe strings.
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($safestring, $user));
 
-        // Bad strings
+        // Bad strings.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_personal_information($badfname, $user));
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_personal_information($badlname, $user));
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_personal_information($badcity, $user));
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_personal_information($badusername, $user));
 
-        // Extra Unit tests for malformed user account with empty strings
+        // Extra Unit tests for malformed user account with empty strings.
         $baduser = $this->getDataGenerator()->create_user(array('username' => 'baduser', 'firstname' => '',
                             'lastname' => '', 'city' => ''));
         $this->setUser($baduser);
         global $USER;
 
-        // Verify logged in as the bad user
+        // Verify logged in as the bad user.
         $this->assertEquals('', $USER->firstname);
 
         $badusername2 = '123baduser123';
@@ -168,14 +155,14 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $badlastname = 'lastname';
         $badusercity = 'badcity';
 
-        // Check for empty string data from user account
+        // Check for empty string data from user account.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_personal_information($badusername2, $baduser));
 
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badfirstname, $baduser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badlastname, $baduser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badusercity, $baduser));
 
-        // Manually null user values
+        // Manually null user values.
         $baduser->firstname = null;
         $baduser->lastname = null;
         $baduser->username = null;
@@ -187,13 +174,13 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertEquals(null, $baduser->username);
         $this->assertEquals(null, $baduser->city);
 
-        // If user account data is null, it should return a good response, as null shouldnt be found inside the password
+        // If user account data is null, it should return a good response, as null shouldnt be found inside the password.
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badusername2, $baduser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badfirstname, $baduser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badlastname, $baduser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($badusercity, $baduser));
 
-        // Create user with single char values
+        // Create user with single char values.
         $singleuser = $this->getDataGenerator()->create_user(array('username' => 'aa', 'firstname' => 'b',
                                 'lastname' => 'c', 'city' => '  '));
 
@@ -202,19 +189,18 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $singlelastname = 'contains c';
         $singlecity = 'contains space';
 
-        // strings with multiple chars should be checked and fail
+        // Strings with multiple chars should be checked and fail.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_personal_information($singleusername, $singleuser));
 
-        // string with single chars shouldnt be checked, and pass
+        // String with single chars shouldnt be checked, and pass.
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($singlefirstname, $singleuser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($singlelastname, $singleuser));
         $this->assertEquals($goodresponse, tool_passwordvalidator_personal_information($singlecity, $singleuser));
     }
 
-    // ===========================SEQUENTIAL DIGITS TESTS============================
     public static function sequential_digits_provider() {
         return [
-            // Data array [Password, passes validation]
+            // Data array [Password, passes validation]/.
             'goodresponse' => ['', true],
             'noseqdigits' => ['a1b2c3d4', true],
             'safeseqdigits' => ['a11b22c33', true],
@@ -235,11 +221,10 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         set_config('sequential_digits_input', 5, 'tool_passwordvalidator');
         $goodresponse = '';
 
-         // test the data provider strings against the expected response
+         // Test the data provider strings against the expected response.
          $this->assertEquals($good, tool_passwordvalidator_sequential_digits($password) == $goodresponse );
     }
 
-    // ===========================REPEATED CHARS TESTS============================
     public static function repeated_chars_provider() {
         return [
             'goodresponse' => ['', true],
@@ -261,11 +246,10 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         set_config('repeated_chars_input', 4, 'tool_passwordvalidator');
         $goodresponse = '';
 
-        // test the data provider strings against the expected response
+        // Test the data provider strings against the expected response.
         $this->assertEquals($good, tool_passwordvalidator_repeated_chars($password) == $goodresponse);
     }
 
-    // ===========================PHRASE BLACKLISTING TESTS============================
     public function test_phrase_blacklisting() {
         $this->resetAfterTest(true);
         set_config('phrase_blacklist_input', "badphrase\nphrasetwo\nphrase with space", 'tool_passwordvalidator');
@@ -277,18 +261,17 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $badphrase2 = 'phrasetwohere';
         $badphrase3 = 'phrase with space here';
 
-        // Safe Variables
+        // Safe Variables.
         $this->assertEquals($goodresponse, tool_passwordvalidator_phrase_blacklist($goodresponse));
         $this->assertEquals($goodresponse, tool_passwordvalidator_phrase_blacklist($tooshort));
         $this->assertEquals($goodresponse, tool_passwordvalidator_phrase_blacklist($safephrase));
 
-        // Contains bad phrases
+        // Contains bad phrases.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_phrase_blacklist($badphrase1));
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_phrase_blacklist($badphrase2));
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_phrase_blacklist($badphrase3));
     }
 
-    // ===========================LOCKOUT PERIOD TESTS============================
     public function test_lockout_period() {
         $this->resetAfterTest(true);
         global $CFG;
@@ -297,30 +280,30 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $goodresponse = '';
         $testpassword = 'testpassword';
 
-        // Set timelock to 1 second
+        // Set timelock to 1 second.
         set_config('time_lockout_input', 2 , 'tool_passwordvalidator');
 
-        // Create a user then 'fake add' a password to trigger the timelock
+        // Create a user then 'fake add' a password to trigger the timelock.
         $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
                          'lastname' => 'user', 'city' => 'testcity'));
         $this->setUser($user);
         user_add_password_history($user->id, 'passwordhistory1');
 
-        // Now test that you are unable to change password
+        // Now test that you are unable to change password.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
 
-        // Wait 3 seconds then test again
+        // Wait 3 seconds then test again.
         sleep(3);
         $this->assertEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
 
-        // Repeat with a slightly longer period
+        // Repeat with a slightly longer period.
         set_config('time_lockout_input', 4 , 'tool_passwordvalidator');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
         sleep(5);
         $this->assertEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
 
-        // Then set to 24hrs (86400 seconds) ensure it takes values that large
+        // Then set to 24hrs (86400 seconds) ensure it takes values that large.
         set_config('time_lockout_input', 86400 , 'tool_passwordvalidator');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
@@ -328,52 +311,53 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
     }
 
-    // ===========================PASSWORD BLACKLIST TESTS============================
     public function test_password_blacklist() {
         // Due to constant data breaches etc, there is a chance one day these tests
         // may fail, as the passwords chosen as the safe test version may actually
-        // become leaked
+        // become leaked.
 
         $goodresponse = '';
         $badpassword = 'password';
         $safepassword = 'hopefully this password remains safe $&!@#*(%(&!@*(%';
 
-        // Safe variables
+        // Safe variables.
         $this->assertEquals($goodresponse, tool_passwordvalidator_password_blacklist($goodresponse));
         $this->assertEquals($goodresponse, tool_passwordvalidator_password_blacklist($safepassword));
 
-        // verified leaked password
+        // Verified leaked password.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_password_blacklist($badpassword));
     }
 
-    // ===========================PASSWORD VALIDATE TESTS============================
+    /*
+     * ===========================PASSWORD VALIDATE TESTS============================
+     */
     public function test_password_validate() {
         $this->resetAfterTest(true);
         $goodresponse = '';
         $badpassword = 'password';
         $admindatapassword = 'admin password check';
 
-        // set account to admin account
+        // Set account to admin account.
         $this->setAdminUser();
         global $USER;
 
-        // Test that check for user data fails
+        // Test that check for user data fails.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, $USER));
 
-        // Create a new user, with different information
+        // Create a new user, with different information.
         $newuser = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
         'lastname' => 'user', 'city' => 'testcity'));
 
-        // Check that check for user data passes with a different user
+        // Check that check for user data passes with a different user.
         $this->assertEquals($goodresponse, tool_passwordvalidator_password_validate($admindatapassword, $newuser));
     }
 
-    // This test ensures that the end to end flow of check_password_policy is working
+    // This test ensures that the end to end flow of check_password_policy is working.
     public function test_password_change_api() {
         $this->resetAfterTest(true);
         global $CFG;
 
-        // Require strong config to test with
+        // Require strong config to test with.
         require(__DIR__.'/../config_policies/NIST_ISM_2019.php');
         $CFG->passwordpolicy = true;
         $CFG->minpasswordlength = 0;
@@ -383,7 +367,7 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $CFG->minpasswordnonalphanum = 0;
         $CFG->maxconsecutiveidentchars = 0;
 
-        // Setup user to test against
+        // Setup user to test against.
         $user = $this->getDataGenerator()->create_user(array('username' => 'phpunit', 'firstname' => 'test',
                          'lastname' => 'user', 'city' => 'testcity'));
         $this->setUser($user);
@@ -391,14 +375,14 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $badpassword = 'testpassword';
         $goodpassword = 'tree grass bush shrub';
 
-        // Test good password
+        // Test good password.
         $errors = '';
         $result = check_password_policy($goodpassword, $errors);
 
         $this->assertTrue($result);
         $this->assertEmpty($errors);
 
-        // Test bad password
+        // Test bad password.
         $result = check_password_policy($badpassword, $errors);
         $this->assertFalse($result);
         $this->assertNotEmpty($errors);

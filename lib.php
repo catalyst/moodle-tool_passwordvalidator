@@ -35,11 +35,11 @@ defined('MOODLE_INTERNAL') || die;
 
 function tool_passwordvalidator_check_password_policy($password, $user = null) {
     if (get_config('tool_passwordvalidator', 'enable_plugin')) {
-        // If plugin is enabled, execute validation
+        // If plugin is enabled, execute validation.
         require_once(__DIR__.'/locallib.php');
         return tool_passwordvalidator_password_validate($password, $user);
     } else {
-        // Return empty, 'passed validation'
+        // Empty, passed validation.
         return '';
     }
 }
@@ -52,16 +52,16 @@ function tool_passwordvalidator_check_password_policy($password, $user = null) {
  */
 function tool_passwordvalidator_print_password_policy() {
     if (get_config('tool_passwordvalidator', 'enable_plugin')) {
-        // Check for templates being active
+        // Check for templates being active.
         $template = get_config('tool_passwordvalidator', 'chosen_template');
         if ($template != '') {
             return [get_string("passwordpolicy$template", 'tool_passwordvalidator')];
         } else {
-            // Inform no template use
+            // Inform no template use.
             return [get_string('passwordpolicynotemplate', 'tool_passwordvalidator')];
         }
     } else {
-        // Return empty, 'no current policy enabled
+        // Return empty, no current policy enabled.
         return [];
     }
 }

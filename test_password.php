@@ -40,17 +40,14 @@ if ($form->is_cancelled()) {
     $success = true;
 }
 
-// Build the page output.
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('testpasswordpagestring', 'tool_passwordvalidator'));
 
-// Configuration Checker
 echo '<br>';
 echo $OUTPUT->heading(get_string('testpasswordconfigchecker', 'tool_passwordvalidator'), 4);
 echo $OUTPUT->notification($configcheckdesc[0], $configcheckdesc[1]);
 echo '<br>';
 
-// Display password validation form
 echo $OUTPUT->heading(get_string('testpasswordvalidationtester', 'tool_passwordvalidator'), 4);
 if ($success) {
     echo $OUTPUT->notification(get_string('testpasswordvalidationpassed', 'tool_passwordvalidator'), 'notifysuccess');

@@ -36,17 +36,17 @@ defined('MOODLE_INTERNAL') || die;
  */
 function tool_passwordvalidator_password_validate($password, $user) {
     // Only execute checks if user isn't admin or is test mode.
-    // Here so admin can force passwords
+    // Here so admin can force passwords.
     $errs = '';
 
-    // ACSC Security Control 0421
+    // ACSC Security Control 0421.
     // Check for character sets.
     if (get_config('tool_passwordvalidator', 'irap_complexity')) {
         $errs .= tool_passwordvalidator_complexity_checker($password, true);
     }
 
-    // ACSC Security Control 0417
-    // Not only numbers
+    // ACSC Security Control 0417.
+    // Not only numbers.
     if (get_config('tool_passwordvalidator', 'irap_numbers')) {
         $errs .= tool_passwordvalidator_complexity_checker($password, false);
     }
@@ -55,7 +55,7 @@ function tool_passwordvalidator_password_validate($password, $user) {
         $errs .= tool_passwordvalidator_dictionary_checker($password);
     }
 
-    // Checks based on user object
+    // Checks based on user object.
     if (!empty($user->id)) {
         // Personal Information Check.
         if (get_config('tool_passwordvalidator', 'personal_info')) {
@@ -64,7 +64,7 @@ function tool_passwordvalidator_password_validate($password, $user) {
 
         // Check for password changes on the user account within lockout period.
         if (get_config('tool_passwordvalidator', 'time_lockout_input') > 0) {
-            // If siteadmin, ignore this check
+            // If siteadmin, ignore this check.
             if (!is_siteadmin()) {
                 $errs .= tool_passwordvalidator_lockout_period($password, $user);
             }
@@ -81,12 +81,12 @@ function tool_passwordvalidator_password_validate($password, $user) {
         $errs .= tool_passwordvalidator_repeated_chars($password);
     }
 
-    // Check for blacklist phrases - eg Service name
+    // Check for blacklist phrases - eg Service name.
     if (get_config('tool_passwordvalidator', 'phrase_blacklist')) {
         $errs .= tool_passwordvalidator_phrase_blacklist($password);
     }
 
-    // Check against HaveIBeenPwned.com password breach API
+    // Check against HaveIBeenPwned.com password breach API.
     if (get_config('tool_passwordvalidator', 'password_blacklist')) {
         $errs .= tool_passwordvalidator_password_blacklist($password);
     }
@@ -118,17 +118,17 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
     $specialcharspattern = '/[^a-z,A-Z,0-9]/';
     $specialchars = preg_match($specialcharspattern, $password);
 
-    // Minimum length checks based on character sets used
+    // Minimum length checks based on character sets used.
     if (($lowercase === 1) && ($uppercase === 1)) {
         if (($specialchars === 1) || ($numbers === 1)) {
-            // At least 3 character sets found
+            // At least 3 character sets found.
             $minchars = get_config('tool_passwordvalidator', 'complex_length_input');
         } else {
-            // Less than 3 charsets
+            // Less than 3 charsets.
             $minchars = get_config('tool_passwordvalidator', 'simple_length_input');
         }
     } else {
-        // Less than 3 charsets
+        // Less than 3 charsets.
         $minchars = 13;
     }
 
@@ -145,7 +145,9 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
 }
 
 /**
- * Checks the password composition for dictionary words. Splits based on spaces, then checks the number of occurances against a dictionary
+ * Checks the password composition for dictionary words.
+ *
+ * Splits based on spaces, then checks the number of occurances against a dictionary
  *
  * @param string $password The password to be validated.
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
@@ -153,12 +155,12 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
  */
 function tool_passwordvalidator_dictionary_checker($password) {
     $return = '';
-    // Strip special chars and numbers from password, to get raw words in array
+    // Strip special chars and numbers from password, to get raw words in array.
     $strippedpw = trim(preg_replace("/[^a-zA-Z ]/", "", $password));
     $wordarray = explode(' ', $strippedpw);
     $wordcount = count($wordarray);
 
-    // Read in dictionary file
+    // Read in dictionary file.
     $dictpath = __DIR__.'/dictionary/'. get_config('tool_passwordvalidator', 'dictionary_check_file');
     try {
         $dict = fopen($dictpath, 'r');
@@ -166,7 +168,7 @@ function tool_passwordvalidator_dictionary_checker($password) {
         $return .= 'Error opening file';
     }
 
-    // Check every line of file for exact match, then reset file pointer to start
+    // Check every line of file for exact match, then reset file pointer to start.
     $foundcount = 0;
     $lastword = '';
     foreach ($wordarray as $word) {
@@ -182,7 +184,7 @@ function tool_passwordvalidator_dictionary_checker($password) {
     }
     $wordsreq = get_config('tool_passwordvalidator', 'dictionary_check');
 
-    // If the amount of dictionary words found is 1, and there is only one word in the password
+    // If the amount of dictionary words found is 1, and there is only one word in the password.
     if (($foundcount == 1) && ($wordcount == 1) && ($strippedpw != '')) {
         $return .= get_string('responsedictionaryfailoneword', 'tool_passwordvalidator', $lastword) . '<br>';
     }
@@ -192,8 +194,8 @@ function tool_passwordvalidator_dictionary_checker($password) {
 }
 
 /**
- * Checks the password for known personal information supplied by the user. Any additional checks can
- * be added into the $badstrings array.
+ * Checks the password for known personal information supplied by the user.
+ * Any additional checks can be added into the $badstrings array.
  *
  * @param string $password The password to be validated.
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
@@ -202,7 +204,7 @@ function tool_passwordvalidator_dictionary_checker($password) {
 
 function  tool_passwordvalidator_personal_information($password, $user) {
     // Protection from malformed accounts, if they have an id but no data
-    // Check for fname, lname, city, username
+    // Check for fname, lname, city, username.
     $badstrings = array();
     if (!empty($user->firstname)) {
         array_push($badstrings, $user->firstname);
@@ -221,7 +223,7 @@ function  tool_passwordvalidator_personal_information($password, $user) {
 
     foreach ($badstrings as $string) {
         $string = trim($string);
-        // Ignore strings if they are too short
+        // Ignore strings if they are too short.
         if (strlen($string) > 1) {
             if (stripos($password, $string) !== false) {
                 $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator', $string).'<br>';
@@ -241,7 +243,7 @@ function  tool_passwordvalidator_personal_information($password, $user) {
  *
  */
 function tool_passwordvalidator_sequential_digits($password) {
-    // get maximum allowed number of digits, add 1 to work in the regex
+    // Fet maximum allowed number of digits, add 1 to work in the regex.
     $seqdigits = get_config('tool_passwordvalidator', 'sequential_digits_input') + 1;
     $digitpattern = '/\d{'.$seqdigits.',}/u';
     $return = '';
@@ -322,7 +324,8 @@ function tool_passwordvalidator_lockout_period($password, $user) {
         return '';
     }
 
-    $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC', 'timecreated', 0, 1);
+    $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)),
+        'timecreated DESC', 'timecreated', 0, 1);
     // Get first elements timecreated, order from DB query.
     if (!empty($lastchanges)) {
         $timechanged = reset($lastchanges)->timecreated;
@@ -366,7 +369,7 @@ function tool_passwordvalidator_password_blacklist($password) {
     $pwhash = sha1($password);
     $searchstring = substr($pwhash, 0, 5); // Get first 5 chars of hash to search API for.
 
-    // Get API response
+    // Get API response.
     $url = $api . $searchstring;
     $response = download_file_content($url, null, null, false, 5, 5); // 5 second timeout.
 
@@ -398,22 +401,22 @@ function tool_passwordvalidator_config_checker() {
     $response = '';
     $type = 'notifysuccess';
 
-    // Check if a password policy is in place, inform users of visibility of password policy
+    // Check if a password policy is in place, inform users of visibility of password policy.
     if ($CFG->passwordpolicy != 1) {
         $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator').'<br>';
-        // If notify is currently success
+        // If notify is currently success.
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
         }
     }
 
-    // Minimum length enforcement is a fail
+    // Minimum length enforcement is a fail.
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlength >= 1) {
         $response .= get_string('configpasswordminlength', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
 
-    // Minimum char enforcement is a fail
+    // Minimum char enforcement is a fail.
     if (($CFG->passwordpolicy == 1) && $CFG->minpassworddigits >= 1) {
         $response .= get_string('configpassworddigits', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
@@ -431,13 +434,13 @@ function tool_passwordvalidator_config_checker() {
         $type = 'notifyerror';
     }
 
-    // Password rotation not beind enabled is a fail
+    // Password rotation not beind enabled is a fail.
     if ($CFG->passwordreuselimit < 1) {
         $response .= get_string('configpasswordrotationempty', 'tool_passwordvalidator').'<br>';
         $type = 'notifyerror';
     }
 
-    // If no errors at end, return a good message
+    // If no errors at end, return a good message.
     if ($type == 'notifysuccess') {
         $response .= get_string('configpasswordgood', 'tool_passwordvalidator').'<br>';
     }

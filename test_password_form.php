@@ -33,11 +33,9 @@ class test_password_form extends moodleform {
 
         $mform = $this->_form;
 
-        // Add Password entry form
         $mform->addElement('text', 'testerpassword', get_string('testpasswordpagepasswordbox', 'tool_passwordvalidator'));
         $mform->setType('testerpassword', PARAM_RAW);
 
-        // Add optional username checker
         $mform->addElement('text', 'testerinput', get_string('testpasswordpageusernamebox', 'tool_passwordvalidator'));
         $mform->setType('testerinput', PARAM_RAW);
 
@@ -45,33 +43,32 @@ class test_password_form extends moodleform {
     }
 
     public function validation($data, $files) {
-        global $DB;
-        global $USER;
+        global $DB, $USER;
         require_once(__DIR__.'/lib.php');
         $errors = parent::validation($data, $files);
 
-        // PASSWORD VALIDATION TEST
         $testpassword = $data['testerpassword'];
         $testerinput = $data['testerinput'];
 
         $otheruser = '';
 
-        // try input as username first, then email
+        // Try input as username first, then email.
         $foundusers = $DB->get_records('user', array('username' => ($testerinput)));
         if (!empty($foundusers)) {
-            // Get first matching username record
+            // Get first matching username record.
             $otheruser = reset($foundusers);
         } else {
             $foundusers = $DB->get_records('user', array('email' => ($testerinput)));
             if (!empty($foundusers)) {
-                // Get first matching email record (should be unique)
+                // Get first matching email record (should be unique).
                 $otheruser = reset($foundusers);
             } else {
                 $otheruser = $USER;
             }
         }
 
-        // Don't check if testpassword is empty. If record exists for optional user, check pw against that account. Else, against currenlty logged in account
+        // Don't check if testpassword is empty. If record exists for optional user,
+        // check pw against that account. Else, against currenlty logged in account.
         $testervalidation = '';
         if ($testpassword != '') {
             $testervalidation = tool_passwordvalidator_check_password_policy($testpassword, $otheruser);
