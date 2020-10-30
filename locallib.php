@@ -306,28 +306,42 @@ function tool_passwordvalidator_phrase_blacklist($password) {
  *
  */
 function tool_passwordvalidator_lockout_period($password, $user) {
-    global $DB;
+    global $DB, $USER;
+
+    // If an admin has forced you to change your password then you MUST be able
+    // to change your password.
+    if (get_user_preferences('auth_forcepasswordchange', 0, $user)) {
+        return '';
+    }
+
+    // If we are not logged in as this user then always pass this check, this
+    // includes admins bulk uploading or other admin actions as well as during
+    // the login process before $USER is set. Without this you will get a loop
+    // if $CFG->passwordpolicycheckonlogin is set.
+    if ($USER->id !== $user->id) {
+        return '';
+    }
 
     $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)), 'timecreated DESC', 'timecreated', 0, 1);
-    // get first elements timecreated, order from DB query
+    // Get first elements timecreated, order from DB query.
     if (!empty($lastchanges)) {
         $timechanged = reset($lastchanges)->timecreated;
     } else {
-        // No timechange found, return passed validation
+        // No timechange found, return passed validation.
         return '';
     }
 
     $currenttime = time();
 
-    // Set the time modifier based on configuration
+    // Set the time modifier based on configuration.
     $inputtime = get_config('tool_passwordvalidator', 'time_lockout_input');
 
-    // Default to 1 day if time not set
+    // Default to 1 day if time not set.
     if ($inputtime == '') {
         $inputtime = DAYSECS;
     }
 
-    // Check if currenttime is within the lockout period
+    // Check if currenttime is within the lockout period.
     $timeleft = $inputtime - ($currenttime - $timechanged);
     if ($timeleft > 0) {
         $timerem = format_time($timeleft);
