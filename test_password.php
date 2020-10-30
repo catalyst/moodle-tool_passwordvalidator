@@ -23,7 +23,6 @@
  */
 require_once(dirname(__FILE__) . '/../../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
-require_once(__DIR__.'/test_password_form.php');
 require_once(__DIR__.'/locallib.php');
 
 admin_externalpage_setup('tool_passwordvalidator_form');
@@ -32,7 +31,7 @@ $prevurl = ($CFG->wwwroot.'/admin/category.php?category=validator');
 $success = false;
 $configcheckdesc = tool_passwordvalidator_config_checker();
 
-$form = new test_password_form();
+$form = new \tool_passwordvalidator\form\test_password_form();
 
 if ($form->is_cancelled()) {
     redirect($prevurl);

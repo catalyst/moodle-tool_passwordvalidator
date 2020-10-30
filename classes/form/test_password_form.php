@@ -24,10 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+namespace tool_passwordvalidator\form;
+
 require_once("$CFG->libdir/formslib.php");
 
-
-class test_password_form extends moodleform {
+class test_password_form extends \moodleform {
 
     public function definition() {
 
