@@ -29,8 +29,7 @@ defined('MOODLE_INTERNAL') || die;
  * settings menu. Calls all of the individual checks
  *
  * @param string $password The password to be validated.
- * @param bool $test Testmode. If true, the checks will run even if the executing account is an administrator.
- *             Used for tester validation in the settings menu.
+ * @param object $user An optional user object
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */

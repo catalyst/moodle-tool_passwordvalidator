@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Language pack
  *
  * @package    tool_passwordvalidator
  * @copyright  2019 Peter Burnett <peterburnett@catalyst-au.net>
