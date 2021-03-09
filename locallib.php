@@ -68,6 +68,12 @@ function tool_passwordvalidator_password_validate($password, $user) {
                 $errs .= tool_passwordvalidator_lockout_period($password, $user);
             }
         }
+
+        // Check for password expiry after a certain period. If so,
+        // Don't add errors, but mark the user to require a change after successful login.
+        if (get_config('tool_passwordvalidator', 'time_passwordexpiry_input') > 0) {
+            tool_passwordvalidator_expiry_period($password, $user);
+        }
     }
 
     // Check for sequential digits.
@@ -351,6 +357,35 @@ function tool_passwordvalidator_lockout_period($password, $user) {
     }
 
     return '';
+}
+
+function tool_passwordvalidator_expiry_period($password, $user) {
+    global $DB, $PAGE;
+
+    // Check if we are coming from the tester. Do nothing if so, this is login only.
+    if ($PAGE->url->compare(new moodle_url('/admin/tool/passwordvalidator/test_password.php'))) {
+        return;
+    }
+
+    $lastchanges = $DB->get_records('user_password_history', ['userid' => $user->id],
+        'timecreated DESC', 'hash, timecreated', 0, 1);
+    // Get first elements timecreated, order from DB query.
+    if (!empty($lastchanges)) {
+        $lastchanges = reset($lastchanges);
+        $timecreated = $lastchanges->timecreated;
+    } else {
+        return;
+    }
+    // Check the most recent hash matches the current password. Otherwise we can't be sure we are correctly expiring.
+    if (!password_verify($password, $lastchanges->hash)) {
+        return;
+    }
+    $duration = get_config('tool_passwordvalidator', 'time_passwordexpiry_input');
+    if ((int) $timecreated < time() - $duration) {
+        // This password is older than the allowed period.
+        // Set the password change flag for the next login.
+        set_user_preference('auth_forcepasswordchange', 1, $user);
+    }
 }
 
 /**
