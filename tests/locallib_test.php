@@ -387,5 +387,34 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $this->assertFalse($result);
         $this->assertNotEmpty($errors);
     }
-}
 
+    public function test_password_expiry() {
+        global $CFG, $DB;
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+        $this->resetAfterTest(true);
+
+        $CFG->forced_plugin_settings['tool_passwordvalidator']['time_passwordexpiry_input'] = DAYSECS;
+        $CFG->passwordreuselimit = 100;
+
+        // Test checking a password with no history.
+        $result = tool_passwordvalidator_expiry_period('nohistory', $user);
+        $this->assertEquals('', $result);
+
+        // Now add some history. Still no pw reset should be forced, as the duration is not up.
+        user_add_password_history($user->id, 'history');
+        $result = tool_passwordvalidator_expiry_period('history', $user);
+        $this->assertEquals('', $result);
+
+        // Set the time for the password outside of the duration.
+        $DB->set_field('user_password_history', 'timecreated', 1);
+
+        // Now check a password that doesnt match the most recent hash. Should never reset in this case.
+        $result = tool_passwordvalidator_expiry_period('nohistory', $user);
+        $this->assertEquals('', $result);
+
+        // Now check the right password, out of duration, and confirm the reset flag is set.
+        $result = tool_passwordvalidator_expiry_period('history', $user);
+        $this->assertEquals(get_string('passwordexpired', 'tool_passwordvalidator'), $result);
+    }
+}

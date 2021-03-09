@@ -40,6 +40,7 @@ $string['passwordforcedconfigmanual'] = 'Settings are read only, configuration i
 $string['passwordbadconfigload'] = 'Unable to load template configuration file. Check variables are correct, and that template is inside the templates folder. - ';
 $string['passwordconfigloc'] = ' at location: ';
 $string['passwordconfigpath'] = '/config_policies/{$a}.php';
+$string['passwordexpired'] = 'Your password is expired.';
 $string['passwordexpiryinputname'] = 'Password expiry duration';
 $string['passwordexpiryinputdesc'] = 'Passwords that are older than this period are required to be changed. Set this control to 0 to disable this check.';
 $string['passwordirapcomplexityname'] = 'Enforce ISM complexity standards';

@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2021030900;
-$plugin->release   = 2021030900; // Match release exactly to version.
+$plugin->release   = $plugin->version;
 $plugin->requires  = 2016052300;
 $plugin->component = 'tool_passwordvalidator';
 $plugin->maturity  = MATURITY_STABLE;
