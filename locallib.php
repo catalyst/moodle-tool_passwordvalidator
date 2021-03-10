@@ -68,6 +68,12 @@ function tool_passwordvalidator_password_validate($password, $user) {
                 $errs .= tool_passwordvalidator_lockout_period($password, $user);
             }
         }
+
+        // Check for password expiry after a certain period. If so,
+        // Don't add errors, but mark the user to require a change after successful login.
+        if (get_config('tool_passwordvalidator', 'time_passwordexpiry_input') > 0) {
+            $errs .= tool_passwordvalidator_expiry_period($password, $user);
+        }
     }
 
     // Check for sequential digits.
@@ -351,6 +357,63 @@ function tool_passwordvalidator_lockout_period($password, $user) {
     }
 
     return '';
+}
+
+/**
+ * Checks the expiry period of a password for a user, and forces a change if needed.
+ *
+ * @param string $password plaintext password
+ * @param stdClass $user the user object
+ * @return string error messages from the check
+ */
+function tool_passwordvalidator_expiry_period($password, $user) {
+    global $DB;
+    $run = false;
+
+    // Here we need to sniff the stacktrace a bit. This check is special,
+    // It should only fire when called just after login, from check PW on login.
+    if (PHPUNIT_TEST) {
+        $run = true;
+    } else {
+        $stack = debug_backtrace();
+        foreach ($stack as $level => $data) {
+            if ($data['function'] === 'authenticate_user_login' &&
+                    stripos($data['file'], '/login/index.php') !== false) {
+                if ($stack[$level - 1]['function'] === 'check_password_policy') {
+                    // We got here from checking policy after auth success.
+                    $run = true;
+                }
+            }
+        }
+    }
+    if (!$run) {
+        return '';
+    }
+
+    $lastchanges = $DB->get_records('user_password_history', ['userid' => $user->id],
+        'timecreated DESC', 'hash, timecreated', 0, 1);
+    // Get first elements timecreated, order from DB query.
+    if (!empty($lastchanges)) {
+        $lastchanges = reset($lastchanges);
+        $timecreated = $lastchanges->timecreated;
+    } else {
+        // No history means this may be the first password.
+        // Use account creation time instead.
+        $timecreated = $user->timecreated;
+    }
+
+    $expired = false;
+    $duration = get_config('tool_passwordvalidator', 'time_passwordexpiry_input');
+    if ((int) $timecreated < time() - $duration) {
+        // This password is older than the allowed period.
+        // Set the password change flag for the next login,
+        // If there is no hist, or the hash matches.
+        if (empty($lastchanges) || password_verify($password, $lastchanges->hash)) {
+            $expired = true;
+        }
+    }
+
+    return $expired ? get_string('passwordexpired', 'tool_passwordvalidator') : '';
 }
 
 /**

@@ -1,0 +1,162 @@
+From 9892d41ac883d37cb5e1efa54a57a33ad0ee00f6 Mon Sep 17 00:00:00 2001
+From: "[Peter Burnett]" <[peterburnett@catalyst-au.net]>
+Date: Thu, 18 Jul 2019 10:23:24 +1000
+Subject: [PATCH] MDL-66123 core: check_password_policy takes $user argument
+
+---
+ admin/cli/reset_password.php    |  2 +-
+ admin/tool/uploaduser/index.php |  4 ++--
+ lib/authlib.php                 | 10 +++++++++-
+ lib/moodlelib.php               |  5 +++--
+ login/change_password_form.php  |  2 +-
+ login/set_password_form.php     |  2 +-
+ user/editadvanced_form.php      |  2 +-
+ user/lib.php                    |  4 ++--
+ 8 files changed, 20 insertions(+), 11 deletions(-)
+
+diff --git a/admin/cli/reset_password.php b/admin/cli/reset_password.php
+index 9d4dc14bf68..8bd03eb16e7 100644
+--- a/admin/cli/reset_password.php
++++ b/admin/cli/reset_password.php
+@@ -94,7 +94,7 @@ if ($options['password'] == '' ) {
+ 
+ $errmsg = '';//prevent eclipse warning
+ if (!$options['ignore-password-policy'] ) {
+-    if (!check_password_policy($password, $errmsg)) {
++    if (!check_password_policy($password, $errmsg, $user)) {
+         cli_error(html_to_text($errmsg, 0));
+     }
+ }
+diff --git a/admin/tool/uploaduser/index.php b/admin/tool/uploaduser/index.php
+index 496b52dd1ac..db62c87539e 100644
+--- a/admin/tool/uploaduser/index.php
++++ b/admin/tool/uploaduser/index.php
+@@ -657,7 +657,7 @@ if ($formdata = $mform2->is_cancelled()) {
+                     // Check for passwords that we want to force users to reset next
+                     // time they log in.
+                     $errmsg = null;
+-                    $weak = !check_password_policy($user->password, $errmsg);
++                    $weak = !check_password_policy($user->password, $errmsg, $user);
+                     if ($resetpasswords == UU_PWRESET_ALL or ($resetpasswords == UU_PWRESET_WEAK and $weak)) {
+                         if ($weak) {
+                             $weakpasswords++;
+@@ -798,7 +798,7 @@ if ($formdata = $mform2->is_cancelled()) {
+                     }
+                 } else {
+                     $errmsg = null;
+-                    $weak = !check_password_policy($user->password, $errmsg);
++                    $weak = !check_password_policy($user->password, $errmsg, $user);
+                     if ($resetpasswords == UU_PWRESET_ALL or ($resetpasswords == UU_PWRESET_WEAK and $weak)) {
+                         if ($weak) {
+                             $weakpasswords++;
+diff --git a/lib/authlib.php b/lib/authlib.php
+index 33a193f094c..87b4930456f 100644
+--- a/lib/authlib.php
++++ b/lib/authlib.php
+@@ -1005,8 +1005,16 @@ function signup_validate_data($data, $files) {
+         }
+     }
+ 
++    // Construct fake user object to check password policy against required information.
++    $tempuser = new stdClass();
++    $tempuser->id = 1;
++    $tempuser->username = $data['username'];
++    $tempuser->firstname = $data['firstname'];
++    $tempuser->lastname = $data['lastname'];
++    $tempuser->email = $data['email'];
++
+     $errmsg = '';
+-    if (!check_password_policy($data['password'], $errmsg)) {
++    if (!check_password_policy($data['password'], $errmsg, $tempuser)) {
+         $errors['password'] = $errmsg;
+     }
+ 
+diff --git a/lib/moodlelib.php b/lib/moodlelib.php
+index ace9a005a80..fb9f9861691 100644
+--- a/lib/moodlelib.php
++++ b/lib/moodlelib.php
+@@ -4827,9 +4827,10 @@ function get_complete_user_data($field, $value, $mnethostid = null, $throwexcept
+  *
+  * @param string $password the password to be checked against the password policy
+  * @param string $errmsg the error message to display when the password doesn't comply with the policy.
++ * @param stdClass $user the user object to perform password validation against. Defaults to null if not provided
+  * @return bool true if the password is valid according to the policy. false otherwise.
+  */
+-function check_password_policy($password, &$errmsg) {
++function check_password_policy($password, &$errmsg, $user = null) {
+     global $CFG;
+ 
+     if (!empty($CFG->passwordpolicy)) {
+@@ -4859,7 +4860,7 @@ function check_password_policy($password, &$errmsg) {
+     $pluginsfunction = get_plugins_with_function('check_password_policy');
+     foreach ($pluginsfunction as $plugintype => $plugins) {
+         foreach ($plugins as $pluginfunction) {
+-            $pluginerr = $pluginfunction($password);
++            $pluginerr = $pluginfunction($password, $user);
+             if ($pluginerr) {
+                 $errmsg .= '<div>'. $pluginerr .'</div>';
+             }
+diff --git a/login/change_password_form.php b/login/change_password_form.php
+index 4a2597932c1..9f2b77d69ad 100644
+--- a/login/change_password_form.php
++++ b/login/change_password_form.php
+@@ -113,7 +113,7 @@ class login_change_password_form extends moodleform {
+         }
+ 
+         $errmsg = '';//prevents eclipse warnings
+-        if (!check_password_policy($data['newpassword1'], $errmsg)) {
++        if (!check_password_policy($data['newpassword1'], $errmsg, $USER)) {
+             $errors['newpassword1'] = $errmsg;
+             $errors['newpassword2'] = $errmsg;
+             return $errors;
+diff --git a/login/set_password_form.php b/login/set_password_form.php
+index ccc725beac8..6cee4e9ea1c 100644
+--- a/login/set_password_form.php
++++ b/login/set_password_form.php
+@@ -100,7 +100,7 @@ class login_set_password_form extends moodleform {
+         }
+ 
+         $errmsg = ''; // Prevents eclipse warnings.
+-        if (!check_password_policy($data['password'], $errmsg)) {
++        if (!check_password_policy($data['password'], $errmsg, $user)) {
+             $errors['password'] = $errmsg;
+             $errors['password2'] = $errmsg;
+             return $errors;
+diff --git a/user/editadvanced_form.php b/user/editadvanced_form.php
+index 6506249ae57..2622dc89179 100644
+--- a/user/editadvanced_form.php
++++ b/user/editadvanced_form.php
+@@ -265,7 +265,7 @@ class user_editadvanced_form extends moodleform {
+         } else {
+             if (!empty($usernew->newpassword)) {
+                 $errmsg = ''; // Prevent eclipse warning.
+-                if (!check_password_policy($usernew->newpassword, $errmsg)) {
++                if (!check_password_policy($usernew->newpassword, $errmsg, $usernew)) {
+                     $err['newpassword'] = $errmsg;
+                 }
+             } else if (!$user) {
+diff --git a/user/lib.php b/user/lib.php
+index 26d14d5190f..de67a564ac3 100644
+--- a/user/lib.php
++++ b/user/lib.php
+@@ -64,7 +64,7 @@ function user_create_user($user, $updatepassword = true, $triggerevent = true) {
+     if ($updatepassword && isset($user->password)) {
+ 
+         // Check password toward the password policy.
+-        if (!check_password_policy($user->password, $errmsg)) {
++        if (!check_password_policy($user->password, $errmsg, $user)) {
+             throw new moodle_exception($errmsg);
+         }
+ 
+@@ -165,7 +165,7 @@ function user_update_user($user, $updatepassword = true, $triggerevent = true) {
+     if ($updatepassword && isset($user->password)) {
+ 
+         // Check password toward the password policy.
+-        if (!check_password_policy($user->password, $errmsg)) {
++        if (!check_password_policy($user->password, $errmsg, $user)) {
+             throw new moodle_exception($errmsg);
+         }
+ 
+-- 
+2.25.1
+

@@ -46,7 +46,7 @@ class test_password_form extends \moodleform {
 
     public function validation($data, $files) {
         global $DB, $USER;
-        require_once(__DIR__.'/lib.php');
+        require_once(__DIR__.'/../../lib.php');
         $errors = parent::validation($data, $files);
 
         $testpassword = $data['testerpassword'];
@@ -83,4 +83,3 @@ class test_password_form extends \moodleform {
         return $errors;
     }
 }
-

@@ -114,6 +114,10 @@ if ($hassiteconfig) {
                 get_string('passwordlockoutinputname', 'tool_passwordvalidator'),
                 get_string('passwordlockoutinputdesc', 'tool_passwordvalidator'), DAYSECS, MINSECS));
 
+        $settings->add(new admin_setting_configduration('tool_passwordvalidator/time_passwordexpiry_input',
+                get_string('passwordexpiryinputname', 'tool_passwordvalidator'),
+                get_string('passwordexpiryinputdesc', 'tool_passwordvalidator'), 0, DAYSECS));
+
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/password_blacklist',
                 get_string('passwordblacklistname', 'tool_passwordvalidator'),
                 get_string('passwordblacklistdesc', 'tool_passwordvalidator'), 1));
