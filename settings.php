@@ -72,7 +72,7 @@ if ($hassiteconfig) {
 
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/simple_length_input',
                 get_string('passwordirapcomplexitysimple', 'tool_passwordvalidator'),
-                get_string('passwordirapcomplexitysimpledesc', 'tool_passwordvalidator'), 13, PARAM_INT));
+                get_string('passwordirapcomplexitysimpledesc', 'tool_passwordvalidator'), 14, PARAM_INT));
 
         $settings->add(new admin_setting_configtext('tool_passwordvalidator/complex_length_input',
                 get_string('passwordirapcomplexitycomplex', 'tool_passwordvalidator'),
