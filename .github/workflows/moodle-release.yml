@@ -1,0 +1,17 @@
+# .github/workflows/moodle-release.yml
+name: Releasing for 3.8+ in the Plugins directory
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'version.php'
+
+jobs:
+  release:
+    uses: catalyst/catalyst-moodle-workflows/.github/workflows/group-38-plus-release.yml@main
+    with:
+      plugin_name: tool_passwordvalidator
+    secrets:
+      moodle_org_token: ${{ secrets.MOODLE_ORG_TOKEN }}
