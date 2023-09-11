@@ -29,3 +29,4 @@ $plugin->release   = $plugin->version;
 $plugin->requires  = 2016052300;
 $plugin->component = 'tool_passwordvalidator';
 $plugin->maturity  = MATURITY_STABLE;
+$plugin->supported = [38, 401];
