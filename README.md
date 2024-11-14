@@ -120,12 +120,11 @@ Password Tester
 The password tester allows admins to enter a password. Upon clicking 'Test Password', the password will be validated against the above configuration, and the user will be alerted as to the status of the password. For the purposes of password lockout testing and information testing, the password will be checked against the current user account accessing the settings, typically the administration account, by default.
 To test passwords against other user accounts, enter the username or email address of the account to test against in the box underneath the password entry box. The plugin will attempt to match this to a user account, and validate the password against that account. If no valid user account can be located, the password will be matched against the current logged in account, as if nothing were entered into the box.
 
-Branches
---------
+## Branches
 
-| Moodle version    | Branch                                                                                       | PHP  | MySQL   | PostgreSQL  |
-|-------------------|--------------------------|----------------------------------------------------------------------------------------------|------|---------|-------------|
-| Moodle 3.8+       | [MOODLE_401_STABLE](https://github.com/catalyst/moodle-tool_passwordvalidator/tree/MOODLE_401_STABLE) | 7.2+ | 5.7+    | 12+         |
+| Moodle version    | Branch            | PHP  | MySQL   | PostgreSQL  |
+|-------------------|-------------------|------|---------|-------------|
+| Moodle 3.8+       | MOODLE_401_STABLE | 7.2+ | 5.7+    | 12+         |
 
 Installation
 ------------
