@@ -122,7 +122,10 @@ To test passwords against other user accounts, enter the username or email addre
 
 Branches
 --------
-For all Moodle versions, use the master branch.
+
+| Moodle version    | Branch                                                                                       | PHP  | MySQL   | PostgreSQL  |
+|-------------------|--------------------------|----------------------------------------------------------------------------------------------|------|---------|-------------|
+| Moodle 3.8+       | [MOODLE_401_STABLE](https://github.com/catalyst/moodle-tool_passwordvalidator/tree/MOODLE_401_STABLE) | 7.2+ | 5.7+    | 12+         |
 
 Installation
 ------------
