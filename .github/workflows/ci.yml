@@ -10,4 +10,4 @@ jobs:
       moodle_org_token: ${{ secrets.MOODLE_ORG_TOKEN }}
     with:
       disable_phpdoc: true
-      release_branches: 'master'
+      release_branches: 'MOODLE_401_STABLE'
