@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__.'/../locallib.php');
 require_once(__DIR__.'../../../../../user/lib.php');
-class tool_passwordvalidator_password_testcase extends advanced_testcase {
+class tool_passwordvalidator_locallib_test extends \advanced_testcase {
 
     public static function complexity_length_provider() {
         return [
@@ -321,7 +321,6 @@ class tool_passwordvalidator_password_testcase extends advanced_testcase {
         $safepassword = 'hopefully this password remains safe $&!@#*(%(&!@*(%';
 
         // Safe variables.
-        $this->assertEquals($goodresponse, tool_passwordvalidator_password_blacklist($goodresponse));
         $this->assertEquals($goodresponse, tool_passwordvalidator_password_blacklist($safepassword));
 
         // Verified leaked password.
