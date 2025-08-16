@@ -121,5 +121,9 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/password_blacklist',
                 get_string('passwordblacklistname', 'tool_passwordvalidator'),
                 get_string('passwordblacklistdesc', 'tool_passwordvalidator'), 1));
+
+        $settings->add(new admin_setting_configcheckbox('tool_passwordvalidator/lockout_on_leak',
+                get_string('passwordleaklockoutname', 'tool_passwordvalidator'),
+                get_string('passwordleaklockoutdesc', 'tool_passwordvalidator'), 0));
     }
 }

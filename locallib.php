@@ -93,7 +93,36 @@ function tool_passwordvalidator_password_validate($password, $user) {
 
     // Check against HaveIBeenPwned.com password breach API.
     if (get_config('tool_passwordvalidator', 'password_blacklist')) {
-        $errs .= tool_passwordvalidator_password_blacklist($password);
+        $leaked = tool_passwordvalidator_password_blacklist($password);
+        $errs .= $leaked;
+
+        if (!empty($leaked) && get_config('tool_passwordvalidator', 'lockout_on_leak')) {
+            $stack = debug_backtrace();
+            $run = false;
+            foreach ($stack as $level => $data) {
+                if ($data['function'] === 'authenticate_user_login' &&
+                        stripos($data['file'], '/login/index.php') !== false) {
+                    if ($stack[$level - 1]['function'] === 'check_password_policy') {
+                        // We got here from checking policy after auth success.
+                        $run = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!empty($user->id) && !isguestuser($user) && $run) {
+                global $DB;
+                // Set the password to empty, so it cannot be used again, locking the user out.
+                $user->password = '';
+                // Update the user record.
+                $DB->update_record('user', $user);
+                // Destroy all sessions for this user.
+                \core\session\manager::destroy_user_sessions($user->id);
+                // Redirect to the forgot password page with an error message.
+                $forgoturl = new \moodle_url('/login/forgot_password.php');
+                redirect($forgoturl, get_string('responsebreachedpasswordlogout', 'tool_passwordvalidator'), 1, \core\output\notification::NOTIFY_ERROR);
+            }
+        }
     }
 
     return $errs;
@@ -470,6 +499,12 @@ function tool_passwordvalidator_config_checker() {
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
         }
+    }
+
+    // Check if password check on login is enabled.
+    if ($CFG->passwordpolicycheckonlogin != 1) {
+        $response .= get_string('configpasswordcheckonlogin', 'tool_passwordvalidator').'<br>';
+        $type = 'notifyerror';
     }
 
     // Minimum length enforcement is a fail.
