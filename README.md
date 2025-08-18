@@ -115,6 +115,12 @@ $CFG->minpasswordnonalphanum = 0;
 $CFG->maxconsecutiveidentchars = 0;
 ```
 
+To enable password policy checks at login, set the following configuration in config.php
+
+``` php
+$CFG->passwordpolicycheckonlogin = true;
+``` 
+
 Password Tester
 ---------------
 The password tester allows admins to enter a password. Upon clicking 'Test Password', the password will be validated against the above configuration, and the user will be alerted as to the status of the password. For the purposes of password lockout testing and information testing, the password will be checked against the current user account accessing the settings, typically the administration account, by default.
