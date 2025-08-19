@@ -23,7 +23,7 @@
  */
 
 $string['pluginname'] = 'Password validator';
-
+$string['configpasswordcheckonlogin'] = 'It appears that the "Check password on login" (passwordpolicycheckonlogin) control is disabled. This plugin cannot function correctly without it.';
 $string['configpasswordpolicy'] = 'It appears that the "Password Policy" control is disabled. If this control is disabled, new users will not be able to view information about the password policy when setting their password.';
 $string['configpasswordrotationempty'] = 'It appears that the current password rotation limit is 0. This plugin relies on this configuration being set to atleast 1 for the password reset lockout period.
  It is recommended to set this value to atleast 1, but higher is better. ACSC recommends not reusing passwords within  8 changes.';
@@ -88,7 +88,6 @@ $string['passwordtesterdesc'] = 'Password tester. Enter a password and save chan
 $string['passwordtesterpass'] = 'Pass: Tester password passed validation settings. ';
 $string['passwordtesterfail'] = 'Fail: Tester password failed validation settings: <br>';
 $string['passwordtesterempty'] = 'No password entered to test.';
-
 $string['responseminimumlength'] = 'Password must have at least {$a} characters.';
 $string['responsenoletters'] = 'Password cannot consist of only numbers and/or special characters, or contain no letters.';
 $string['responsedictionaryfailoneword'] = 'Password cannot be based of a single dictionary word: {$a}, consider adding more words.';

@@ -472,6 +472,12 @@ function tool_passwordvalidator_config_checker() {
         }
     }
 
+    // Check if password check on login is enabled.
+    if ($CFG->passwordpolicycheckonlogin != 1) {
+        $response .= get_string('configpasswordcheckonlogin', 'tool_passwordvalidator').'<br>';
+        $type = 'notifyerror';
+    }
+
     // Minimum length enforcement is a fail.
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlength >= 1) {
         $response .= get_string('configpasswordminlength', 'tool_passwordvalidator').'<br>';
