@@ -30,10 +30,11 @@ defined('MOODLE_INTERNAL') || die;
  *
  * @param string $password The password to be validated.
  * @param object $user An optional user object
+ * @param bool $compcheck The compromised check flag.
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
-function tool_passwordvalidator_password_validate($password, $user) {
+function tool_passwordvalidator_password_validate($password, $user, $compcheck = true) {
     // Only execute checks if user isn't admin or is test mode.
     // Here so admin can force passwords.
     $errs = '';
@@ -92,11 +93,26 @@ function tool_passwordvalidator_password_validate($password, $user) {
     }
 
     // Check against HaveIBeenPwned.com password breach API.
-    if (get_config('tool_passwordvalidator', 'password_blacklist')) {
+    if ($compcheck && get_config('tool_passwordvalidator', 'password_blacklist')) {
         $errs .= tool_passwordvalidator_password_blacklist($password);
     }
 
     return $errs;
+}
+
+/**
+ * Validates the password against the HaveIBeenPwned password breach API.
+ *
+ * @param string $password The password to be validated.
+ * @return string Returns a non-empty string if a password has been compromised.
+ *
+ */
+function tool_passwordvalidator_password_compromised($password): string {
+    // Check against HaveIBeenPwned.com password breach API.
+    if (get_config('tool_passwordvalidator', 'password_blacklist')) {
+        return tool_passwordvalidator_password_blacklist($password);
+    }
+    return '';
 }
 
 /**

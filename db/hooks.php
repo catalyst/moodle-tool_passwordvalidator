@@ -29,4 +29,8 @@ $callbacks = [
         'hook' => \core\hook\check_password_policy::class,
         'callback' => [\tool_passwordvalidator\hook_callbacks::class, 'check_password_policy'],
     ],
+    [
+        'hook' => \core\hook\check_password_compromised::class,
+        'callback' => [\tool_passwordvalidator\hook_callbacks::class, 'check_password_compromised'],
+    ],
 ];

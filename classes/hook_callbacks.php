@@ -17,6 +17,7 @@
 namespace tool_passwordvalidator;
 
 use core\hook\check_password_policy;
+use core\hook\check_password_compromised;
 /**
  * Callbacks for hooks.
  *
@@ -35,9 +36,26 @@ class hook_callbacks {
         if (get_config('tool_passwordvalidator', 'enable_plugin')) {
             require_once($CFG->dirroot . '/admin/tool/passwordvalidator/locallib.php');
             // If plugin is enabled, execute validation.
-            $error = tool_passwordvalidator_password_validate($hook->password, $hook->user);
+            $error = tool_passwordvalidator_password_validate($hook->password, $hook->user, $hook->compcheck);
             if ($error) {
                 $hook->add_errors($error);
+            }
+        }
+    }
+
+    /**
+     * Listener for the check_password_compromised hook.
+     *
+     * @param check_password_compromised $hook
+     */
+    public static function check_password_compromised(check_password_compromised $hook): void {
+        global $CFG;
+        if (get_config('tool_passwordvalidator', 'enable_plugin')) {
+            require_once($CFG->dirroot . '/admin/tool/passwordvalidator/locallib.php');
+            // If plugin is enabled, execute validation.
+            $error = tool_passwordvalidator_password_compromised($hook->password);
+            if ($error) {
+                $hook->add_error($error);
             }
         }
     }
