@@ -134,7 +134,7 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
         }
     } else {
         // Less than 3 charsets.
-        $minchars = 13;
+        $minchars = get_config('tool_passwordvalidator', 'simple_length_input');
     }
 
     if ((strlen($password) < $minchars) && $complex) {
