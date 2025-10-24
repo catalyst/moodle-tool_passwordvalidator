@@ -29,8 +29,18 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->libdir/formslib.php");
 
-class test_password_form extends \moodleform {
 
+/**
+ * Testing class for password form
+ *
+ * @package    tool_passwordvalidator
+ * @copyright  Peter Burnett <peterburnett@catalyst-au.net>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class test_password_form extends \moodleform {
+    /**
+     * Form definition test
+     */
     public function definition() {
 
         $mform = $this->_form;
@@ -44,9 +54,16 @@ class test_password_form extends \moodleform {
         $this->add_action_buttons(true, get_string('testpasswordpagetestbutton', 'tool_passwordvalidator'));
     }
 
-    public function validation($data, $files) {
+    /**
+     * Form validation test
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *  or an empty array if everything is OK (true allowed for backwards compatibility too).
+     **/
+    public function validation($data, $files): array {
         global $DB, $USER;
-        require_once(__DIR__.'/../../lib.php');
+        require_once(__DIR__ . '/../../lib.php');
         $errors = parent::validation($data, $files);
 
         $testpassword = $data['testerpassword'];
@@ -55,12 +72,12 @@ class test_password_form extends \moodleform {
         $otheruser = '';
 
         // Try input as username first, then email.
-        $foundusers = $DB->get_records('user', array('username' => ($testerinput)));
+        $foundusers = $DB->get_records('user', ['username' => ($testerinput)]);
         if (!empty($foundusers)) {
             // Get first matching username record.
             $otheruser = reset($foundusers);
         } else {
-            $foundusers = $DB->get_records('user', array('email' => ($testerinput)));
+            $foundusers = $DB->get_records('user', ['email' => ($testerinput)]);
             if (!empty($foundusers)) {
                 // Get first matching email record (should be unique).
                 $otheruser = reset($foundusers);

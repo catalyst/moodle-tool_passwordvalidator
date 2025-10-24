@@ -22,8 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Validates the password provided against the password policy configured in the plugin admin
  * settings menu. Calls all of the individual checks
@@ -154,12 +152,12 @@ function tool_passwordvalidator_complexity_checker($password, $complex) {
     }
 
     if ((strlen($password) < $minchars) && $complex) {
-        $return .= get_string('responseminimumlength', 'tool_passwordvalidator', $minchars).'<br>';
+        $return .= get_string('responseminimumlength', 'tool_passwordvalidator', $minchars) . '<br>';
     }
 
     if (!($complex)) {
         if ($lowercase === 0 && $uppercase === 0) {
-            $return .= get_string('responsenoletters', 'tool_passwordvalidator').'<br>';
+            $return .= get_string('responsenoletters', 'tool_passwordvalidator') . '<br>';
         }
     }
     return $return;
@@ -182,7 +180,7 @@ function tool_passwordvalidator_dictionary_checker($password) {
     $wordcount = count($wordarray);
 
     // Read in dictionary file.
-    $dictpath = __DIR__.'/dictionary/'. get_config('tool_passwordvalidator', 'dictionary_check_file');
+    $dictpath = __DIR__ . '/dictionary/' . get_config('tool_passwordvalidator', 'dictionary_check_file');
     try {
         $dict = fopen($dictpath, 'r');
     } catch (Exception $e) {
@@ -219,14 +217,14 @@ function tool_passwordvalidator_dictionary_checker($password) {
  * Any additional checks can be added into the $badstrings array.
  *
  * @param string $password The password to be validated.
+ * @param stdClass $user a logged-in user.
  * @return string Returns a string of any errors presented by the check, or an empty string for success.
  *
  */
-
-function  tool_passwordvalidator_personal_information($password, $user) {
+function tool_passwordvalidator_personal_information($password, $user) {
     // Protection from malformed accounts, if they have an id but no data
     // Check for fname, lname, city, username.
-    $badstrings = array();
+    $badstrings = [];
     if (!empty($user->firstname)) {
         array_push($badstrings, $user->firstname);
     }
@@ -247,7 +245,7 @@ function  tool_passwordvalidator_personal_information($password, $user) {
         // Ignore strings if they are too short.
         if (strlen($string) > 1) {
             if (stripos($password, $string) !== false) {
-                $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator', $string).'<br>';
+                $return .= get_string('responseidentifyinginformation', 'tool_passwordvalidator', $string) . '<br>';
                 break;
             }
         }
@@ -266,11 +264,11 @@ function  tool_passwordvalidator_personal_information($password, $user) {
 function tool_passwordvalidator_sequential_digits($password) {
     // Fet maximum allowed number of digits, add 1 to work in the regex.
     $seqdigits = get_config('tool_passwordvalidator', 'sequential_digits_input') + 1;
-    $digitpattern = '/\d{'.$seqdigits.',}/u';
+    $digitpattern = '/\d{' . $seqdigits . ',}/u';
     $return = '';
 
     if (preg_match($digitpattern, $password) === 1) {
-        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator', ($seqdigits - 1)).'<br>';
+        $return .= get_string('responsenumericsequence', 'tool_passwordvalidator', ($seqdigits - 1)) . '<br>';
     }
 
     return $return;
@@ -286,11 +284,11 @@ function tool_passwordvalidator_sequential_digits($password) {
  */
 function tool_passwordvalidator_repeated_chars($password) {
     $repeatchars = get_config('tool_passwordvalidator', 'repeated_chars_input');
-    $characterpattern = '/(.)\1{'.$repeatchars.',}/';
+    $characterpattern = '/(.)\1{' . $repeatchars . ',}/';
     $return = '';
 
     if (preg_match($characterpattern, $password) === 1) {
-        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator', $repeatchars).'<br>';
+        $return .= get_string('responserepeatedcharacters', 'tool_passwordvalidator', $repeatchars) . '<br>';
     }
     return $return;
 }
@@ -311,7 +309,7 @@ function tool_passwordvalidator_phrase_blacklist($password) {
     foreach ($phrases as $string) {
         $tstring = trim($string);
         if (stripos($password, $tstring) !== false) {
-            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator', $tstring).'<br>';
+            $return .= get_string('responseblacklistphrase', 'tool_passwordvalidator', $tstring) . '<br>';
             break;
         }
     }
@@ -345,8 +343,14 @@ function tool_passwordvalidator_lockout_period($password, $user) {
         return '';
     }
 
-    $lastchanges = $DB->get_records('user_password_history', array('userid' => ($user->id)),
-        'timecreated DESC', 'timecreated', 0, 1);
+    $lastchanges = $DB->get_records(
+        'user_password_history',
+        ['userid' => ($user->id)],
+        'timecreated DESC',
+        'timecreated',
+        0,
+        1
+    );
     // Get first elements timecreated, order from DB query.
     if (!empty($lastchanges)) {
         $timechanged = reset($lastchanges)->timecreated;
@@ -369,7 +373,7 @@ function tool_passwordvalidator_lockout_period($password, $user) {
     $timeleft = $inputtime - ($currenttime - $timechanged);
     if ($timeleft > 0) {
         $timerem = format_time($timeleft);
-        return get_string('responselockoutperiod', 'tool_passwordvalidator', $timerem).'<br>';
+        return get_string('responselockoutperiod', 'tool_passwordvalidator', $timerem) . '<br>';
     }
 
     return '';
@@ -393,8 +397,10 @@ function tool_passwordvalidator_expiry_period($password, $user) {
     } else {
         $stack = debug_backtrace();
         foreach ($stack as $level => $data) {
-            if ($data['function'] === 'authenticate_user_login' &&
-                    stripos($data['file'], '/login/index.php') !== false) {
+            if (
+                $data['function'] === 'authenticate_user_login' &&
+                    stripos($data['file'], '/login/index.php') !== false
+            ) {
                 if ($stack[$level - 1]['function'] === 'check_password_policy') {
                     // We got here from checking policy after auth success.
                     $run = true;
@@ -406,8 +412,14 @@ function tool_passwordvalidator_expiry_period($password, $user) {
         return '';
     }
 
-    $lastchanges = $DB->get_records('user_password_history', ['userid' => $user->id],
-        'timecreated DESC', 'hash, timecreated', 0, 1);
+    $lastchanges = $DB->get_records(
+        'user_password_history',
+        ['userid' => $user->id],
+        'timecreated DESC',
+        'hash, timecreated',
+        0,
+        1
+    );
     // Get first elements timecreated, order from DB query.
     if (!empty($lastchanges)) {
         $lastchanges = reset($lastchanges);
@@ -442,7 +454,7 @@ function tool_passwordvalidator_expiry_period($password, $user) {
  */
 function tool_passwordvalidator_password_blacklist($password) {
     global $CFG;
-    require_once($CFG->libdir.'/filelib.php');
+    require_once($CFG->libdir . '/filelib.php');
     $api = 'https://api.pwnedpasswords.com/range/';
     $pwhash = sha1($password);
     $searchstring = substr($pwhash, 0, 5); // Get first 5 chars of hash to search API for.
@@ -454,7 +466,7 @@ function tool_passwordvalidator_password_blacklist($password) {
     if ($response == false) {
         // API not available, create error event, and log it.
         $failmessage = get_string('responseapierror', 'tool_passwordvalidator');
-        $event = \core\event\webservice_login_failed::create(array('other' => array('reason' => $failmessage, 'method' => '')));
+        $event = \core\event\webservice_login_failed::create(['other' => ['reason' => $failmessage, 'method' => '']]);
         $event->trigger();
         return '';
     }
@@ -462,7 +474,7 @@ function tool_passwordvalidator_password_blacklist($password) {
     // Check for presence of hash in response.
     $shorthash = substr($pwhash, 5);
     if (stripos($response, $shorthash) !== false) {
-        return get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
+        return get_string('responsebreachedpassword', 'tool_passwordvalidator') . '<br>';
     }
 
     return '';
@@ -481,7 +493,7 @@ function tool_passwordvalidator_config_checker() {
 
     // Check if a password policy is in place, inform users of visibility of password policy.
     if ($CFG->passwordpolicy != 1) {
-        $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordpolicy', 'tool_passwordvalidator') . '<br>';
         // If notify is currently success.
         if ($type == 'notifysuccess') {
             $type = 'notifymessage';
@@ -490,44 +502,44 @@ function tool_passwordvalidator_config_checker() {
 
     // Check if password check on login is enabled.
     if ($CFG->passwordpolicycheckonlogin != 1) {
-        $response .= get_string('configpasswordcheckonlogin', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordcheckonlogin', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
 
     // Minimum length enforcement is a fail.
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlength >= 1) {
-        $response .= get_string('configpasswordminlength', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordminlength', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
 
     // Minimum char enforcement is a fail.
     if (($CFG->passwordpolicy == 1) && $CFG->minpassworddigits >= 1) {
-        $response .= get_string('configpassworddigits', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpassworddigits', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordlower >= 1) {
-        $response .= get_string('configpasswordlowerletter', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordlowerletter', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordupper >= 1) {
-        $response .= get_string('configpasswordupperletter', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordupperletter', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
     if (($CFG->passwordpolicy == 1) && $CFG->minpasswordnonalphanum >= 1) {
-        $response .= get_string('configpasswordspecialchars', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordspecialchars', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
 
     // Password rotation not beind enabled is a fail.
     if ($CFG->passwordreuselimit < 1) {
-        $response .= get_string('configpasswordrotationempty', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordrotationempty', 'tool_passwordvalidator') . '<br>';
         $type = 'notifyerror';
     }
 
     // If no errors at end, return a good message.
     if ($type == 'notifysuccess') {
-        $response .= get_string('configpasswordgood', 'tool_passwordvalidator').'<br>';
+        $response .= get_string('configpasswordgood', 'tool_passwordvalidator') . '<br>';
     }
 
-    return array($response, $type);
+    return [$response, $type];
 }

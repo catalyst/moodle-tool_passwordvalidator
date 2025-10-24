@@ -21,7 +21,6 @@
  * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die;
 
 /**
  * Wrapper function for the password validation. Simply calls password validate
@@ -32,11 +31,10 @@ defined('MOODLE_INTERNAL') || die;
  * @return string Returns a string of any errors presented by the checks, or an empty string for success.
  *
  */
-
 function tool_passwordvalidator_check_password_policy($password, $user = null) {
     if (get_config('tool_passwordvalidator', 'enable_plugin')) {
         // If plugin is enabled, execute validation.
-        require_once(__DIR__.'/locallib.php');
+        require_once(__DIR__ . '/locallib.php');
         return tool_passwordvalidator_password_validate($password, $user);
     } else {
         // Empty, passed validation.
