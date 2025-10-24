@@ -15,18 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Hook callbacks for Password Validator
  *
  * @package    tool_passwordvalidator
- * @copyright  2019 Peter Burnett <peterburnett@catalyst-au.net>
+ * @copyright  2025 Dustin Huynh <dustinhuynh@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025082100;
-$plugin->release   = 2025082100;
-$plugin->requires  = 2016052300;
-$plugin->component = 'tool_passwordvalidator';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->supported = [38, 405];
+$callbacks = [
+    [
+        'hook' => \core\hook\check_password_policy::class,
+        'callback' => [\tool_passwordvalidator\hook_callbacks::class, 'check_password_policy'],
+    ],
+    [
+        'hook' => \core\hook\check_password_compromised::class,
+        'callback' => [\tool_passwordvalidator\hook_callbacks::class, 'check_password_compromised'],
+    ],
+];
