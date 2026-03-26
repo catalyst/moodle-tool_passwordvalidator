@@ -113,3 +113,4 @@ $string['testpasswordconfigchecker'] = 'Moodle configuration checker';
 $string['testpasswordvalidationtester'] = 'Password validation tester';
 $string['testpasswordvalidationpassed'] = 'Password successfully passed validation testing.';
 $string["privacy:metadata"] = "The Password policy checker plugin does not store any personal data.";
+$string['cachedef_haveibeenpwned'] = 'Have I Been Pwned API responses cached by SHA1 prefix for breach lookups.';

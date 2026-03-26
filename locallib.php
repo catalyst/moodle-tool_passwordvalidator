@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_passwordvalidator\cache\haveibeenpwned;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -425,28 +427,18 @@ function tool_passwordvalidator_expiry_period($password, $user) {
  *
  */
 function tool_passwordvalidator_password_blacklist($password) {
-    global $CFG;
-    require_once($CFG->libdir.'/filelib.php');
-    $api = 'https://api.pwnedpasswords.com/range/';
-    $pwhash = sha1($password);
-    $searchstring = substr($pwhash, 0, 5); // Get first 5 chars of hash to search API for.
+    $result = haveibeenpwned::is_breached($password);
 
-    // Get API response.
-    $url = $api . $searchstring;
-    $response = download_file_content($url, null, null, false, 5, 5); // 5 second timeout.
-
-    if ($response == false) {
+    if ($result === null) {
         // API not available, create error event, and log it.
         $failmessage = get_string('responseapierror', 'tool_passwordvalidator');
-        $event = \core\event\webservice_login_failed::create(array('other' => array('reason' => $failmessage, 'method' => '')));
+        $event = \core\event\webservice_login_failed::create(['other' => ['reason' => $failmessage, 'method' => '']]);
         $event->trigger();
         return '';
     }
 
-    // Check for presence of hash in response.
-    $shorthash = substr($pwhash, 5);
-    if (stripos($response, $shorthash) !== false) {
-        return get_string('responsebreachedpassword', 'tool_passwordvalidator').'<br>';
+    if ($result) {
+        return get_string('responsebreachedpassword', 'tool_passwordvalidator') . '<br>';
     }
 
     return '';

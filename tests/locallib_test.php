@@ -312,6 +312,8 @@ class tool_passwordvalidator_locallib_test extends \advanced_testcase {
     }
 
     public function test_password_blacklist() {
+        $this->resetAfterTest(true);
+
         // Due to constant data breaches etc, there is a chance one day these tests
         // may fail, as the passwords chosen as the safe test version may actually
         // become leaked.
@@ -320,11 +322,32 @@ class tool_passwordvalidator_locallib_test extends \advanced_testcase {
         $badpassword = 'password';
         $safepassword = 'hopefully this password remains safe $&!@#*(%(&!@*(%';
 
-        // Safe variables.
+        // Safe password should not be flagged.
         $this->assertEquals($goodresponse, tool_passwordvalidator_password_blacklist($safepassword));
 
-        // Verified leaked password.
+        // Verified leaked password should be flagged.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_password_blacklist($badpassword));
+    }
+
+    /**
+     * Test that HIBP API responses are cached by SHA1 prefix.
+     */
+    public function test_password_blacklist_caching() {
+        $this->resetAfterTest(true);
+
+        $cache = \cache::make('tool_passwordvalidator', 'haveibeenpwned');
+        $password = 'password';
+        $prefix = substr(strtoupper(sha1($password)), 0, 5);
+
+        // Start from a cold cache. Use has() instead of get() to avoid triggering the datasource.
+        \cache_helper::purge_by_definition('tool_passwordvalidator', 'haveibeenpwned');
+        $this->assertFalse($cache->has($prefix), 'Cache should be empty after purge.');
+
+        // Call the blacklist check, which should trigger a live API fetch and populate the cache.
+        tool_passwordvalidator_password_blacklist($password);
+
+        // Verify the cache now holds a response for this prefix.
+        $this->assertTrue($cache->has($prefix), 'HIBP response should be cached after first lookup.');
     }
 
     /*
