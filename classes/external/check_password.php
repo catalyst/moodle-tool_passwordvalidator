@@ -35,7 +35,6 @@ use core_external\external_value;
  * External function check_password.
  */
 class check_password extends external_api {
-
     /**
      * Returns description of method parameters.
      *
@@ -66,7 +65,6 @@ class check_password extends external_api {
 
         // Capability check — caller must be able to manage users or be checking their own password.
         if (!$userid !== $USER->id) {
-            
             $context = \context_user::instance($userid);
             self::validate_context($context);
             require_capability('tool/passwordvalidator:checkpassword', $context);

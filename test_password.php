@@ -15,19 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A form for password validation against custom settings
+ *  A form for password validation against custom settings
  *
- * @package   tool_passwordvalidator
- * @copyright 2019 Peter Burnett <peterburnett@catalyst-au.net>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     tool_passwordvalidator
+ * @copyright   2019 Peter Burnett <peterburnett@catalyst-au.net>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once(dirname(__FILE__) . '/../../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
-require_once(__DIR__.'/locallib.php');
+require_once(__DIR__ . '/locallib.php');
 
 admin_externalpage_setup('tool_passwordvalidator_form');
 
-$prevurl = ($CFG->wwwroot.'/admin/category.php?category=validator');
+$prevurl = ($CFG->wwwroot . '/admin/category.php?category=validator');
 $success = false;
 $configcheckdesc = tool_passwordvalidator_config_checker();
 
