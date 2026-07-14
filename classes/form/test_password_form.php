@@ -29,8 +29,13 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->libdir/formslib.php");
 
+/**
+ * Password Validation Settings form
+ */
 class test_password_form extends \moodleform {
-
+    /**
+     * Form definition.
+     */
     public function definition() {
 
         $mform = $this->_form;
@@ -44,9 +49,12 @@ class test_password_form extends \moodleform {
         $this->add_action_buttons(true, get_string('testpasswordpagetestbutton', 'tool_passwordvalidator'));
     }
 
+    /**
+     * Validation for the form.
+     */
     public function validation($data, $files) {
         global $DB, $USER;
-        require_once(__DIR__.'/../../lib.php');
+        require_once(__DIR__ . '/../../lib.php');
         $errors = parent::validation($data, $files);
 
         $testpassword = $data['testerpassword'];
@@ -55,12 +63,12 @@ class test_password_form extends \moodleform {
         $otheruser = '';
 
         // Try input as username first, then email.
-        $foundusers = $DB->get_records('user', array('username' => ($testerinput)));
+        $foundusers = $DB->get_records('user', ['username' => ($testerinput)]);
         if (!empty($foundusers)) {
             // Get first matching username record.
             $otheruser = reset($foundusers);
         } else {
-            $foundusers = $DB->get_records('user', array('email' => ($testerinput)));
+            $foundusers = $DB->get_records('user', ['email' => ($testerinput)]);
             if (!empty($foundusers)) {
                 // Get first matching email record (should be unique).
                 $otheruser = reset($foundusers);

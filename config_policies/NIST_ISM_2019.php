@@ -42,4 +42,3 @@ $CFG->forced_plugin_settings['tool_passwordvalidator']['repeated_chars_input'] =
 $CFG->forced_plugin_settings['tool_passwordvalidator']['sequential_digits_input'] = 2;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['simple_length_input'] = 13;
 $CFG->forced_plugin_settings['tool_passwordvalidator']['time_lockout_input'] = 86400;
-
