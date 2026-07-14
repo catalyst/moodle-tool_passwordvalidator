@@ -15,18 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Capability definitions for tool_passwordvalidator.
  *
- * @package    tool_passwordvalidator
- * @copyright  2019 Peter Burnett <peterburnett@catalyst-au.net>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   tool_passwordvalidator
+ * @copyright 2026 Jay Oswald <jayoswald@catalyst-au.net>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024111403;
-$plugin->release   = $plugin->version;
-$plugin->requires  = 2016052300;
-$plugin->component = 'tool_passwordvalidator';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->supported = [38, 405];
+$capabilities = [
+    'tool/passwordvalidator:checkpassword' => [
+        'riskbitmask'  => RISK_PERSONAL,
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes'   => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];
