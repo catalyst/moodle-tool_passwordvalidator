@@ -63,17 +63,16 @@ class check_password extends external_api {
             'userid'   => $userid,
         ]);
 
-        // Capability check — caller must be able to manage users or be checking their own password.
-        if (!$userid !== $USER->id) {
-            $context = \context_user::instance($userid);
-            self::validate_context($context);
-            require_capability('tool/passwordvalidator:checkpassword', $context);
+        if ($params['userid'] > 0) {
+            $context = \context_user::instance($params['userid']);
+        } else {
+            $context = \context_system::instance();
         }
         self::validate_context($context);
         require_capability('tool/passwordvalidator:checkpassword', $context);
 
         $user = new \stdClass();
-        if (!empty($params['userid'])) {
+        if ($params['userid'] > 0) {
             $user = \core_user::get_user($params['userid'], '*', MUST_EXIST);
         }
 
