@@ -87,6 +87,7 @@ $string['passwordtesterheading'] = 'Password validation tester';
 $string['passwordtesterheadingdesc'] = 'Enter a password into the box and save changes to test it against the current validation settings';
 $string['passwordtestername'] = 'Password tester field';
 $string['passwordtesterpass'] = 'Pass: Tester password passed validation settings. ';
+$string['passwordvalidator:checkpassword'] = 'Allowed to check password for other users';
 $string['pluginname'] = 'Password validator';
 
 
