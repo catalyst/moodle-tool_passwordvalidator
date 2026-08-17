@@ -69,6 +69,13 @@ if ($hassiteconfig) {
         ));
 
         $settings->add(new admin_setting_configcheckbox(
+            'tool_passwordvalidator/validate_group_enrolment_key',
+            get_string('passwordgroupenrolmentkeyname', 'tool_passwordvalidator'),
+            get_string('passwordgroupenrolmentkeydesc', 'tool_passwordvalidator'),
+            1
+        ));
+
+        $settings->add(new admin_setting_configcheckbox(
             'tool_passwordvalidator/irap_complexity',
             get_string('passwordirapcomplexityname', 'tool_passwordvalidator'),
             get_string('passwordirapcomplexitydesc', 'tool_passwordvalidator'),

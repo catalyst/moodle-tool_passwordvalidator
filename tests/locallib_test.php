@@ -413,13 +413,47 @@ final class locallib_test extends \advanced_testcase {
 
         // Test good password.
         $errors = '';
-        $result = check_password_policy($goodpassword, $errors);
+        $result = check_password_policy($goodpassword, $errors, $user);
 
         $this->assertTrue($result);
         $this->assertEmpty($errors);
 
         // Test bad password.
-        $result = check_password_policy($badpassword, $errors);
+        $result = check_password_policy($badpassword, $errors, $user);
+        $this->assertFalse($result);
+        $this->assertNotEmpty($errors);
+    }
+
+    // This test ensures that the end to end flow of check_password_policy with no user context is working.
+    public function test_password_change_api_no_user_context(): void {
+        $this->resetAfterTest(true);
+        global $CFG;
+
+        // Require strong config that would normally reject short passwords.
+        require(__DIR__ . '/../config_policies/NIST_ISM_2019.php');
+        $CFG->passwordpolicy = true;
+        $CFG->minpasswordlength = 0;
+        $CFG->minpassworddigits = 0;
+        $CFG->minpasswordlower = 0;
+        $CFG->minpasswordupper = 0;
+        $CFG->minpasswordnonalphanum = 0;
+        $CFG->maxconsecutiveidentchars = 0;
+
+        // A short password that tool_passwordvalidator would normally reject.
+        $shortpassword = 'test';
+
+        // Setting disabled (default): without a user object (e.g. group enrolment key),
+        // tool_passwordvalidator must not apply its extra checks.
+        set_config('validate_group_enrolment_key', 0, 'tool_passwordvalidator');
+        $errors = '';
+        $result = check_password_policy($shortpassword, $errors, null);
+        $this->assertTrue($result);
+        $this->assertEmpty($errors);
+
+        // Setting enabled: tool_passwordvalidator checks must apply even without a user object.
+        set_config('validate_group_enrolment_key', 1, 'tool_passwordvalidator');
+        $errors = '';
+        $result = check_password_policy($shortpassword, $errors, null);
         $this->assertFalse($result);
         $this->assertNotEmpty($errors);
     }

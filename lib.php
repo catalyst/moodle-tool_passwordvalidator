@@ -33,6 +33,13 @@ defined('MOODLE_INTERNAL') || die;
  *
  */
 function tool_passwordvalidator_check_password_policy($password, $user = null) {
+    // When no user context is provided, the password is not a user account password
+    // (e.g. a group enrolment key). Only apply checks if the admin has explicitly
+    // enabled validation for that context via the plugin setting.
+    if ($user === null && !get_config('tool_passwordvalidator', 'validate_group_enrolment_key')) {
+        return '';
+    }
+
     if (get_config('tool_passwordvalidator', 'enable_plugin')) {
         // If plugin is enabled, execute validation.
         require_once(__DIR__ . '/locallib.php');
