@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024111407;
-$plugin->release   = $plugin->version;
+$plugin->version   = 2024111408;
+$plugin->release   = 2024111408;
 $plugin->requires  = 2016052300;
 $plugin->component = 'tool_passwordvalidator';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->supported = [38, 405];
+$plugin->supported = [38, 503];
