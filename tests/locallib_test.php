@@ -317,7 +317,7 @@ final class locallib_test extends \advanced_testcase {
         $goodresponse = '';
         $testpassword = 'testpassword';
 
-        // Set timelock to 1 second.
+        // Set timelock to 2 seconds.
         set_config('time_lockout_input', 2, 'tool_passwordvalidator');
 
         // Create a user then 'fake add' a password to trigger the timelock.
@@ -329,22 +329,21 @@ final class locallib_test extends \advanced_testcase {
         // Now test that you are unable to change password.
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
 
-        // Wait 3 seconds then test again.
-        sleep(3);
+        $DB->set_field('user_password_history', 'timecreated', time() - 3, ['userid' => $user->id]);
         $this->assertEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
 
         // Repeat with a slightly longer period.
         set_config('time_lockout_input', 4, 'tool_passwordvalidator');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
-        sleep(5);
+        $DB->set_field('user_password_history', 'timecreated', time() - 5, ['userid' => $user->id]);
         $this->assertEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
 
         // Then set to 24hrs (86400 seconds) ensure it takes values that large.
         set_config('time_lockout_input', 86400, 'tool_passwordvalidator');
         user_add_password_history($user->id, 'passwordhistory2');
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
-        sleep(2);
+        $DB->set_field('user_password_history', 'timecreated', time() - 2, ['userid' => $user->id]);
         $this->assertNotEquals($goodresponse, tool_passwordvalidator_lockout_period($testpassword, $user));
     }
 
